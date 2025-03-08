@@ -1,0 +1,71 @@
+.container {
+    position: relative;
+    height: 100%;
+  }
+  
+  .fixed-bottom {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    
+    /* text-align: center; */
+  }
+
+  .loading-dots {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #000;
+    border-radius: 50%;
+    opacity: 0;
+    animation: fadeInOut 1.5s infinite;
+  }
+  
+  .dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .dot:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+  
+  .dot:nth-child(3) {
+    animation-delay: 1s;
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .animate-fadeInOut {
+    animation: fadeInOut 1.5s infinite;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }

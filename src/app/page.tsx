@@ -1,101 +1,137 @@
+"use client";
+
+import Header from "@/components/header";
+import Layout from "./layout";
+import Logo from "@/components/Logo";
+import Buttons from "@/components/buttons";
 import Image from "next/image";
+import styled from "styled-components";
+import { useRouter } from "next/navigation";
+import FadeInSection from "../utils/animationUtils";
+import "../styles/animations.css";
+import Section from "@/components/Section";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
+const FadeInImage = styled(Image)`
+  animation: fadeIn 1s ease-out forwards;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+`;
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const router = useRouter();
+  const handleCall = () => {
+    router.push("/login");
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <Layout>
+      <Header />
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid pb-5 rounded-xl">
+        <div className="flex flex-col w-full">
+          {/* Section  landing page*/}
+          <div className="grid grid-cols-2 items-center justify-center w-full">
+            <div className="col-span-1 px-12">
+              <div className="flex flex-col justify-start items-center px-24 py-8">
+                <Logo className="items-start" />
+                <div className="w-full">
+                  <div className="flex flex-col items-start w-full">
+                    <h3 className="text-8xl font-bold text-start">
+                      Pique ton défi<br></br>fais-le grandir
+                    </h3>
+                    <p className="text-xl text-center my-4">
+                      Participez à des défis provenant de plus de 130 pays
+                    </p>
+                  </div>
+                  <div className="flex justify-start items-center">
+                    <Buttons
+                      onClick={handleCall}
+                      className="py-5 bg-gray-900 hover:bg-slate-700 text-gray-900 rounded-lg text-[10px] sm:text-sm"
+                    >
+                      <FontAwesomeIcon>
+
+                      </FontAwesomeIcon>
+                      
+                      Let go
+                      <i className="fa fa-arrow-right ml-2"></i>
+                    </Buttons>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-span-1">
+              <div className="flex flex-col justify-center items-center px-12 py-8 min-h-[900px] bg-[#d9788b] rounded-lg">
+                <FadeInImage
+                  src="/02.png"
+                  alt="hero"
+                  width={1000}
+                  height={100}
+                  className="object-cover h-full w-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section */}
+            <Section>
+              <div className="flex flex-row items-center justify-center h-screen  gap-4">
+                <div className=" h-full w-full bg-[#d9788b]  rounded-lg items-center p-4">
+                  <div className="flex justify-center items-center">
+                  <FadeInImage
+                  src="/001.png"
+                  alt="hero"
+                  width={1000}
+                  height={100}
+                  className="object-cover h-full w-full"
+                />
+                  </div>
+                </div>
+                <div className="flex h-full flex-col w-full justify-center items-center p-4">
+                  <p className="text-center my-4 text-8xl font-bold">
+                  Participez à des défis provenant de divers pays
+
+                  <span className="text-9xl font-bold  animated-text block text-red-500 ">
+                    +130 pays
+                  </span>
+                  
+                  </p>
+                </div>
+              </div>
+            </Section>
+
+          <FadeInSection>
+            <Section>
+              <div className="flex flex-row items-center  gap-4 justify-center h-screen">
+                <div className="flex h-full flex-col w-full justify-center container ">
+                    <p className="text-center text-6xl font-bold py-20 text-wrap">
+                     Faites-vous plein d'amis plein d'argent, pleine de joies
+                    </p>
+                </div>
+
+                <div className=" h-full flex justify-center items-center flex-col w-full bg-[#d9788b] rounded-lg ani">
+                 
+                 <FadeInImage
+                  src="/03.png"
+                  alt="hero"
+                  className="object-cover items-center"
+                  width={600}
+                  height={100}/>
+                </div>
+              </div>
+            </Section>
+          </FadeInSection>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </Layout>
   );
 }

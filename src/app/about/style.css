@@ -1,0 +1,50 @@
+#dosk path {
+    fill: transparent;
+    stroke: #fff;
+    stroke-width: 0.5;
+    stroke-dasharray: 20;
+    stroke-dashoffset: 50;
+    animation: textAnimation 4s ease-in-out 1 forwards;
+}
+
+#dosk{
+z-index: 10;
+}
+@keyframes textAnimation {
+    0% {
+        stroke-dashoffset: 50;
+        transform: translateZ(0);
+    }
+    90% {
+        fill: transparent;
+        transform: translateZ(-20px);
+    }
+    100% {
+        fill: #fff;
+        stroke-dashoffset: 0;
+        transform: translateZ(-20px);
+}
+}
+
+
+#image {
+    animation: ImageEaseIn 4s ease-in-out 1 forwards;
+    transform-origin: center center;
+}
+
+
+
+@keyframes ImageEaseIn {
+    0% {
+        opacity: 0.9;
+        transform: scale(0.2);
+    }
+    80%{
+        opacity: 0.6;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
