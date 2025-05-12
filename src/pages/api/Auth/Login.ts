@@ -7,7 +7,7 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Méthode non autorisée' });
   }
 
-  //try {
+  try {
     const { telephone } = req.body;
 
     if (!telephone) {
@@ -38,10 +38,10 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
- /*
+ 
   } catch (error) {
     console.error('Erreur lors de la connexion:', error);
     return res.status(500).json({ message: 'Erreur interne du serveur' });
   }
-    */
+    
 }

@@ -1,0 +1,106 @@
+.leftCol {
+    animation: fadeInLeft 1s ease-in-out;
+  }
+  
+  .leftColOverlay {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .rightCol {
+    animation: fadeInRight 1s ease-in-out;
+  }
+  
+  .form {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .inputWrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input,
+  .textarea {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .inputUnderline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #3b82f6;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .input:focus + .inputUnderline,
+  .textarea:focus + .inputUnderline {
+    width: 100%;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .checkbox input {
+    margin-right: 0.5rem;
+  }
+  
+  .submitButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .submitButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @keyframes fadeInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
