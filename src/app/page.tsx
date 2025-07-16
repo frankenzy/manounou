@@ -10,8 +10,6 @@ import { useRouter } from "next/navigation";
 import FadeInSection from "../utils/animationUtils";
 import "../styles/animations.css";
 import Section from "@/components/Section";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 
 const FadeInImage = styled(Image)`
   animation: fadeIn 1s ease-out forwards;
@@ -57,10 +55,6 @@ export default function Home() {
                       onClick={handleCall}
                       className="py-5 bg-gray-900 hover:bg-slate-700 text-gray-900 rounded-lg text-[10px] sm:text-sm"
                     >
-                      <FontAwesomeIcon>
-
-                      </FontAwesomeIcon>
-                      
                       Let go
                       <i className="fa fa-arrow-right ml-2"></i>
                     </Buttons>
@@ -83,49 +77,47 @@ export default function Home() {
           </div>
 
           {/* Section */}
-            <Section>
-              <div className="flex flex-row items-center justify-center h-screen  gap-4">
-                <div className=" h-full w-full bg-[#d9788b]  rounded-lg items-center p-4">
-                  <div className="flex justify-center items-center">
+          <Section>
+            <div className="flex flex-row items-center justify-center h-screen  gap-4">
+              <div className=" h-full w-full bg-[#d9788b]  rounded-lg items-center p-4">
+                <div className="flex justify-center items-center">
                   <FadeInImage
-                  src="/001.png"
-                  alt="hero"
-                  width={1000}
-                  height={100}
-                  className="object-cover h-full w-full"
-                />
-                  </div>
+                    src="/001.png"
+                    alt="hero"
+                    width={1000}
+                    height={100}
+                    className="object-cover h-full w-full"
+                  />
                 </div>
-                <div className="flex h-full flex-col w-full justify-center items-center p-4">
-                  <p className="text-center my-4 text-8xl font-bold">
+              </div>
+              <div className="flex h-full flex-col w-full justify-center items-center p-4">
+                <p className="text-center my-4 text-8xl font-bold">
                   Participez à des défis provenant de divers pays
-
                   <span className="text-9xl font-bold  animated-text block text-red-500 ">
                     +130 pays
                   </span>
-                  
-                  </p>
-                </div>
+                </p>
               </div>
-            </Section>
+            </div>
+          </Section>
 
           <FadeInSection>
             <Section>
               <div className="flex flex-row items-center  gap-4 justify-center h-screen">
                 <div className="flex h-full flex-col w-full justify-center container ">
-                    <p className="text-center text-6xl font-bold py-20 text-wrap">
-                     Faites-vous plein d'amis plein d'argent, pleine de joies
-                    </p>
+                  <p className="text-center text-6xl font-bold py-20 text-wrap">
+                    {` Faites-vous plein d'amis plein d'argent, pleine de joies`}
+                  </p>
                 </div>
 
                 <div className=" h-full flex justify-center items-center flex-col w-full bg-[#d9788b] rounded-lg ani">
-                 
-                 <FadeInImage
-                  src="/03.png"
-                  alt="hero"
-                  className="object-cover items-center"
-                  width={600}
-                  height={100}/>
+                  <FadeInImage
+                    src="/03.png"
+                    alt="hero"
+                    className="object-cover items-center"
+                    width={600}
+                    height={100}
+                  />
                 </div>
               </div>
             </Section>
