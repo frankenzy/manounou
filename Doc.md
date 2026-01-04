@@ -4,7 +4,7 @@ Bienvenue dans le projet ! Ce document a pour but d’aider les nouveaux dévelo
 
 ## 1. Structure des Répertoires
 
-Le projet est situé dans `/var/www/html/web/backend/NEST/dushdata/`. Voici une description générale des dossiers et fichiers typiques que vous pourriez rencontrer :
+Le projet est situé dans `/var/www/html/web/backend/NEST/manounous/`. Voici une description générale des dossiers et fichiers typiques que vous pourriez rencontrer :
 
 - **src/** : Contient le code source principal (contrôleurs, services, modules).
 - **config/** : Fichiers de configuration (base de données, environnement).

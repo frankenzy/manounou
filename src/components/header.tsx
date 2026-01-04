@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Menu from "./Menu";
 import Buttons from "./buttons";
-import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
@@ -19,7 +18,7 @@ export default function Header() {
         <div className="flex flex-row items-center justify-between w-full">
           <div className="col-span-1 flex flex-row items-center sm:gap-2">
             <Image src="/logo.svg" alt="logo" width={40} height={40} />
-            <h2>Dushdata</h2>
+            <h2>manounous</h2>
           </div>
           <div className="col-span-1 sm:col-span-2">
             <Menu />
