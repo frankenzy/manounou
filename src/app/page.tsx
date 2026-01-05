@@ -74,6 +74,26 @@ export default function Home() {
     setInputValue(e.target.value);
   }
 
+  // load image
+  const handleLoadingImage = () => {
+    console.log("Image loading...");
+  }
+
+  // set location
+  const handleSetLocation = () => {
+    console.log("Setting location...");
+  }
+
+  // set user
+  const handleSetUser = () => {
+    console.log("Setting user...");
+  }
+
+  // set id card
+  const handleSetIdCard = () => {
+    console.log("Setting ID Card...");
+  }
+
   return (
     <Layout>
       <Header />
@@ -178,7 +198,7 @@ export default function Home() {
           <h2>Ajouter un details sur la publication:</h2>
 
            <div className="icons flex flex-row gap-4 text-[clamp(1rem,2vw,1.5rem)] justify-end items-end">
-            <FontAwesomeIcon icon={faImage} />
+            <FontAwesomeIcon icon={faImage} onClick={handleLoadingImage} className=""/>
             <FontAwesomeIcon icon={faLocation} />
             <FontAwesomeIcon icon={faUser} />
             <FontAwesomeIcon icon={faIdCard} />
