@@ -2,7 +2,6 @@
 
 import Logo from "@/components/Logo";
 import Modal from "@/components/Modal";
-import Buttons from "@/components/buttons";
 import Header from "@/components/header";
 
 import { faIdCard, faImage, faLocation, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -70,7 +69,12 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let value = e.target.value;
+    console.log("Input changed: ", value);
+    if (value.length > 4) {
+      initialInputBg();
+    }
     setInputValue(e.target.value);
   }
 
@@ -121,7 +125,7 @@ export default function Home() {
                     />
                   </div>
                   </div>
-                  <div className="flex justify-center items-center">
+                  {/* <div className="flex justify-center items-center">
                     <Buttons
                       onClick={handleSearch}
                       className="py-5 bg-gray-900 hover:bg-slate-700 text-gray-900 rounded-lg text-[10px] sm:text-sm"
@@ -129,7 +133,7 @@ export default function Home() {
                       Announce
                       <i className="fa fa-arrow-right ml-2"></i>
                     </Buttons>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -162,15 +166,14 @@ export default function Home() {
           </div>
           <hr className="mb-4" />
          
-
-
          {/* section formulaire */}
 
          <div className={`"modal modalForms flex flex-auto justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}>
             <textarea
               placeholder="Décrire votre publication..."
               className={`w-full h-32 p-2 rounded-lg focus:outline-none bg-inherit ${inputColor}`}
-            ></textarea>
+              onChange={handleInput}
+            />
 
           </div>
 
@@ -193,7 +196,7 @@ export default function Home() {
           </div>
 
 
-          <div className="modal forms modalForms footer modalFormsFooters bg-gray-600 border-2 border-white-600 flex flex-auto justify-normal items-center p-2 rounded-lg gap-4">
+          <div className="modal forms modalForms footer modalFormsFooters  border-2 border-white-600 flex flex-auto justify-normal items-center p-2 rounded-lg gap-4">
 
           <h2>Ajouter un details sur la publication:</h2>
 
