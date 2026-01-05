@@ -1,35 +1,30 @@
-import React,{useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
+import React from "react";
 
 interface CustomProps {
-    children: React.ReactNode
+    children: React.ReactNode;
+    className?: string;
+    isOpen?: boolean;
+    onClose?: () => void;
 }
-const Modal = ({children}:CustomProps)=>{
 
-    const [isOpen,setIsOpen] = useState(false);
+const Modal = ({ children, className, isOpen = false, onClose }: CustomProps) => {
+    if (!isOpen) return null;
 
-    return(
-        <div>
-            <div  onClick={() => setIsOpen(!isOpen)} 
-                className="border p-2 cursor-pointer flex items-center justify-center"
-                aria-label="Icon"
-            >
-
-                <FontAwesomeIcon icon={faChevronDown} className="w-4" />
-               
-                
+    return (
+        <div className={`fixed inset-0 z-50 flex items-center justify-center ${className}`}>
+            {/* Overlay */}
+            <div 
+                className="fixed inset-0 bg-black bg-opacity-50"
+                onClick={onClose}
+                aria-label="Close Modal"
+            />
+            
+            {/* Modal Content */}
+            <div className="relative bg-white rounded-lg shadow-lg max-w-[640] min-h-max w-full mx-4 z-10">
+                {children}
             </div>
-            {isOpen && (
-                <div className="absolute border bg-slate-200 mt-1 w-full z-10">
-                    {/* TODO: ajouter du contennu */}
-                  {/* {{ children}} */}
-                </div>
-            )}
         </div>
-    )
-
+    );
 }
 
 export default Modal;
