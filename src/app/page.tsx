@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import Modal from "@/components/Modal";
 import Header from "@/components/header";
 
-import { faIdCard, faImage, faLocation, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faClock, faImage, faLocationDot, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -28,6 +28,9 @@ const FadeInImage = styled(Image)`
     }
   }
 `;
+
+
+const lengthLimit = 140;
 export default function Home() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,13 +39,20 @@ export default function Home() {
   const [inputColor, setInputColor] = useState("");
   const [inputComment, setInputComment] = useState("");
   const [inputSize, setInputSize] = useState("");
+  const [lastSelectedColor, setLastSelectedColor] = useState(""); // Mémoriser la dernière couleur choisie
 
   const handleInputBg = (color: string) => {
+    if(inputValue.length >lengthLimit){ 
+      return;
+    }
     setInputBg(`${color} p-8`);
-    setInputColor('text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold');
+    setInputColor('text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center');
+    setLastSelectedColor(color); // Sauvegarder la couleur choisie
     // setInputSize('text-32px');
     console.log("Input text color set to: ",inputColor);
   }
+
+
 
 
   const handleSearch = () => {
@@ -62,6 +72,7 @@ export default function Home() {
     setInputBg('bg-white');
     setInputColor('text-black');
     setInputSize('text-normal');
+    setLastSelectedColor
     setInputComment('');
   }
 
@@ -72,8 +83,10 @@ export default function Home() {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let value = e.target.value;
     console.log("Input changed: ", value);
-    if (value.length > 4) {
+    if (value.length > lengthLimit) {
       initialInputBg();
+    } else if (value.length <= lengthLimit && lastSelectedColor) {
+      handleInputBg(lastSelectedColor);
     }
     setInputValue(e.target.value);
   }
@@ -121,19 +134,9 @@ export default function Home() {
                       placeholder="Qoui de neuf ?"
                       className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-96"
                       onClick={handleInputClick }
-                      // onChange={handleInput}
                     />
                   </div>
                   </div>
-                  {/* <div className="flex justify-center items-center">
-                    <Buttons
-                      onClick={handleSearch}
-                      className="py-5 bg-gray-900 hover:bg-slate-700 text-gray-900 rounded-lg text-[10px] sm:text-sm"
-                    >
-                      Announce
-                      <i className="fa fa-arrow-right ml-2"></i>
-                    </Buttons>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -159,7 +162,7 @@ export default function Home() {
             <div className="void">
 
             </div>
-            <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">Créer une publication</h2>
+            <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">Publier une annonce</h2>
             <button className="flex items-end justify-end text-3xl mb-4" onClick={handleCloseModal}>
               <FontAwesomeIcon icon={faClose} />
             </button>
@@ -171,7 +174,7 @@ export default function Home() {
          <div className={`"modal modalForms flex flex-auto justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}>
             <textarea
               placeholder="Décrire votre publication..."
-              className={`w-full h-32 p-2 rounded-lg focus:outline-none bg-inherit ${inputColor}`}
+              className={`w-full h-auto p-2 rounded-lg focus:outline-none bg-inherit ${inputColor}`}
               onChange={handleInput}
             />
 
@@ -196,18 +199,24 @@ export default function Home() {
           </div>
 
 
-          <div className="modal forms modalForms footer modalFormsFooters  border-2 border-white-600 flex flex-auto justify-normal items-center p-2 rounded-lg gap-4">
 
-          <h2>Ajouter un details sur la publication:</h2>
-
-           <div className="icons flex flex-row gap-4 text-[clamp(1rem,2vw,1.5rem)] justify-end items-end">
-            <FontAwesomeIcon icon={faImage} onClick={handleLoadingImage} className=""/>
-            <FontAwesomeIcon icon={faLocation} />
-            <FontAwesomeIcon icon={faUser} />
-            <FontAwesomeIcon icon={faIdCard} />
-            </div>
+           <div className="icons flex flex-row text-[clamp(1rem,2vw,1.5rem)] justify-start items-start gap-10">
+              <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faImage} onClick={handleLoadingImage} color="gray" size="sm"/>
+              </div>
+              <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faLocationDot} color="gray" size="sm"/>
+              </div>
+              <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faUser} color="gray" size="sm" />
+              </div>
+              <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faCalendar} color="gray" size="sm" />
+              </div>
+              <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faClock} color="gray" size="sm"/>
+              </div>
           </div>
-
 
             <div className="flex justify-center items-center mt-4">
                 <button 
@@ -216,7 +225,7 @@ export default function Home() {
           >
             Suivant
           </button>
-    </div>
+          </div>
         </div>
       </Modal>
     </Layout>
