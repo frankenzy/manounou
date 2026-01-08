@@ -1,3 +1,5 @@
+import { IAnnoncement } from "@/api/interface/IAnnouncement";
+
 export class QueryService {
 
 
@@ -9,14 +11,14 @@ export class QueryService {
     }
 
 
-    async publishAnnouncement(title: string, description: string, price: number, userId: number) {
+    async publishAnnouncement(message:IAnnoncement) {
         try {
             const response = await fetch('/api/Announcements/Publish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title, description, price, userId })
+                body: JSON.stringify({ message})
             });
 
             const data = await response.json();
