@@ -1,15 +1,16 @@
 "use client";
 
-import Logo from "@/components/Logo";
 import Modal from "@/components/Modal";
 import Header from "@/components/header";
 
-import { faCalendar, faClock, faImage, faLocationDot, faUser } from "@fortawesome/free-solid-svg-icons";
+import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+// import Localization, { LocalizationRef, LocationData } from "@/components/localization";
+import { faCalendar, faClock, faImage, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "../styles/animations.css";
 import Layout from "./layout";
@@ -33,13 +34,32 @@ const FadeInImage = styled(Image)`
 const lengthLimit = 140;
 export default function Home() {
   const router = useRouter();
+  const uploadImageRef = useRef<UploadImageRef>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputBg, setInputBg] = useState("");
   const [inputColor, setInputColor] = useState("");
   const [inputComment, setInputComment] = useState("");
   const [inputSize, setInputSize] = useState("");
-  const [lastSelectedColor, setLastSelectedColor] = useState(""); // Mémoriser la dernière couleur choisie
+  const [lastSelectedColor, setLastSelectedColor] = useState("");
+  const [showUploadImage, setShowUploadImage] = useState(false);
+
+  // Fonction pour ajuster automatiquement la hauteur du textarea
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Réinitialise la hauteur
+      const newHeight = Math.min(textarea.scrollHeight, 180); // Max 180px
+      textarea.style.height = `${newHeight}px`;
+    }
+  };
+
+  // Ajuster la hauteur quand inputValue change
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [inputValue]);
+
 
   const handleInputBg = (color: string) => {
     if(inputValue.length >lengthLimit){ 
@@ -48,7 +68,6 @@ export default function Home() {
     setInputBg(`${color} p-8`);
     setInputColor('text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center');
     setLastSelectedColor(color); // Sauvegarder la couleur choisie
-    // setInputSize('text-32px');
     console.log("Input text color set to: ",inputColor);
   }
 
@@ -58,9 +77,7 @@ export default function Home() {
   const handleSearch = () => {
 
     console.log("Search initiated with input: ", inputValue);
-    // router.push(`/search?query=${encodeURIComponent(inputValue)}`);
   }
-  //ouverture d'un modal au click sur le input
   const handleInputClick = () => {
     console.log('Input clicked');
     initialInputBg();
@@ -72,8 +89,13 @@ export default function Home() {
     setInputBg('bg-white');
     setInputColor('text-black');
     setInputSize('text-normal');
-    setLastSelectedColor
+    setLastSelectedColor('');
     setInputComment('');
+    setInputValue(''); // Réinitialise le texte
+    // Réinitialise la hauteur du textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
   }
 
   const handleCloseModal = () => {
@@ -93,16 +115,18 @@ export default function Home() {
 
   // load image
   const handleLoadingImage = () => {
-    console.log("Image loading...");
+    initialInputBg();
+    console.log("Loading image...");
+    setShowUploadImage(true);
+    setTimeout(() => {
+      uploadImageRef.current?.openFileDialog();
+    }, 100);
   }
 
-  // set location
-  const handleSetLocation = () => {
-    console.log("Setting location...");
-  }
 
   // set user
   const handleSetUser = () => {
+    initialInputBg();
     console.log("Setting user...");
   }
 
@@ -111,45 +135,45 @@ export default function Home() {
     console.log("Setting ID Card...");
   }
 
+  // set calendar
+  const handleSetCalendar = () => {
+    initialInputBg();
+    console.log("Setting calendar...");
+  }
+
   return (
     <Layout>
       <Header />
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid pb-5 rounded-xl">
-        <div className="flex flex-col w-full">
+      <main className="flex flex-col justify-center gap-8 row-start-2 md:items-center  sm:items-start border-gray-200 border-2 border-solid pb-5 rounded-xl h-screen ">
+        <div className="flex flex-col w-full h-full px-4 py-8 gap-8">
           {/* Section  landing page*/}
           <div className="grid grid-cols-1 items-center justify-center w-full">
-            <div className="col-span-1 px-12">
+            <div className="px-12 h-full w-full">
               <div className="flex flex-col justify-start items-center px-24 py-8">
-                <Logo className="items-start" />
+                {/* <Logo className="items-start" /> */}
                 <div className="w-full">
                   <div className="flex flex-col items-center w-full">
-                    <h3 className="text-4xl font-bold text-start">
+                    <h3 className="text-6xl font-bold text-start text-[clamp(2rem,4vw,8rem)]">
                       Ma <strong>Nounou</strong>
                     </h3>
                   
-
-                  <div className="flex justify-center items-center my-4">
+                  <div className="flex justify-center items-center my-4 w-full">
                     <input
                       type="text"
                       placeholder="Qoui de neuf ?"
-                      className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-96"
+                      className="border border-gray-300 rounded-full px-4 py-4 w-full md:w-[740px] sm:w-96 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       onClick={handleInputClick }
                     />
+                    <button
+                      className="ml-4 px-6 py-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 ml-[-6rem]"
+                      onClick={handleSearch}
+                    >
+                      Publier
+                    </button>
                   </div>
+                  
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="col-span-1">
-              <div className="flex flex-col justify-center items-center px-12 py-8 min-h-[900px] bg-[#d9788b] rounded-lg">
-                <FadeInImage
-                  src="/02.png"
-                  alt="hero"
-                  width={1000}
-                  height={100}
-                  className="object-cover h-full w-full"
-                />
               </div>
             </div>
           </div>
@@ -171,12 +195,27 @@ export default function Home() {
          
          {/* section formulaire */}
 
-         <div className={`"modal modalForms flex flex-auto justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}>
+         <div className={`"modal modalForms row justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}>
             <textarea
+              ref={textareaRef}
+              value={inputValue}
               placeholder="Décrire votre publication..."
-              className={`w-full h-auto p-2 rounded-lg focus:outline-none bg-inherit ${inputColor}`}
+              className={`flex flex-auto w-full p-2 rounded-lg focus:outline-none bg-inherit resize-none overflow-y-auto ${inputColor}`}
+              style={{ minHeight: '60px', maxHeight: '180px' }}
               onChange={handleInput}
             />
+            {
+              showUploadImage && (
+                <div className="flex flex-auto items-center justify-start">
+                  <UploadImage
+                    ref={uploadImageRef}
+                    onUpload={(file) => {
+                      console.log("Image uploaded: ", file);
+                    }}
+                  />
+                </div>
+              )
+            }
 
           </div>
 
@@ -200,21 +239,22 @@ export default function Home() {
 
 
 
-           <div className="icons flex flex-row text-[clamp(1rem,2vw,1.5rem)] justify-start items-start gap-10">
+           <div className="icons flex flex-row text-[clamp(1.5rem,2vw,2.5rem)] justify-start items-start gap-12">
               <div className="flex justify-start items-start">
                 <FontAwesomeIcon icon={faImage} onClick={handleLoadingImage} color="gray" size="sm"/>
               </div>
+              {/* TODO: Add location icon */}
+              {/* <div className="flex justify-start items-start">
+                <FontAwesomeIcon icon={faLocationDot} color="gray" size="sm" onClick={handleLoadingLocation}/>
+              </div> */}
               <div className="flex justify-start items-start">
-                <FontAwesomeIcon icon={faLocationDot} color="gray" size="sm"/>
+                <FontAwesomeIcon icon={faUser} color="gray" size="sm" onClick={handleSetUser} />
               </div>
               <div className="flex justify-start items-start">
-                <FontAwesomeIcon icon={faUser} color="gray" size="sm" />
+                <FontAwesomeIcon icon={faCalendar} color="gray" size="sm" onClick={handleSetCalendar}/>
               </div>
               <div className="flex justify-start items-start">
-                <FontAwesomeIcon icon={faCalendar} color="gray" size="sm" />
-              </div>
-              <div className="flex justify-start items-start">
-                <FontAwesomeIcon icon={faClock} color="gray" size="sm"/>
+                <FontAwesomeIcon icon={faClock} color="gray" size="sm" onClick={handleSetIdCard}/>
               </div>
           </div>
 
