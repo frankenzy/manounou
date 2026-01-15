@@ -1,24 +1,10 @@
-// const { Pool } = require('pg');
-// require('dotenv').config();
+import Database from "better-sqlite3";
+import path from "path";
 
-// const pool = new Pool({
-//     connectionString: process.env.DATABASE_URL,
-// });
+const dbPath = path.join(process.cwd(), "data", "manounous.db");
 
-// module.exports = {
-//     query: (text:string, params:string) => pool.query(text, params),
-// };
+const db = new Database(dbPath, {
+  verbose: process.env.NODE_ENV === "development" ? console.log : undefined,
+});
 
-
-
-// import sqlite3 from 'sqlite3';
-// import { open } from 'sqlite';
-
-// const getDbConnection = async () => {
-//   return open({
-//     filename: './database.db', // Path where your SQLite database file is located
-//     driver: sqlite3.Database,
-//   });
-// };
-
-export default getDbConnection;
+export default db;
