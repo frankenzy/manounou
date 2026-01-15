@@ -1,10 +1,18 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { Pool } from "pg";
 
-const dbPath = path.join(process.cwd(), "data", "manounous.db");
 
-const db = new Database(dbPath, {
-  verbose: process.env.NODE_ENV === "development" ? console.log : undefined,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
 });
 
-export default db;
+// Test de connexion
+pool.on("connect", () => {
+  console.log("✅ Connecté à la base de données PostgreSQL");
+});
+
+pool.on("error", (err) => {
+  console.error("❌ Erreur de connexion à la base de données:", err);
+});
+
+export default pool;

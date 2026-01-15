@@ -5,6 +5,7 @@ import Header from "@/components/header";
 
 import UploadImage, { UploadImageRef } from "@/components/uploadImage";
 // import Localization, { LocalizationRef, LocationData } from "@/components/localization";
+import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { faCalendar, faClock, faImage, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +31,6 @@ const FadeInImage = styled(Image)`
   }
 `;
 
-
 const lengthLimit = 140;
 export default function Home() {
   const router = useRouter();
@@ -44,6 +44,32 @@ export default function Home() {
   const [inputSize, setInputSize] = useState("");
   const [lastSelectedColor, setLastSelectedColor] = useState("");
   const [showUploadImage, setShowUploadImage] = useState(false);
+  
+  // État pour les annonces
+  const [announcements, setAnnouncements] = useState<IAnnouncementDTO[]>([]);
+  const [isLoadingAnnouncements, setIsLoadingAnnouncements] = useState(false);
+
+  // Récupérer les annonces via l'API
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      setIsLoadingAnnouncements(true);
+      try {
+        const response = await fetch('/api/announcements');
+        const data = await response.json();
+        if (data.success) {
+          setAnnouncements(data.data || []);
+        } else {
+          console.error('Client: Échec de la récupération des annonces:', data.message);
+        }
+      } catch (error) {
+        console.error('Client: Erreur lors de la récupération des annonces:', error);
+      } finally {
+        setIsLoadingAnnouncements(false);
+      }
+    };
+    
+    fetchAnnouncements();
+  }, []);
 
   // Fonction pour ajuster automatiquement la hauteur du textarea
   const adjustTextareaHeight = () => {
@@ -74,9 +100,12 @@ export default function Home() {
 
 
 
-  const handleSearch = () => {
+  const handleSubmit = () => {
 
     console.log("Search initiated with input: ", inputValue);
+
+   //
+    
   }
   const handleInputClick = () => {
     console.log('Input clicked');
@@ -166,7 +195,7 @@ export default function Home() {
                     />
                     <button
                       className="ml-4 px-6 py-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 ml-[-6rem]"
-                      onClick={handleSearch}
+                      onClick={handleSubmit}
                     >
                       Publier
                     </button>
@@ -175,6 +204,12 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+
+
+
+        <div className="p-4">
+          <ListAnnouncement announcements={announcements} isLoadingAnnouncements={isLoadingAnnouncements} />
+        </div>
             </div>
           </div>
         </div>
@@ -261,13 +296,60 @@ export default function Home() {
             <div className="flex justify-center items-center mt-4">
                 <button 
             className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full"
-            onClick={handleSearch}
+            onClick={handleSubmit}
           >
             Suivant
           </button>
           </div>
         </div>
       </Modal>
+
+
     </Layout>
   );
 }
+
+
+const ListAnnouncement = ({ announcements, isLoadingAnnouncements }: { announcements: IAnnouncementDTO[], isLoadingAnnouncements: boolean }) => {
+  const renderContent = () => {
+    if (isLoadingAnnouncements) {
+      return <p>Chargement des annonces...</p>;
+    }
+    
+    if (announcements.length === 0) {
+      return <p>Aucune annonce disponible.</p>;
+    }
+    
+    return (
+      <div className="flex flex-row gap-4 overflow-x-auto">
+        {announcements.map((post) => (
+          <div key={post.id} className="bg-white p-4 rounded-lg shadow-md flex-col w-80">
+            <h2 className="text-lg font-semibold">{post.title}</h2>
+            <p className="text-gray-600">{post.description}</p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div>
+           <div className="w-full  h-full">
+        <div className="p-4">
+          {/* <p className="text-xl font-bold mb-4">Liste des annonces ({announcements.length})</p> */}
+          {renderContent()}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+
+
+/**
+ * create announcement component
+ * props: announcements: IAnnouncementDTO[], isLoadingAnnouncements: boolean
+ */
+
+const CreateAnnouncement = "";
