@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import pool from "../src/lib/db";
 
 async function seedDatabase() {
@@ -34,7 +34,7 @@ async function seedDatabase() {
         `INSERT INTO users (pseudo, email, phone, role) 
          VALUES ($1, $2, $3, $4)
          ON CONFLICT (email) DO NOTHING`,
-        [user.pseudo, user.email, user.phone, user.role]
+        [user.pseudo, user.email, user.phone, user.role],
       );
     }
 
@@ -45,7 +45,8 @@ async function seedDatabase() {
       {
         user_id: 2, // jean_parent
         title: "Recherche nounou à temps partiel",
-        description: "Nous recherchons une nounou expérimentée pour garder nos 2 enfants (3 et 5 ans) les mercredis après-midi.",
+        description:
+          "Nous recherchons une nounou expérimentée pour garder nos 2 enfants (3 et 5 ans) les mercredis après-midi.",
         location: "Paris 15ème",
       },
       {
@@ -65,18 +66,13 @@ async function seedDatabase() {
           announcement.title,
           announcement.description,
           announcement.location,
-        ]
+        ],
       );
     }
 
-    console.log(`✅ ${announcements.length} annonces ajoutées`);
-
     await client.query("COMMIT");
-    console.log("✅ Base de données seedée avec succès");
-    
   } catch (error) {
     await client.query("ROLLBACK");
-    console.error("❌ Erreur lors du seed:", error);
     throw error;
   } finally {
     client.release();

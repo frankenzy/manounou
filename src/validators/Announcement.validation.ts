@@ -21,8 +21,8 @@ export class AnnouncementValidator {
 
     if (announcementData.location === undefined || announcementData.location === null) {
       errors.push('Location is required');
-    } else if (typeof announcementData.location !== 'number' || isNaN(announcementData.location)) {
-      errors.push('Location must be a valid number');
+    } else if (typeof announcementData.location !== 'string' || announcementData.location.trim().length === 0) {
+      errors.push('Location must be a valid string');
     }
 
     if (!announcementData.user_id || announcementData.user_id.trim().length === 0) {
@@ -57,8 +57,8 @@ export class AnnouncementValidator {
     }
 
     if (announcementData.location !== undefined) {
-      if (typeof announcementData.location !== 'number' || isNaN(announcementData.location)) {
-        errors.push('Location must be a valid number');
+      if (typeof announcementData.location !== 'string' || announcementData.location.trim().length === 0) {
+        errors.push('Location must be a valid string');
       }
     }
 

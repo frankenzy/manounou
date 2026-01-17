@@ -8,7 +8,7 @@ export class AnnouncementService implements IAnnouncementService {
   constructor(announcementRepository: IAnnouncementRepository) {
     this.announcementRepository = announcementRepository;
   }
-    getAnnouncementsByLocation(location: number): Promise<IAnnouncementDTO[]> {
+    getAnnouncementsByLocation(location: string): Promise<IAnnouncementDTO[]> {
        const result = this.announcementRepository.findAll().then(announcements =>
         announcements.filter(announcement => announcement.location === location)
       );

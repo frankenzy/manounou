@@ -3,20 +3,21 @@ export interface IAnnouncement {
   user_id: string;
   title: string;
   description: string;
-  location: number;
+  location: string; // Changé de number à string pour correspondre à la BD
   createdAt?: Date;
   updatedAt?: Date;
+  metadata?: Record<string, any>;
 }
-
 
 export interface IAnnouncementDTO {
   id?: number;
   user_id: string;
   title: string;
   description: string;
-  location: number;
+  location: string; // Changé de number à string pour correspondre à la BD
   createdAt?: Date;
   updatedAt?: Date;
+  metadata?: Record<string, any>;
 }
 
 export class Announcement implements IAnnouncement {
@@ -24,9 +25,10 @@ export class Announcement implements IAnnouncement {
   user_id: string;
   title: string;
   description: string;
-  location: number;
+  location: string; // Changé de number à string pour correspondre à la BD
   createdAt?: Date;
   updatedAt?: Date;
+  metadata?: Record<string, any>;
 
   constructor(data: IAnnouncement) {
     this.id = data.id;
@@ -36,10 +38,10 @@ export class Announcement implements IAnnouncement {
     this.location = data.location;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.metadata = data.metadata;
   }
 
-
- Announcement(): IAnnouncementDTO {
+  Announcement(): IAnnouncementDTO {
     return {
       id: this.id,
       user_id: this.user_id,
@@ -48,6 +50,7 @@ export class Announcement implements IAnnouncement {
       location: this.location,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      metadata: this.metadata,
     };
   }
 }

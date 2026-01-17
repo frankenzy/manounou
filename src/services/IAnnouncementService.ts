@@ -7,7 +7,7 @@ export interface IAnnouncementService {
   updateAnnouncement(id: number, announcement: Partial<IAnnouncement>): Promise<IAnnouncementDTO | null>;
   deleteAnnouncement(id: number): Promise<boolean>;
   getAnnouncementsByUserId(user_id: string): Promise<IAnnouncementDTO[]>;
-  getAnnouncementsByLocation(location: number): Promise<IAnnouncementDTO[]>;
+  getAnnouncementsByLocation(location: string): Promise<IAnnouncementDTO[]>;
   searchAnnouncements(query: string): Promise<IAnnouncementDTO[]>;
 }
 

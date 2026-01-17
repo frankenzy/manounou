@@ -7,6 +7,6 @@ export interface IAnnouncementRepository {
   update(id: number, announcement: Partial<IAnnouncement>): Promise<IAnnouncementDTO | null>;
   delete(id: number): Promise<boolean>;
   findByUserId(user_id: string): Promise<IAnnouncementDTO[]>;
-  findByLocation(location: number): Promise<IAnnouncementDTO[]>;
+  findByLocation(location: string): Promise<IAnnouncementDTO[]>;
   search(query: string): Promise<IAnnouncementDTO[]>;
 }
