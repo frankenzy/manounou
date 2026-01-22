@@ -17,6 +17,9 @@ importers:
       '@fortawesome/react-fontawesome':
         specifier: ^0.2.2
         version: 0.2.6(@fortawesome/fontawesome-svg-core@6.7.2)(react@19.2.3)
+      '@syncfusion/ej2-react-dropdowns':
+        specifier: ^32.1.24
+        version: 32.1.24
       '@types/bcryptjs':
         specifier: ^3.0.0
         version: 3.0.0
@@ -35,6 +38,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.3
+      lucide-react:
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -695,6 +701,46 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@syncfusion/ej2-base@32.1.24':
+    resolution: {integrity: sha512-JXbpTVsh2cEzBcTF9F52oXtQx1dOpFO5iMQO/QV+R3KU5mTENqIKWl7IWqDgS4hMqoT+qE1swBbrAPTy+unVlg==}
+    hasBin: true
+
+  '@syncfusion/ej2-buttons@32.1.24':
+    resolution: {integrity: sha512-J9YY/pIOQQlpy1HmLfAmfyuVQxT16XRr6UQ3+5mEKaMCYRNrENKi/gIiRl8IWcN5rW0r3GQdYUNTnpRd53AAqg==}
+
+  '@syncfusion/ej2-data@32.1.24':
+    resolution: {integrity: sha512-XlZeSSJbK37EeM/RYgEY418WA8Ig5hcVHgSN7EEzsVldTFYIBM4y0H9bRs3K5mJDLwDMkG2Oz2A1gEObBfnKsg==}
+
+  '@syncfusion/ej2-dropdowns@32.1.24':
+    resolution: {integrity: sha512-sXqbubjeNKbe7N+j0cVnc3m+ILiHguW611cAivwL6ri2v2n6G5LgRo+qFapPJzWanGn2KLDspU0/IUWz8cFJ6Q==}
+
+  '@syncfusion/ej2-icons@32.1.24':
+    resolution: {integrity: sha512-Xwexar8y+HE5ikwwtWVCmFnIbOsE5VYWEqa/60f4yf5KElXp2McQWI3ZdNIFd5aNr9JrCQycqKOVIxbx2cLlIg==}
+
+  '@syncfusion/ej2-inputs@32.1.24':
+    resolution: {integrity: sha512-6EFx4zJ3QfIFPl+ShznK75a4w4OwbKQ8zJjc0i/MmYV5HW3Xh8UpfbkLGAjXHJZdrl1DinBto6lNVNI7pSWuZg==}
+
+  '@syncfusion/ej2-lists@32.1.24':
+    resolution: {integrity: sha512-TONxcc03VrmrTTMMrirg6gHy4+1HJePrAG0C37qMjzzpaw9Lw0KOWcPm5plMEZRZJCZC3x1YYRoGpmd+/4UmUQ==}
+
+  '@syncfusion/ej2-navigations@32.1.24':
+    resolution: {integrity: sha512-xUYKgOGfi8n+MVLIc09B2+ZsYTDfSdBy+PlezrszHn7oX/in/KC0pe/4Tnhrul4R/sgwjfAf/JqyDalNKJMjyg==}
+
+  '@syncfusion/ej2-notifications@32.1.24':
+    resolution: {integrity: sha512-3iAAMrIIBN+e6WXb0mgFsWDxhN3UAbzDOeAwYK0XFSloce84rMO3rAXtAEV8tS/uHIEEX731ZUNM+mcsH2mAog==}
+
+  '@syncfusion/ej2-popups@32.1.24':
+    resolution: {integrity: sha512-HGfAupsdy0HxEXh2SBO2VadM4K1rN/14Zd1D3fSLrSh8Nnd1uZm96LI/wjT53Zgy96a1Z9yjM5VvpOyQkKzHuw==}
+
+  '@syncfusion/ej2-react-base@32.1.24':
+    resolution: {integrity: sha512-T45MCoCKyMJEynka6alqSPQdu64JUa3ihaXXsQa6Yk9nBl+LPxV/Gj6gMhmZkuZPY+GowAJAql644GGahv2C5g==}
+
+  '@syncfusion/ej2-react-dropdowns@32.1.24':
+    resolution: {integrity: sha512-su8Exnkc6UJuYleIkkiTsJchdKrfKzXlEeEs92+TiRNPXmO1BNcxf2CoVh962kLfl6sQfMLnj75VHoCDOgSKBA==}
+
+  '@syncfusion/ej2-splitbuttons@32.1.24':
+    resolution: {integrity: sha512-rV2HUOY/s4PjVOPI5xmz5Xh3b+opBSnJNh+9Pa1l7/EkRTMrAmNgUUuVAWlx99AYtEHUiItQkI6KTEQAmlvobg==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -1747,6 +1793,11 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
+
+  lucide-react@0.562.0:
+    resolution: {integrity: sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -2846,6 +2897,79 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
+
+  '@syncfusion/ej2-base@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-icons': 32.1.24
+
+  '@syncfusion/ej2-buttons@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+
+  '@syncfusion/ej2-data@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+
+  '@syncfusion/ej2-dropdowns@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-data': 32.1.24
+      '@syncfusion/ej2-inputs': 32.1.24
+      '@syncfusion/ej2-lists': 32.1.24
+      '@syncfusion/ej2-navigations': 32.1.24
+      '@syncfusion/ej2-notifications': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
+
+  '@syncfusion/ej2-icons@32.1.24': {}
+
+  '@syncfusion/ej2-inputs@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-buttons': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
+      '@syncfusion/ej2-splitbuttons': 32.1.24
+
+  '@syncfusion/ej2-lists@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-buttons': 32.1.24
+      '@syncfusion/ej2-data': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
+
+  '@syncfusion/ej2-navigations@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-buttons': 32.1.24
+      '@syncfusion/ej2-data': 32.1.24
+      '@syncfusion/ej2-inputs': 32.1.24
+      '@syncfusion/ej2-lists': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
+
+  '@syncfusion/ej2-notifications@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-buttons': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
+
+  '@syncfusion/ej2-popups@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-buttons': 32.1.24
+
+  '@syncfusion/ej2-react-base@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+
+  '@syncfusion/ej2-react-dropdowns@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-dropdowns': 32.1.24
+      '@syncfusion/ej2-react-base': 32.1.24
+
+  '@syncfusion/ej2-splitbuttons@32.1.24':
+    dependencies:
+      '@syncfusion/ej2-base': 32.1.24
+      '@syncfusion/ej2-popups': 32.1.24
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
@@ -4083,6 +4207,10 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  lucide-react@0.562.0(react@19.2.3):
+    dependencies:
+      react: 19.2.3
 
   math-intrinsics@1.1.0: {}
 

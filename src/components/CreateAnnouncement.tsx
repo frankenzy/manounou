@@ -1,0 +1,327 @@
+"use client";
+
+import Modal from "@/components/Modal";
+import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import {
+    faCalendar,
+    faClock,
+    faImage,
+    faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useRef, useState } from "react";
+
+interface CreateAnnouncementProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess?: () => void;
+}
+
+interface IMetadata {
+  fontSize: string;
+  backgroundColor: string;
+  background: string;
+  location: string;
+  audience: string;
+  relationSheep: string;
+  calendar: string;
+  idCard: string;
+  image: string;
+}
+
+const lengthLimit = 140;
+
+export default function CreateAnnouncement({
+  isOpen,
+  onClose,
+  onSuccess,
+}: CreateAnnouncementProps) {
+  const uploadImageRef = useRef<UploadImageRef>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const [inputValue, setInputValue] = useState("");
+  const [inputBg, setInputBg] = useState("");
+  const [inputColor, setInputColor] = useState("");
+  const [lastSelectedColor, setLastSelectedColor] = useState("");
+  const [showUploadImage, setShowUploadImage] = useState(false);
+  const [announcementTitle, setAnnouncementTitle] = useState("");
+
+  const [metadata, setMetadata] = useState<IMetadata>({
+    fontSize: "",
+    backgroundColor: "",
+    background: "",
+    location: "",
+    audience: "",
+    relationSheep: "",
+    calendar: "",
+    idCard: "",
+    image: "",
+  });
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      const newHeight = Math.min(textarea.scrollHeight, 180);
+      textarea.style.height = `${newHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [inputValue]);
+
+  const handleInputBg = (color: string) => {
+    if (inputValue.length > lengthLimit) {
+      return;
+    }
+    setInputBg(`${color} p-8`);
+    setInputColor(
+      "text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center",
+    );
+    setLastSelectedColor(color);
+    setMetadata((prev) => ({
+      ...prev,
+      background: color,
+      backgroundColor: color,
+    }));
+  };
+
+  const initialInputBg = () => {
+    setInputBg("bg-white");
+    setInputColor("text-black");
+    setLastSelectedColor("");
+    setInputValue("");
+    setAnnouncementTitle("");
+
+    setMetadata({
+      fontSize: "",
+      backgroundColor: "",
+      background: "",
+      location: "",
+      audience: "",
+      relationSheep: "",
+      calendar: "",
+      idCard: "",
+      image: "",
+    });
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("/api/announcements", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: "1",
+          title: announcementTitle || "Nouvelle annonce",
+          description: inputValue,
+          location: metadata.location || "Non spécifié",
+          metadata: metadata,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("Annonce créée avec succès:", result.data);
+        initialInputBg();
+        onClose();
+        if (onSuccess) onSuccess();
+        alert("Annonce créée avec succès !");
+      } else {
+        console.error("Erreur lors de la création:", result.message);
+        alert(`Erreur: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error);
+      alert("Une erreur est survenue lors de la création de l'annonce");
+    }
+  };
+
+  const handleCloseModal = () => {
+    initialInputBg();
+    onClose();
+  };
+
+  const handleInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let value = e.target.value;
+    if (value.length > lengthLimit) {
+      initialInputBg();
+    } else if (value.length <= lengthLimit && lastSelectedColor) {
+      handleInputBg(lastSelectedColor);
+    }
+    setInputValue(e.target.value);
+  };
+
+  const handleLoadingImage = () => {
+    initialInputBg();
+    setShowUploadImage(true);
+    setTimeout(() => {
+      uploadImageRef.current?.openFileDialog();
+    }, 100);
+  };
+
+  const handleImageUpload = (file: File) => {
+    console.log("Image uploaded: ", file);
+    setMetadata((prev) => ({
+      ...prev,
+      image: file.name,
+    }));
+  };
+
+  const handleSetUser = () => {
+    initialInputBg();
+    setMetadata((prev) => ({
+      ...prev,
+      audience: "user-selected",
+    }));
+  };
+
+  const handleSetIdCard = () => {
+    setMetadata((prev) => ({
+      ...prev,
+      idCard: "id-selected",
+    }));
+  };
+
+  const handleSetCalendar = () => {
+    initialInputBg();
+    setMetadata((prev) => ({
+      ...prev,
+      calendar: new Date().toISOString(),
+    }));
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
+      <div className="p-6">
+        <div className="modalHeader flex items-center justify-between">
+          <div className="void"></div>
+          <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
+            Publier une annonce
+          </h2>
+          <button
+            className="flex items-end justify-end text-3xl mb-4"
+            onClick={handleCloseModal}
+          >
+            <FontAwesomeIcon icon={faClose} />
+          </button>
+        </div>
+        <hr className="mb-4" />
+
+        {/* Section formulaire */}
+        <div
+          className={`modal modalForms row justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}
+        >
+          <textarea
+            ref={textareaRef}
+            value={inputValue}
+            placeholder="Décrire votre publication..."
+            className={`flex flex-auto w-full p-2 rounded-lg focus:outline-none bg-inherit resize-none overflow-y-auto ${inputColor}`}
+            style={{ minHeight: "60px", maxHeight: "180px" }}
+            onChange={handleInput}
+          />
+          {showUploadImage && (
+            <div className="flex flex-auto items-center justify-start">
+              <UploadImage ref={uploadImageRef} onUpload={handleImageUpload} />
+            </div>
+          )}
+        </div>
+
+        {/* Boutons de couleur */}
+        <div className="flex-auto flex flex-row gap-4 text-[clamp(1rem,2vw,1.5rem)] justify-start items-start mb-4">
+          <button
+            className="w-5 bg-orange-500 rounded-md h-6 p-2 text-white flex items-center justify-center"
+            onClick={() =>
+              handleInputBg("bg-gradient-to-br from-orange-500 to-orange-600")
+            }
+          />
+          <button
+            className="w-5 bg-green-600 rounded-md h-6 p-2 text-white flex items-center justify-center"
+            onClick={() =>
+              handleInputBg("bg-gradient-to-br from-green-600 to-emerald-700")
+            }
+          />
+          <button
+            className="w-5 bg-red-500 rounded-md h-6 p-2 text-white flex items-center justify-center"
+            onClick={() =>
+              handleInputBg("bg-gradient-to-br from-red-500 to-yellow-500")
+            }
+          />
+          <button
+            className="w-5 bg-yellow-500 rounded-md h-6 p-2 text-white flex items-center justify-center"
+            onClick={() =>
+              handleInputBg("bg-gradient-to-br from-amber-400 to-orange-500")
+            }
+          />
+          <button
+            className="w-5 bg-gray-500 rounded-md h-6 p-2 text-white flex items-center justify-center"
+            onClick={() =>
+              handleInputBg("bg-gradient-to-br from-slate-600 to-slate-800")
+            }
+          />
+          <button
+            className="w-5 bg-white rounded-md h-6 p-2 text-white flex items-center justify-center border-2 border-black"
+            onClick={() => initialInputBg()}
+          />
+        </div>
+
+        {/* Icônes */}
+        <div className="icons flex flex-row text-[clamp(1.5rem,2vw,2.5rem)] justify-start items-start gap-12">
+          <div className="flex justify-start items-start">
+            <FontAwesomeIcon
+              icon={faImage}
+              onClick={handleLoadingImage}
+              color="gray"
+              size="sm"
+            />
+          </div>
+          <div className="flex justify-start items-start">
+            <FontAwesomeIcon
+              icon={faUser}
+              color="gray"
+              size="sm"
+              onClick={handleSetUser}
+            />
+          </div>
+          <div className="flex justify-start items-start">
+            <FontAwesomeIcon
+              icon={faCalendar}
+              color="gray"
+              size="sm"
+              onClick={handleSetCalendar}
+            />
+          </div>
+          <div className="flex justify-start items-start">
+            <FontAwesomeIcon
+              icon={faClock}
+              color="gray"
+              size="sm"
+              onClick={handleSetIdCard}
+            />
+          </div>
+        </div>
+
+        {/* Bouton de soumission */}
+        <div className="flex justify-center items-center mt-4">
+          <button
+            className="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 w-full"
+            onClick={handleSubmit}
+          >
+            Suivant
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
