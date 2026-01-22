@@ -5,8 +5,8 @@ export interface IUser {
   password: string;
   firstName?: string;
   lastName?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
 }
 
 export interface IUserDTO {
@@ -15,8 +15,8 @@ export interface IUserDTO {
   email: string;
   firstName?: string;
   lastName?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
 }
 
 export class User implements IUser {
@@ -26,8 +26,8 @@ export class User implements IUser {
   password: string;
   firstName?: string;
   lastName?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
 
   constructor(data: IUser) {
     this.id = data.id;
@@ -36,8 +36,8 @@ export class User implements IUser {
     this.password = data.password;
     this.firstName = data.firstName;
     this.lastName = data.lastName;
-    this.createdAt = data.createdAt;
-    this.updatedAt = data.updatedAt;
+    this.created_ad = data.created_ad;
+    this.updated_at = data.updated_at;
   }
 
   User(): IUserDTO {
@@ -47,8 +47,8 @@ export class User implements IUser {
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      created_ad: this.created_ad,
+      updated_at: this.updated_at,
     };
   }
 }

@@ -1,204 +1,129 @@
 {
-    "programmingLanguages": {
-        "backend": [
-            {
-                "name": "Java",
-                "version": "17",
-                "frameworks": [
-                    "Spring Boot",
-                    "Jakarta EE",
-                    "Quarkus"
-                ],
-                "buildTools": [
-                    "Maven",
-                    "Gradle"
-                ]
-            },
-            {
-                "name": "Python",
-                "version": "3.11",
-                "frameworks": [
-                    "Django",
-                    "Flask",
-                    "FastAPI"
-                ],
-                "buildTools": [
-                    "pip",
-                    "poetry"
-                ]
-            },
-            {
-                "name": "Node.js",
-                "version": "18.x",
-                "frameworks": [
-                    "Express",
-                    "NestJS",
-                    "Fastify"
-                ],
-                "buildTools": [
-                    "npm",
-                    "yarn"
-                ]
-            },
-            {
-                "name": "PHP",
-                "version": "8.2",
-                "frameworks": [
-                    "Laravel",
-                    "Symfony",
-                    "CodeIgniter"
-                ],
-                "buildTools": [
-                    "Composer",
-                    "PEAR"
-                ]
-            }
-        ],
-        "frontend": [
-            {
-                "name": "JavaScript",
-                "version": "ES2022",
-                "frameworks": [
-                    "React",
-                    "Vue.js",
-                    "Angular"
-                ],
-                "buildTools": [
-                    "webpack",
-                    "vite",
-                    "parcel"
-                ]
-            },
-            {
-                "name": "TypeScript",
-                "version": "5.0",
-                "frameworks": [
-                    "React",
-                    "Vue.js",
-                    "Angular"
-                ],
-                "buildTools": [
-                    "webpack",
-                    "vite",
-                    "parcel"
-                ]
-            },
-            {
-                "name": "CSS",
-                "version": "CSS3",
-                "frameworks": [
-                    "Tailwind CSS",
-                    "Bootstrap",
-                    "Sass",
-                    "Less"
-                ],
-                "buildTools": [
-                    "PostCSS",
-                    "Autoprefixer",
-                    "PurgeCSS"
-                ]
-            }
-        ]
-    },
-    "classes": {
-        "backend": {
-            "models": {
-                "User": {
-                    "properties": {
-                        "id": "UUID",
-                        "username": "String",
-                        "email": "String",
-                        "password": "String",
-                        "createdAt": "DateTime"
-                    },
-                    "methods": [
-                        "authenticate()",
-                        "updateProfile()",
-                        "resetPassword()"
-                    ]
-                },
-                "Product": {
-                    "properties": {
-                        "id": "UUID",
-                        "name": "String",
-                        "description": "String",
-                        "price": "Decimal",
-                        "category": "String"
-                    },
-                    "methods": [
-                        "calculateDiscount()",
-                        "updateStock()",
-                        "getDetails()"
-                    ]
-                }
-            },
-            "services": {
-                "AuthService": {
-                    "methods": [
-                        "login()",
-                        "register()",
-                        "verifyToken()"
-                    ]
-                },
-                "ProductService": {
-                    "methods": [
-                        "createProduct()",
-                        "updateProduct()",
-                        "deleteProduct()",
-                        "searchProducts()"
-                    ]
-                }
-            }
+  "programmingLanguages": {
+    "backend": [
+      {
+        "name": "Java",
+        "version": "17",
+        "frameworks": ["Spring Boot", "Jakarta EE", "Quarkus"],
+        "buildTools": ["Maven", "Gradle"]
+      },
+      {
+        "name": "Python",
+        "version": "3.11",
+        "frameworks": ["Django", "Flask", "FastAPI"],
+        "buildTools": ["pip", "poetry"]
+      },
+      {
+        "name": "Node.js",
+        "version": "18.x",
+        "frameworks": ["Express", "NestJS", "Fastify"],
+        "buildTools": ["npm", "yarn"]
+      },
+      {
+        "name": "PHP",
+        "version": "8.2",
+        "frameworks": ["Laravel", "Symfony", "CodeIgniter"],
+        "buildTools": ["Composer", "PEAR"]
+      }
+    ],
+    "frontend": [
+      {
+        "name": "JavaScript",
+        "version": "ES2022",
+        "frameworks": ["React", "Vue.js", "Angular"],
+        "buildTools": ["webpack", "vite", "parcel"]
+      },
+      {
+        "name": "TypeScript",
+        "version": "5.0",
+        "frameworks": ["React", "Vue.js", "Angular"],
+        "buildTools": ["webpack", "vite", "parcel"]
+      },
+      {
+        "name": "CSS",
+        "version": "CSS3",
+        "frameworks": ["Tailwind CSS", "Bootstrap", "Sass", "Less"],
+        "buildTools": ["PostCSS", "Autoprefixer", "PurgeCSS"]
+      }
+    ]
+  },
+  "classes": {
+    "backend": {
+      "models": {
+        "User": {
+          "properties": {
+            "id": "UUID",
+            "username": "String",
+            "email": "String",
+            "password": "String",
+            "created_ad": "DateTime"
+          },
+          "methods": ["authenticate()", "updateProfile()", "resetPassword()"]
         },
-        "frontend": {
-            "components": {
-                "Header": {
-                    "props": {
-                        "title": "String",
-                        "user": "Object",
-                        "isAuthenticated": "Boolean"
-                    },
-                    "methods": [
-                        "handleLogout()",
-                        "toggleMenu()"
-                    ]
-                },
-                "ProductCard": {
-                    "props": {
-                        "product": "Object",
-                        "onAddToCart": "Function"
-                    },
-                    "methods": [
-                        "handleClick()",
-                        "formatPrice()"
-                    ]
-                }
-            },
-            "pages": {
-                "Home": {
-                    "state": {
-                        "products": "Array",
-                        "loading": "Boolean",
-                        "error": "String"
-                    },
-                    "methods": [
-                        "fetchProducts()",
-                        "handleSearch()",
-                        "filterProducts()"
-                    ]
-                },
-                "Profile": {
-                    "state": {
-                        "userData": "Object",
-                        "orders": "Array"
-                    },
-                    "methods": [
-                        "updateProfile()",
-                        "fetchOrders()",
-                        "handlePasswordChange()"
-                    ]
-                }
-            }
+        "Product": {
+          "properties": {
+            "id": "UUID",
+            "name": "String",
+            "description": "String",
+            "price": "Decimal",
+            "category": "String"
+          },
+          "methods": ["calculateDiscount()", "updateStock()", "getDetails()"]
         }
+      },
+      "services": {
+        "AuthService": {
+          "methods": ["login()", "register()", "verifyToken()"]
+        },
+        "ProductService": {
+          "methods": [
+            "createProduct()",
+            "updateProduct()",
+            "deleteProduct()",
+            "searchProducts()"
+          ]
+        }
+      }
+    },
+    "frontend": {
+      "components": {
+        "Header": {
+          "props": {
+            "title": "String",
+            "user": "Object",
+            "isAuthenticated": "Boolean"
+          },
+          "methods": ["handleLogout()", "toggleMenu()"]
+        },
+        "ProductCard": {
+          "props": {
+            "product": "Object",
+            "onAddToCart": "Function"
+          },
+          "methods": ["handleClick()", "formatPrice()"]
+        }
+      },
+      "pages": {
+        "Home": {
+          "state": {
+            "products": "Array",
+            "loading": "Boolean",
+            "error": "String"
+          },
+          "methods": ["fetchProducts()", "handleSearch()", "filterProducts()"]
+        },
+        "Profile": {
+          "state": {
+            "userData": "Object",
+            "orders": "Array"
+          },
+          "methods": [
+            "updateProfile()",
+            "fetchOrders()",
+            "handlePasswordChange()"
+          ]
+        }
+      }
     }
+  }
 }

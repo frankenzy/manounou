@@ -4,8 +4,8 @@ export interface IAnnouncement {
   title: string;
   description: string;
   location: string; // Changé de number à string pour correspondre à la BD
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
   metadata?: Record<string, any>;
 }
 
@@ -15,8 +15,8 @@ export interface IAnnouncementDTO {
   title: string;
   description: string;
   location: string; // Changé de number à string pour correspondre à la BD
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
   metadata?: Record<string, any>;
 }
 
@@ -26,8 +26,8 @@ export class Announcement implements IAnnouncement {
   title: string;
   description: string;
   location: string; // Changé de number à string pour correspondre à la BD
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_ad?: Date;
+  updated_at?: Date;
   metadata?: Record<string, any>;
 
   constructor(data: IAnnouncement) {
@@ -36,8 +36,8 @@ export class Announcement implements IAnnouncement {
     this.title = data.title;
     this.description = data.description;
     this.location = data.location;
-    this.createdAt = data.createdAt;
-    this.updatedAt = data.updatedAt;
+    this.created_ad = data.created_ad;
+    this.updated_at = data.updated_at;
     this.metadata = data.metadata;
   }
 
@@ -48,8 +48,8 @@ export class Announcement implements IAnnouncement {
       title: this.title,
       description: this.description,
       location: this.location,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      created_ad: this.created_ad,
+      updated_at: this.updated_at,
       metadata: this.metadata,
     };
   }

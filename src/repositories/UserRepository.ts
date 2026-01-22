@@ -1,9 +1,9 @@
-import pool from '../lib/db';
-import { IUser, IUserDTO } from '../models/User.model';
-import { IUserRepository } from './IUserRepository';
+import pool from "../lib/db";
+import { IUser, IUserDTO } from "../models/User.model";
+import { IUserRepository } from "./IUserRepository";
 
 export class UserRepository implements IUserRepository {
-  private readonly tableName = 'users';
+  private readonly tableName = "users";
 
   async findAll(): Promise<IUserDTO[]> {
     try {
@@ -13,10 +13,10 @@ export class UserRepository implements IUserRepository {
         ORDER BY created_at DESC
       `;
       const result = await pool.query(query);
-      return result.rows.map(row => this.mapRowToDTO(row));
+      return result.rows.map((row) => this.mapRowToDTO(row));
     } catch (error) {
-      console.error('Error in findAll:', error);
-      throw new Error('Failed to fetch users');
+      console.error("Error in findAll:", error);
+      throw new Error("Failed to fetch users");
     }
   }
 
@@ -28,15 +28,15 @@ export class UserRepository implements IUserRepository {
         WHERE id = $1
       `;
       const result = await pool.query(query, [id]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
-      
+
       return this.mapRowToDTO(result.rows[0]);
     } catch (error) {
-      console.error('Error in findById:', error);
-      throw new Error('Failed to fetch user');
+      console.error("Error in findById:", error);
+      throw new Error("Failed to fetch user");
     }
   }
 
@@ -48,15 +48,15 @@ export class UserRepository implements IUserRepository {
         WHERE email = $1
       `;
       const result = await pool.query(query, [email]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
-      
+
       return this.mapRowToUser(result.rows[0]);
     } catch (error) {
-      console.error('Error in findByEmail:', error);
-      throw new Error('Failed to fetch user by email');
+      console.error("Error in findByEmail:", error);
+      throw new Error("Failed to fetch user by email");
     }
   }
 
@@ -68,19 +68,21 @@ export class UserRepository implements IUserRepository {
         WHERE username = $1
       `;
       const result = await pool.query(query, [username]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
-      
+
       return this.mapRowToUser(result.rows[0]);
     } catch (error) {
-      console.error('Error in findByUsername:', error);
-      throw new Error('Failed to fetch user by username');
+      console.error("Error in findByUsername:", error);
+      throw new Error("Failed to fetch user by username");
     }
   }
 
-  async create(userData: Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>): Promise<IUserDTO> {
+  async create(
+    userData: Omit<IUser, "id" | "created_ad" | "updated_at">,
+  ): Promise<IUserDTO> {
     try {
       const query = `
         INSERT INTO ${this.tableName} (username, email, password, first_name, last_name)
@@ -94,12 +96,12 @@ export class UserRepository implements IUserRepository {
         userData.firstName || null,
         userData.lastName || null,
       ];
-      
+
       const result = await pool.query(query, values);
       return this.mapRowToDTO(result.rows[0]);
     } catch (error) {
-      console.error('Error in create:', error);
-      throw new Error('Failed to create user');
+      console.error("Error in create:", error);
+      throw new Error("Failed to create user");
     }
   }
 
@@ -139,21 +141,21 @@ export class UserRepository implements IUserRepository {
 
       const query = `
         UPDATE ${this.tableName}
-        SET ${fields.join(', ')}
+        SET ${fields.join(", ")}
         WHERE id = $${paramIndex}
         RETURNING id, username, email, first_name, last_name, created_at, updated_at
       `;
 
       const result = await pool.query(query, values);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
-      
+
       return this.mapRowToDTO(result.rows[0]);
     } catch (error) {
-      console.error('Error in update:', error);
-      throw new Error('Failed to update user');
+      console.error("Error in update:", error);
+      throw new Error("Failed to update user");
     }
   }
 
@@ -163,8 +165,8 @@ export class UserRepository implements IUserRepository {
       const result = await pool.query(query, [id]);
       return result.rowCount !== null && result.rowCount > 0;
     } catch (error) {
-      console.error('Error in delete:', error);
-      throw new Error('Failed to delete user');
+      console.error("Error in delete:", error);
+      throw new Error("Failed to delete user");
     }
   }
 
@@ -175,8 +177,8 @@ export class UserRepository implements IUserRepository {
       email: row.email,
       firstName: row.first_name,
       lastName: row.last_name,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      created_ad: row.created_at,
+      updated_at: row.updated_at,
     };
   }
 
@@ -188,8 +190,8 @@ export class UserRepository implements IUserRepository {
       password: row.password,
       firstName: row.first_name,
       lastName: row.last_name,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      created_ad: row.created_at,
+      updated_at: row.updated_at,
     };
   }
 }
