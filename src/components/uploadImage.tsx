@@ -2,6 +2,7 @@ import { ChangeEvent, forwardRef, useImperativeHandle, useRef, useState } from "
 
 interface UploadImageProps {
   onUpload?: (file: File) => void;
+  onRemove?: () => void;
   maxSize?: number;
 }
 
@@ -9,9 +10,10 @@ export interface UploadImageRef {
   openFileDialog: () => void;
 }
 
-const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({ 
-  onUpload, 
-  maxSize = 5 * 1024 * 1024 
+const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
+  onUpload,
+  onRemove,
+  maxSize = 5 * 1024 * 1024
 }, ref) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -26,7 +28,7 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    
+
     if (!selectedFile) return;
 
     if (selectedFile.size > maxSize) {
@@ -57,15 +59,16 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
     setFile(null);
     setPreview(null);
     setError(null);
+    if (onRemove) onRemove();
   };
 
   return (
     <div className="upload-image-container flex flex-col items-start w-full">
-      
-      <input 
+
+      <input
         ref={fileInputRef}
-        type="file" 
-        accept="image/*" 
+        type="file"
+        accept="image/*"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -80,12 +83,12 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
       {preview && (
         <div className="preview-container mt-4 w-full">
           <div className="relative w-full max-w-[20rem]">
-            <img 
-              src={preview} 
-              alt="Aperçu" 
+            <img
+              src={preview}
+              alt="Aperçu"
               className="w-full h-auto max-h-80 rounded-lg"
             />
-            <button 
+            <button
               onClick={handleRemove}
               className="absolute top-2 right-2 bg-red-500  text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
             >

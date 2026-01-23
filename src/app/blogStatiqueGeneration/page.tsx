@@ -326,58 +326,6 @@ export default function BlueskyLayout() {
         </div>
 
         {/* Posts */}
-        {/* Post 2 avec image */}
-        <div className="p-4 hover:bg-gray-50">
-          <div className="flex gap-3">
-            <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-semibold">
-                  Brock's Photographic Journey
-                </span>
-                <span className="text-gray-500 text-sm">
-                  @bar44.bsky.social
-                </span>
-                <span className="text-gray-500 text-sm">· 5h</span>
-              </div>
-              <p className="mb-3">
-                Shopfront in Lisboa.{" "}
-                <span className="text-green-600">#WindowsOnWednesday</span>{" "}
-                <span className="text-green-600">#Photography</span>{" "}
-                <span className="text-green-600">#Architecture</span>{" "}
-                <span className="text-green-600">#Doors</span>{" "}
-                <span className="text-green-600">#Portugal</span>{" "}
-                <span className="text-green-600">#Lisbon</span> 📸
-              </p>
-
-              {/* Image */}
-              <div className="mb-3 rounded-lg overflow-hidden">
-                <div className="w-full h-80 bg-gradient-to-b from-yellow-400 to-yellow-500"></div>
-              </div>
-
-              <div className="flex items-center gap-8 text-gray-500 text-sm">
-                <button className="flex items-center gap-2 hover:text-green-600">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>9</span>
-                </button>
-                <button className="flex items-center gap-2 hover:text-green-500">
-                  <Repeat2 className="w-4 h-4" />
-                  <span>41</span>
-                </button>
-                <button className="flex items-center gap-2 hover:text-red-500">
-                  <Heart className="w-4 h-4" />
-                  <span>660</span>
-                </button>
-                <button className="hover:text-orange-500">
-                  <Share className="w-4 h-4" />
-                </button>
-                <button className="hover:text-gray-700">
-                  <MoreHorizontal className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="divide-y divide-gray-200">
           {Array.isArray(annonces) && annonces.length > 0 ? (
             annonces.map((annonce: IAnnouncementDTO) => {
@@ -404,7 +352,7 @@ export default function BlueskyLayout() {
                       </div>
 
                       <div
-                        className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-48 items-center flex justify-center`}
+                        className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-64 items-center flex justify-center`}
                         style={{
                           backgroundColor: metaColor,
                           fontSize: metaSize,

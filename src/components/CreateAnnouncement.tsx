@@ -88,7 +88,26 @@ export default function CreateAnnouncement({
     }));
   };
 
-  const initialInputBg = () => {
+  // Fonction pour réinitialiser uniquement les styles (sans perdre le contenu)
+  const resetStyles = () => {
+    setInputBg("bg-white");
+    setInputColor("text-black");
+    setLastSelectedColor("");
+
+    setMetadata((prev) => ({
+      ...prev,
+      fontSize: "",
+      backgroundColor: "",
+      background: "",
+    }));
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  };
+
+  // Fonction pour réinitialiser complètement le formulaire (appelée à la fermeture)
+  const resetForm = () => {
     setInputBg("bg-white");
     setInputColor("text-black");
     setLastSelectedColor("");
@@ -132,7 +151,7 @@ export default function CreateAnnouncement({
 
       if (result.success) {
         console.log("Annonce créée avec succès:", result.data);
-        initialInputBg();
+        resetForm();
         onClose();
         if (onSuccess) onSuccess();
         alert("Annonce créée avec succès !");
@@ -147,7 +166,7 @@ export default function CreateAnnouncement({
   };
 
   const handleCloseModal = () => {
-    initialInputBg();
+    resetForm();
     onClose();
   };
 
@@ -156,7 +175,7 @@ export default function CreateAnnouncement({
   ) => {
     let value = e.target.value;
     if (value.length > lengthLimit) {
-      initialInputBg();
+      resetStyles();
     } else if (value.length <= lengthLimit && lastSelectedColor) {
       handleInputBg(lastSelectedColor);
     }
@@ -164,7 +183,7 @@ export default function CreateAnnouncement({
   };
 
   const handleLoadingImage = () => {
-    initialInputBg();
+    resetStyles();
     setShowUploadImage(true);
     setTimeout(() => {
       uploadImageRef.current?.openFileDialog();
@@ -179,8 +198,17 @@ export default function CreateAnnouncement({
     }));
   };
 
+  const handleImageRemove = () => {
+    console.log("Image removed");
+    setMetadata((prev) => ({
+      ...prev,
+      image: "",
+    }));
+    // Ne pas appeler resetStyles() ici pour garder le texte
+  };
+
   const handleSetUser = () => {
-    initialInputBg();
+    resetStyles();
     setMetadata((prev) => ({
       ...prev,
       audience: "user-selected",
@@ -195,7 +223,7 @@ export default function CreateAnnouncement({
   };
 
   const handleSetCalendar = () => {
-    initialInputBg();
+    resetStyles();
     setMetadata((prev) => ({
       ...prev,
       calendar: new Date().toISOString(),
@@ -233,7 +261,11 @@ export default function CreateAnnouncement({
           />
           {showUploadImage && (
             <div className="flex flex-auto items-center justify-start">
-              <UploadImage ref={uploadImageRef} onUpload={handleImageUpload} />
+              <UploadImage 
+                ref={uploadImageRef} 
+                onUpload={handleImageUpload}
+                onRemove={handleImageRemove}
+              />
             </div>
           )}
         </div>
@@ -272,7 +304,7 @@ export default function CreateAnnouncement({
           />
           <button
             className="w-5 bg-white rounded-md h-6 p-2 text-white flex items-center justify-center border-2 border-black"
-            onClick={() => initialInputBg()}
+            onClick={() => resetStyles()}
           />
         </div>
 
