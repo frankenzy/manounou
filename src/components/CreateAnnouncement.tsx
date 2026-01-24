@@ -2,6 +2,7 @@
 
 import Modal from "@/components/Modal";
 import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import { IAnnouncementDTO } from "@/models/Annnouncements";
 import {
     faCalendar,
     faClock,
@@ -16,6 +17,7 @@ interface CreateAnnouncementProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  announcement?: IAnnouncementDTO;
 }
 
 interface IMetadata {
@@ -36,7 +38,9 @@ export default function CreateAnnouncement({
   isOpen,
   onClose,
   onSuccess,
+  announcement,
 }: CreateAnnouncementProps) {
+  const isEditMode = !!announcement;
   const uploadImageRef = useRef<UploadImageRef>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -71,6 +75,31 @@ export default function CreateAnnouncement({
   useEffect(() => {
     adjustTextareaHeight();
   }, [inputValue]);
+
+  // Pré-remplir le formulaire en mode édition
+  useEffect(() => {
+    if (announcement && isOpen) {
+      setAnnouncementTitle(announcement.title || "");
+      setInputValue(announcement.description || "");
+      
+      if (announcement.metadata) {
+        setMetadata(announcement.metadata as IMetadata);
+        
+        // Restaurer le style de fond si présent
+        const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
+        if (bgColor) {
+          setInputBg(`${bgColor} p-8`);
+          setInputColor(
+            "text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center"
+          );
+          setLastSelectedColor(bgColor as string);
+        }
+      }
+    } else if (!isOpen) {
+      // Reset quand on ferme le modal
+      resetForm();
+    }
+  }, [announcement, isOpen]);
 
   const handleInputBg = (color: string) => {
     if (inputValue.length > lengthLimit) {
@@ -133,16 +162,22 @@ export default function CreateAnnouncement({
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("/api/announcements", {
-        method: "POST",
+      const url = isEditMode 
+        ? `/api/announcements/${announcement?.id}` 
+        : "/api/announcements";
+      
+      const method = isEditMode ? "PUT" : "POST";
+      
+      const response = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: "1",
+          user_id: announcement?.user_id || "1",
           title: announcementTitle || "Nouvelle annonce",
           description: inputValue,
-          location: metadata.location || "Non spécifié",
+          location: metadata.location || announcement?.location || "Non spécifié",
           metadata: metadata,
         }),
       });
@@ -150,18 +185,32 @@ export default function CreateAnnouncement({
       const result = await response.json();
 
       if (result.success) {
-        console.log("Annonce créée avec succès:", result.data);
+        console.log(
+          isEditMode ? "Annonce modifiée avec succès:" : "Annonce créée avec succès:",
+          result.data
+        );
         resetForm();
         onClose();
         if (onSuccess) onSuccess();
-        alert("Annonce créée avec succès !");
+        alert(
+          isEditMode 
+            ? "Annonce modifiée avec succès !" 
+            : "Annonce créée avec succès !"
+        );
       } else {
-        console.error("Erreur lors de la création:", result.message);
+        console.error(
+          isEditMode ? "Erreur lors de la modification:" : "Erreur lors de la création:",
+          result.message
+        );
         alert(`Erreur: ${result.message}`);
       }
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
-      alert("Une erreur est survenue lors de la création de l'annonce");
+      alert(
+        isEditMode
+          ? "Une erreur est survenue lors de la modification de l'annonce"
+          : "Une erreur est survenue lors de la création de l'annonce"
+      );
     }
   };
 
@@ -236,7 +285,7 @@ export default function CreateAnnouncement({
         <div className="modalHeader flex items-center justify-between">
           <div className="void"></div>
           <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
-            Publier une annonce
+            {isEditMode ? "Modifier l'annonce" : "Publier une annonce"}
           </h2>
           <button
             className="flex items-end justify-end text-3xl mb-4"
@@ -350,7 +399,7 @@ export default function CreateAnnouncement({
             className="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 w-full"
             onClick={handleSubmit}
           >
-            Suivant
+            {isEditMode ? "Mettre à jour" : "Suivant"}
           </button>
         </div>
       </div>

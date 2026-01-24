@@ -35,7 +35,9 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 
   async findAll(): Promise<IAnnouncementDTO[]> {
     console.log("🔍 Repository: Requête SELECT * FROM announcements...");
-    const result = await pool.query(`SELECT * FROM ${this.tableName}`);
+    const result = await pool.query(
+      `SELECT * FROM ${this.tableName} ORDER BY created_at DESC`,
+    );
     console.log(
       `✅ Repository: ${result.rows.length} lignes récupérées de la BD`,
     );
