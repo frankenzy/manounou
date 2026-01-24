@@ -1,5 +1,5 @@
 "use client";
-import CreateAnnouncement from "@/components/CreateAnnouncement";
+import { AnnouncementModal } from "@/components/Announcement";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import {
   Bell,
@@ -26,6 +26,10 @@ import { useEffect, useRef, useState } from "react";
 export default function BlueskyLayout() {
   const [annonces, setAnnonces] = useState<IAnnouncementDTO[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
+  const [createdAt, setCreatedAt] = useState('');
+
+
 
   const fetchAnnonces = async () => {
     try {
@@ -35,8 +39,23 @@ export default function BlueskyLayout() {
       console.log("Fetched data:", data);
 
       if (Array.isArray(data)) {
+        // appeler fncreatedAt pour chaque annonce afin de forcer son exécution au chargement
+        data.forEach((item: IAnnouncementDTO) => {
+          try {
+            fncreatedAt(item.created_ad);
+          } catch (e) {
+            console.error("fncreatedAt error on item:", e);
+          }
+        });
         setAnnonces(data);
       } else if (data && Array.isArray(data.data)) {
+        data.data.forEach((item: IAnnouncementDTO) => {
+          try {
+            fncreatedAt(item.created_ad);
+          } catch (e) {
+            console.error("fncreatedAt error on item:", e);
+          }
+        });
         setAnnonces(data.data);
       } else {
         console.log("Data is not an array:", data);
@@ -143,15 +162,17 @@ export default function BlueskyLayout() {
   };
 
   const handleOpenMOdal = () => {
+    setSelectedAnnouncement(undefined); // Reset pour création
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSelectedAnnouncement(undefined); // Reset après fermeture
   };
 
   // Menu pour les posts avec options (éditer, supprimer, etc.)
-  const PostMenu = ({ announcementId }: { announcementId?: string }) => {
+  const PostMenu = ({ announcementId }: { announcementId?: string | number }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -174,10 +195,23 @@ export default function BlueskyLayout() {
       };
     }, [isOpen]);
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
       console.log("Edit announcement:", announcementId);
       setIsOpen(false);
-      // Implémenter la logique d'édition
+
+      // Récupérer les données complètes de l'annonce
+      try {
+        const response = await fetch(`/api/announcements/${announcementId}`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            setSelectedAnnouncement(result.data);
+            setIsModalOpen(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching announcement for edit:", error);
+      }
     };
 
     const handleDelete = async () => {
@@ -340,12 +374,12 @@ export default function BlueskyLayout() {
 
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
                           <span className="font-semibold">{annonce.title}</span>
                           <span className="text-gray-500 text-sm">
                             @{annonce.created_ad?.toDateString()}
                           </span>
-                          <span className="text-gray-500 text-sm">· 1h</span>
+                          <span className="text-gray-500 text-sm items-end">2s</span>
                         </div>
 
                         <PostMenu announcementId={annonce.id} />
@@ -410,10 +444,11 @@ export default function BlueskyLayout() {
 
         <InfoPanel />
       </div>
-      <CreateAnnouncement
+      <AnnouncementModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSuccess={fetchAnnonces}
+        announcement={selectedAnnouncement}
       />
     </div>
   );
