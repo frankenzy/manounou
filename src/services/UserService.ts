@@ -27,7 +27,7 @@ export class UserService implements IUserService {
   }
 
   async createUser(
-    userData: Omit<IUser, "id" | "created_ad" | "updated_at">,
+    userData: Omit<IUser, "id" | "created_at" | "updated_at">,
   ): Promise<IUserDTO> {
     const validation = UserValidator.validateCreate(userData);
     if (!validation.isValid) {

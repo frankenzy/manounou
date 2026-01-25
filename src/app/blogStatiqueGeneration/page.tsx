@@ -1,6 +1,7 @@
 "use client";
 import { AnnouncementModal } from "@/components/Announcement";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { GetCreatedAt } from "@/utils/getCreatedAt";
 import {
   Bell,
   Bookmark,
@@ -31,6 +32,21 @@ export default function BlueskyLayout() {
 
 
 
+  function fncreatedAt(date: Date | number | string) {
+
+    console.log('Date', date)
+    const d = GetCreatedAt(date)
+
+
+    console.log("Date de creation: ", d)
+
+
+    return d;
+  }
+
+
+
+
   const fetchAnnonces = async () => {
     try {
       const response = await fetch("/api/announcements");
@@ -42,7 +58,7 @@ export default function BlueskyLayout() {
         // appeler fncreatedAt pour chaque annonce afin de forcer son exécution au chargement
         data.forEach((item: IAnnouncementDTO) => {
           try {
-            fncreatedAt(item.created_ad);
+            fncreatedAt(item.created_at ? item.created_at : "");
           } catch (e) {
             console.error("fncreatedAt error on item:", e);
           }
@@ -51,7 +67,7 @@ export default function BlueskyLayout() {
       } else if (data && Array.isArray(data.data)) {
         data.data.forEach((item: IAnnouncementDTO) => {
           try {
-            fncreatedAt(item.created_ad);
+            fncreatedAt(item.created_at ? item.created_at : "");
           } catch (e) {
             console.error("fncreatedAt error on item:", e);
           }
@@ -363,6 +379,10 @@ export default function BlueskyLayout() {
         <div className="divide-y divide-gray-200">
           {Array.isArray(annonces) && annonces.length > 0 ? (
             annonces.map((annonce: IAnnouncementDTO) => {
+
+              console.log('Announce', annonce)
+
+
               const metadata = annonce.metadata;
               const bgClass = metadata?.background || metadata?.backgroundColor;
               const metaColor = metadata?.backgroundColor;
@@ -377,9 +397,9 @@ export default function BlueskyLayout() {
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-semibold">{annonce.title}</span>
                           <span className="text-gray-500 text-sm">
-                            @{annonce.created_ad?.toDateString()}
+                            @{annonce.created_at?.toDateString()}
                           </span>
-                          <span className="text-gray-500 text-sm items-end">2s</span>
+                          <span className="text-gray-500 text-sm items-end">{fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}</span>
                         </div>
 
                         <PostMenu announcementId={annonce.id} />

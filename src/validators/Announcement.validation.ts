@@ -3,7 +3,7 @@ import { ValidationResult } from "./UserValidator";
 
 export class AnnouncementValidator {
   static validateCreate(
-    announcementData: Omit<IAnnouncement, "id" | "created_ad" | "updated_at">,
+    announcementData: Omit<IAnnouncement, "id" | "created_at" | "updated_at">,
   ): ValidationResult {
     const errors: string[] = [];
 

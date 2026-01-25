@@ -65,10 +65,10 @@ export default function AnnouncementDetailPage() {
 
   const metadata = announcement.metadata as
     | {
-        background?: string;
-        backgroundColor?: string;
-        fontSize?: string;
-      }
+      background?: string;
+      backgroundColor?: string;
+      fontSize?: string;
+    }
     | undefined;
 
   const bgClass =
@@ -100,12 +100,12 @@ export default function AnnouncementDetailPage() {
               >
                 <strong>Localisation:</strong> {announcement.location}
               </p>
-              {announcement.created_ad && (
+              {announcement.created_at && (
                 <p
                   className={`text-sm ${metadata?.backgroundColor ? "text-white text-opacity-80" : "text-gray-600"} mt-2`}
                 >
                   <strong>Publié le:</strong>{" "}
-                  {new Date(announcement.created_ad).toLocaleDateString(
+                  {new Date(announcement.created_at).toLocaleDateString(
                     "fr-FR",
                   )}
                 </p>

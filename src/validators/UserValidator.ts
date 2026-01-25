@@ -7,7 +7,7 @@ export interface ValidationResult {
 
 export class UserValidator {
   static validateCreate(
-    userData: Omit<IUser, "id" | "created_ad" | "updated_at">,
+    userData: Omit<IUser, "id" | "created_at" | "updated_at">,
   ): ValidationResult {
     const errors: string[] = [];
 

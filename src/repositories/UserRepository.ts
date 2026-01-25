@@ -81,7 +81,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async create(
-    userData: Omit<IUser, "id" | "created_ad" | "updated_at">,
+    userData: Omit<IUser, "id" | "created_at" | "updated_at">,
   ): Promise<IUserDTO> {
     try {
       const query = `
@@ -177,7 +177,7 @@ export class UserRepository implements IUserRepository {
       email: row.email,
       firstName: row.first_name,
       lastName: row.last_name,
-      created_ad: row.created_at,
+      created_at: row.created_at,
       updated_at: row.updated_at,
     };
   }
@@ -190,7 +190,7 @@ export class UserRepository implements IUserRepository {
       password: row.password,
       firstName: row.first_name,
       lastName: row.last_name,
-      created_ad: row.created_at,
+      created_at: row.created_at,
       updated_at: row.updated_at,
     };
   }

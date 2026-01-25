@@ -6,7 +6,7 @@ export interface IUserRepository {
   findByEmail(email: string): Promise<IUser | null>;
   findByUsername(username: string): Promise<IUser | null>;
   create(
-    user: Omit<IUser, "id" | "created_ad" | "updated_at">,
+    user: Omit<IUser, "id" | "created_at" | "updated_at">,
   ): Promise<IUserDTO>;
   update(id: number, user: Partial<IUser>): Promise<IUserDTO | null>;
   delete(id: number): Promise<boolean>;
