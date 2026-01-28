@@ -1,7 +1,7 @@
-import React from "react";
+import { Announcement } from './../models/Annnouncements';
 
 
-const Login ={
+const Login = {
   async loginService(telephone: string) {
     try {
       const response = await fetch('/api/Auth/Login', {
@@ -33,4 +33,5 @@ const Login ={
   }
 }
 
-export default Login 
+
+export default Login;

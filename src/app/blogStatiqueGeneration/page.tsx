@@ -24,13 +24,27 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+
+const enum Tabs {
+  JobSeeker = 'job-seeker',
+  Employer = 'employer',
+}
+
+const enum NavTabs {
+  Annonces = 'annonces',
+  MesAnnonces = 'mes-annonces',
+}
+
+
 export default function BlueskyLayout() {
   const [annonces, setAnnonces] = useState<IAnnouncementDTO[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
   const [createdAt, setCreatedAt] = useState('');
+  const [activeNavTab, setActiveNavTab] = useState<NavTabs>(NavTabs.Annonces);
 
-
+  // const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
+  const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
 
   function fncreatedAt(date: Date | number | string) {
 
@@ -39,7 +53,6 @@ export default function BlueskyLayout() {
 
 
     console.log("Date de creation: ", d)
-
 
     return d;
   }
@@ -101,11 +114,21 @@ export default function BlueskyLayout() {
         </div>
 
         {/* Onglets Discover/Following */}
-        <div className="bg-gray-100 rounded-lg p-1 flex gap-1">
-          <button className="flex-1 bg-white rounded-md py-2 px-4 text-sm font-semibold shadow-sm">
+        <div className="bg-gray-100 rounded-lg p-1 flex gap-4 justify-between">
+          <button className={`"flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm font-semibold shadow-sm"`}
+            onClick={
+              () => {
+                setActiveNavTab(NavTabs.Annonces);
+              }
+            }>
             Nouveau
           </button>
-          <button className="flex-1 py-2 px-4 text-sm font-semibold text-gray-600">
+          <button className={`"flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm font-semibold shadow-sm"`}
+            onClick={
+              () => {
+                setActiveNavTab(NavTabs.MesAnnonces);
+              }
+            }>
             Mes postes
           </button>
         </div>
@@ -360,21 +383,64 @@ export default function BlueskyLayout() {
     );
   };
 
+
+
+  const tabsContainerRef = useRef<HTMLDivElement | null>(null);
+  const btnJobRef = useRef<HTMLButtonElement | null>(null);
+  const btnEmpRef = useRef<HTMLButtonElement | null>(null);
+  const [indicator, setIndicator] = useState<{ left: string; width: string }>({ left: "0px", width: "0px" });
+
+  useEffect(() => {
+    const update = () => {
+      const container = tabsContainerRef.current;
+      const activeBtn = tabs === "job-seeker" ? btnJobRef.current : btnEmpRef.current;
+      if (container && activeBtn) {
+        const cRect = container.getBoundingClientRect();
+        const bRect = activeBtn.getBoundingClientRect();
+        setIndicator({ left: `${bRect.left - cRect.left}px`, width: `${bRect.width}px` });
+      }
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [tabs]);
+
   const Main = () => {
     return (
       <div className="flex-1 max-w-2xl border-r border-gray-200">
-        {/* Header avec tabs */}
+        {/* Header avec tabs (avec indicateur animé) */}
         <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
-          <div className="flex">
-            <button className="flex-1 py-4 text-center font-semibold border-b-2 border-orange-500 text-orange-500">
-              Nouveau
-            </button>
-            <button className="flex-1 py-4 text-center font-semibold text-gray-600 hover:bg-gray-50">
-              Mes postes
-            </button>
+          <div ref={tabsContainerRef} className="relative">
+            <div className="flex">
+              <button
+                ref={btnJobRef}
+                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-md" : "text-gray-600 hover:bg-gray-50"}`}
+                onClick={() => setTabs("job-seeker")}
+                aria-pressed={tabs === "job-seeker"}
+              >
+                Je cherche un travail
+              </button>
+
+              <button
+                ref={btnEmpRef}
+                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-md rounded-md" : "text-gray-600 hover:bg-gray-50"}`}
+                onClick={() => setTabs("employer")}
+                aria-pressed={tabs === "employer"}
+              >
+                J’ai besoin de quelqu’un
+              </button>
+            </div>
+
+            <span
+              aria-hidden
+              className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
+              style={{
+                left: indicator.left,
+                width: indicator.width,
+              }}
+            />
           </div>
         </div>
-
         {/* Posts */}
         <div className="divide-y divide-gray-200">
           {Array.isArray(annonces) && annonces.length > 0 ? (
@@ -397,7 +463,8 @@ export default function BlueskyLayout() {
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-semibold">{annonce.title}</span>
                           <span className="text-gray-500 text-sm">
-                            @{annonce.created_at?.toDateString()}
+                            {/* @{annonce.created_at?.toDateString()} */}
+                            @{annonce.created_at ? new Date(annonce.created_at as any).toLocaleDateString() : ""}
                           </span>
                           <span className="text-gray-500 text-sm items-end">{fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}</span>
                         </div>
