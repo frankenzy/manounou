@@ -524,6 +524,9 @@ export default function BlueskyLayout() {
 
   return (
     <div className="min-h-screen bg-white">
+      <div className="p-4 w-full">
+        <h1 className="text-3xl font-bold text-center text-orange-500">Manounou Job</h1>
+      </div>
       <div className="max-w-7xl mx-auto flex">
         <Navigation />
 
