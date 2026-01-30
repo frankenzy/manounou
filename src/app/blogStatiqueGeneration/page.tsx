@@ -102,7 +102,7 @@ export default function BlueskyLayout() {
 
   const InfoPanel = () => {
     return (
-      <section className="w-80 p-4 space-y-4">
+      <section className="relative w-80 p-4 space-y-4">
         {/* Barre de recherche */}
         <div className="relative">
           <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
@@ -115,7 +115,7 @@ export default function BlueskyLayout() {
 
         {/* Onglets Discover/Following */}
         <div className="bg-gray-100 rounded-lg p-1 flex gap-4 justify-between">
-          <button className={`"flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm font-semibold shadow-sm"`}
+          <button className={`"flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 w-full px-4 text-sm font-semibold shadow-sm"`}
             onClick={
               () => {
                 setActiveNavTab(NavTabs.Annonces);
@@ -123,7 +123,7 @@ export default function BlueskyLayout() {
             }>
             Nouveau
           </button>
-          <button className={`"flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm font-semibold shadow-sm"`}
+          <button className={`"flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm w-full font-semibold shadow-sm"`}
             onClick={
               () => {
                 setActiveNavTab(NavTabs.MesAnnonces);
@@ -409,12 +409,12 @@ export default function BlueskyLayout() {
     return (
       <div className="flex-1 max-w-2xl border-r border-gray-200">
         {/* Header avec tabs (avec indicateur animé) */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
+        <div className="sticky top-0 bg-gray-100 border-b border-gray-200 z-10 p-2">
           <div ref={tabsContainerRef} className="relative">
             <div className="flex">
               <button
                 ref={btnJobRef}
-                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-md" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-4 text-center font-semibold rounded-2xl transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
                 onClick={() => setTabs("job-seeker")}
                 aria-pressed={tabs === "job-seeker"}
               >
@@ -423,7 +423,7 @@ export default function BlueskyLayout() {
 
               <button
                 ref={btnEmpRef}
-                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-md rounded-md" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-4 text-center font-semibold rounded-md transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
                 onClick={() => setTabs("employer")}
                 aria-pressed={tabs === "employer"}
               >
@@ -431,14 +431,14 @@ export default function BlueskyLayout() {
               </button>
             </div>
 
-            <span
+            {/* <span
               aria-hidden
               className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
               style={{
                 left: indicator.left,
                 width: indicator.width,
               }}
-            />
+            /> */}
           </div>
         </div>
         {/* Posts */}
@@ -523,8 +523,8 @@ export default function BlueskyLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="p-4 w-full">
+    <div className="min-h-screen bg-white pt-16">
+      <div className="p-4 w-full fixed top-0 bg-white border-b border-gray-200 z-20 mb-8">
         <h1 className="text-3xl font-bold text-center text-orange-500">Manounou Job</h1>
       </div>
       <div className="max-w-7xl mx-auto flex">
