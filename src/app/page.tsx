@@ -1,6 +1,6 @@
-'use client';
-
+"use client";
 import Image from "next/image";
+
 import Buttons from "@/components/buttons";
 import Header from "@/components/header";
 import Logo from "@/components/Logo";
@@ -8,6 +8,9 @@ import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { Layout } from "lucide-react";
+
+
+
 
 const FadeInImage = styled(Image)`
   animation: fadeIn 1s ease-out forwards;
@@ -24,7 +27,9 @@ const FadeInImage = styled(Image)`
   }
 `;
 
-export default function Home() {
+
+export default function about() {
+
   const router = useRouter();
   const handleCall = () => {
     router.push("/login");
@@ -51,8 +56,8 @@ export default function Home() {
                   </div>
                   <div className="flex justify-start items-center">
                     <Buttons
+                      onClick={handleCall}
                       className="py-5 bg-gray-900 hover:bg-slate-700 text-gray-900 rounded-lg text-[10px] sm:text-sm"
-                      onClick={() => window.location.href = "/login"}
                     >
                       Announce
                       <i className="fa fa-arrow-right ml-2"></i>

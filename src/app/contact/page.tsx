@@ -3,7 +3,7 @@ import HEAD from "@/components/header";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Layout from "../layout";
-import "./style.css";
+import * as styles from "./style.css";
 
 const Contact = () => {
   return (
@@ -20,16 +20,16 @@ const Contact = () => {
           >
             <div className="grid grid-cols-2">
               <div
-                className={`cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center`}
+                className={`${styles.leftCol} cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center`}
               >
                 <div
-                  className={`flex justify-center items-center w-full max-h-full bg-black bg-opacity-25`}
+                  className={`${styles.leftColOverlay} flex justify-center items-center w-full max-h-full bg-black bg-opacity-25`}
                 >
                   <p className="text-white font-bold hidden">Contact</p>
                 </div>
               </div>
               <div
-                className={`cols flex flex-col bg-black h-screen pt-10`}
+                className={`${styles.rightCol} cols flex flex-col bg-black h-screen pt-10`}
               >
                 <div className="flex w-full justify-center">
                   <motion.h1
@@ -62,7 +62,7 @@ const ContactForms = () => {
   });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -190,8 +190,9 @@ const ContactForms = () => {
 
       <motion.button
         type="submit"
-        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${isAccepted ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${
+          isAccepted ? "" : "opacity-50 cursor-not-allowed"
+        }`}
         disabled={!isAccepted}
         whileHover={{ scale: isAccepted ? 1.05 : 1 }}
         transition={{ duration: 0.3 }}

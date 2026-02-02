@@ -11,26 +11,6 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    ignores: [
-      // Fichiers legacy à nettoyer dans Phase 3
-      "src/controllers/**",
-      "src/services/**",
-      "src/models/**",
-      "src/repositories/**",
-      "src/Auth/**",
-      "src/components/**",
-      "src/hooks/**",
-      "src/utils/**",
-      // Pages avec erreurs legacy temporaires
-      "src/app/about/**",
-      "src/app/contact/**",
-      "src/app/login/**",
-      "src/app/manounou/**",
-      "src/app/page.tsx",
-      "src/app/todo/**",
-    ],
-  },
 ];
 
 export default eslintConfig;
