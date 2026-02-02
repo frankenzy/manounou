@@ -4,7 +4,7 @@
  */
 
 import { AnnouncementResponseDTO } from '@/core/application/dto/Announcement.dto';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export function useAnnouncement(id: number | null) {
    const [announcement, setAnnouncement] =
@@ -40,4 +40,48 @@ export function useAnnouncement(id: number | null) {
    }, [id]);
 
    return { announcement, isLoading, error };
+}
+
+
+export function useAnnouncements() {
+   const [announcements, setAnnouncements] = useState<AnnouncementResponseDTO[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
+   const [error, setError] = useState<string | null>(null);
+
+   const fetchAnnouncements = useCallback(async () => {
+      try {
+         setIsLoading(true);
+         setError(null);
+
+         const response = await fetch('/api/announcements');
+         const data = await response.json();
+
+         if (data.success && Array.isArray(data.data)) {
+            setAnnouncements(data.data);
+         } else {
+            throw new Error(data.message || 'Failed to fetch announcements');
+         }
+      } catch (err) {
+         const message = err instanceof Error ? err.message : 'Unknown error';
+         setError(message);
+         setAnnouncements([]);
+      } finally {
+         setIsLoading(false);
+      }
+   }, []);
+
+   useEffect(() => {
+      fetchAnnouncements();
+   }, [fetchAnnouncements]);
+
+   const refetch = useCallback(() => {
+      fetchAnnouncements();
+   }, [fetchAnnouncements]);
+
+   return {
+      announcements,
+      isLoading,
+      error,
+      refetch
+   };
 }

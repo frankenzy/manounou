@@ -1,14 +1,16 @@
 "use client";
 import { AnnouncementModal } from "@/components/Announcement";
 import Comment from "@/components/comments/comment";
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { useAnnouncements } from "@/presentation/hooks/useAnnouncements";
+import { deleteAnnouncementAction } from "@/presentation/actions/announcement.actions";
+import { AnnouncementResponseDTO } from "@/core/application/dto/Announcement.dto";
+import { AnnouncementCard } from "@/presentation/components/AnnouncementCard";
 import { GetCreatedAt } from "@/utils/getCreatedAt";
 import {
   Bell,
   Bookmark,
   Edit,
   Hash,
-  Heart,
   Home,
   ListCheckIcon,
   LocateIcon,
@@ -16,7 +18,6 @@ import {
   MoreHorizontal,
   MoreVertical,
   Plus,
-  Repeat2,
   Search,
   Settings,
   Share,
@@ -38,9 +39,11 @@ const enum NavTabs {
 
 
 export default function BlueskyLayout() {
-  const [annonces, setAnnonces] = useState<IAnnouncementDTO[]>([]);
+  // Utilisation du hook personnalisé (Couche Présentation)
+  const { announcements: annonces, isLoading, error, refetch } = useAnnouncements();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<AnnouncementResponseDTO | undefined>(undefined);
   const [activeNavTab, setActiveNavTab] = useState<NavTabs>(NavTabs.Annonces);
   const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
@@ -59,28 +62,6 @@ export default function BlueskyLayout() {
     setCommentModalOpen(false);
   };
 
-  const fetchAnnonces = async () => {
-    try {
-      const response = await fetch("/api/announcements");
-      const data = await response.json();
-
-      if (Array.isArray(data)) {
-        setAnnonces(data);
-      } else if (data && Array.isArray(data.data)) {
-        setAnnonces(data.data);
-      } else {
-        setAnnonces([]);
-      }
-    } catch (error) {
-      console.error("Error fetching announcements:", error);
-      setAnnonces([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchAnnonces();
-  }, []);
-
   const InfoPanel = () => {
     return (
       <section className="relative w-80 p-4 space-y-4">
@@ -89,7 +70,7 @@ export default function BlueskyLayout() {
           <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Recghercher"
+            placeholder="Rechercher"
             className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
@@ -219,7 +200,7 @@ export default function BlueskyLayout() {
       console.log("Edit announcement:", announcementId);
       setIsOpen(false);
 
-      // Récupérer les données complètes de l'annonce
+      // Récupérer les données complètes via API (Couche Présentation)
       try {
         const response = await fetch(`/api/announcements/${announcementId}`);
         if (response.ok) {
@@ -237,11 +218,11 @@ export default function BlueskyLayout() {
     const handleDelete = async () => {
       if (confirm("Êtes-vous sûr de vouloir supprimer cette annonce ?")) {
         try {
-          const response = await fetch(`/api/announcements/${announcementId}`, {
-            method: "DELETE",
-          });
-          if (response.ok) {
-            fetchAnnonces();
+          const result = await deleteAnnouncementAction(announcementId as number);
+          if (result.success) {
+            refetch();
+          } else {
+            console.error("Error deleting announcement:", result.error);
           }
         } catch (error) {
           console.error("Error deleting announcement:", error);
@@ -396,7 +377,7 @@ export default function BlueskyLayout() {
             <div className="flex">
               <button
                 ref={btnJobRef}
-                className={`flex-1 py-4 text-center font-semibold rounded-2xl transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50 rounded-lg"}`}
                 onClick={() => setTabs("job-seeker")}
                 aria-pressed={tabs === "job-seeker"}
               >
@@ -405,99 +386,40 @@ export default function BlueskyLayout() {
 
               <button
                 ref={btnEmpRef}
-                className={`flex-1 py-4 text-center font-semibold rounded-md transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50 rounded-lg"}`}
                 onClick={() => setTabs("employer")}
                 aria-pressed={tabs === "employer"}
               >
                 J’ai besoin de quelqu’un
               </button>
             </div>
-
-            {/* <span
-              aria-hidden
-              className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
-              style={{
-                left: indicator.left,
-                width: indicator.width,
-              }}
-            /> */}
           </div>
         </div>
-        {Array.isArray(annonces) && annonces.length > 0 ? (
-          annonces.map((annonce: IAnnouncementDTO) => {
-            const metadata = annonce.metadata;
-            const bgClass = metadata?.background || metadata?.backgroundColor;
-            const metaColor = metadata?.backgroundColor;
-            const metaSize = metadata?.fontSize;
-            return (
-              <div key={annonce.id} className="p-4 hover:bg-gray-50">
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
-
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold">{annonce.title}</span>
-                        <span className="text-gray-500 text-sm">
-                          @{annonce.created_at ? new Date(annonce.created_at as any).toLocaleDateString() : ""}
-                        </span>
-                        <span className="text-gray-500 text-sm items-end">
-                          {fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}
-                        </span>
-                      </div>
-
-                      <PostMenu announcementId={annonce.id} />
-                    </div>
-
-                    <div
-                      className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-64 items-center flex justify-center`}
-                      style={{
-                        backgroundColor: metaColor,
-                        fontSize: metaSize,
-                      }}
-                    >
-                      <p
-                        className={`${metaSize ?? "text-lg"} ${bgClass ? "text-white" : "text-black"} font-semibold mb-3`}
-                      >
-                        {annonce.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-8 text-gray-500 text-sm">
-                      <button
-                        className="flex items-center gap-2 hover:text-green-600"
-                        onClick={() => {
-                          setSelectedAnnouncement(annonce);
-                          handleCommentModalOpen();
-                        }}
-                      >
-                        <MessageCircle className="w-4 h-4" />
-                        <span>10</span>
-                      </button>
-                      <button className="flex items-center gap-2 hover:text-green-500">
-                        <Repeat2 className="w-4 h-4" />
-                        <span>187</span>
-                      </button>
-                      <button className="flex items-center gap-2 hover:text-red-500">
-                        <Heart className="w-4 h-4" />
-                        <span>1K</span>
-                      </button>
-                      <button className="hover:text-orange-500">
-                        <Share className="w-4 h-4" />
-                      </button>
-                      <button className="hover:text-gray-700">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })
+        {isLoading ? (
+          <div className="p-8 text-center text-gray-500">
+            Chargement...
+          </div>
+        ) : error ? (
+          <div className="p-8 text-center text-red-500">
+            Erreur: {error}
+          </div>
+        ) : Array.isArray(annonces) && annonces.length > 0 ? (
+          annonces.map((annonce: AnnouncementResponseDTO) => (
+            <AnnouncementCard
+              key={annonce.id}
+              announcement={annonce}
+              onComment={(announcement) => {
+                setSelectedAnnouncement(announcement);
+                handleCommentModalOpen();
+              }}
+              renderMenu={(announcementId) => (
+                <PostMenu announcementId={announcementId} />
+              )}
+            />
+          ))
         ) : (
           <div className="p-8 text-center text-gray-500">
-            {annonces.length === 0
-              ? "Aucune annonce pour le moment"
-              : "Chargement..."}
+            Aucune annonce pour le moment
           </div>
         )}
       </div>
@@ -519,7 +441,7 @@ export default function BlueskyLayout() {
       <AnnouncementModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onSuccess={fetchAnnonces}
+        onSuccess={refetch}
         announcement={selectedAnnouncement}
       />
 
