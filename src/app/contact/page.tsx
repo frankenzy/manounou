@@ -190,9 +190,8 @@ const ContactForms = () => {
 
       <motion.button
         type="submit"
-        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${
-          isAccepted ? "" : "opacity-50 cursor-not-allowed"
-        }`}
+        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${isAccepted ? "" : "opacity-50 cursor-not-allowed"
+          }`}
         disabled={!isAccepted}
         whileHover={{ scale: isAccepted ? 1.05 : 1 }}
         transition={{ duration: 0.3 }}
