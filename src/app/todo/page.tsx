@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect,useState,useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import Header from "@/components/header";
 
@@ -7,8 +7,8 @@ import RootLayout from "../layout";
 
 import Badge from "@/components/Badge";
 
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,15 +20,15 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import VerticalBar from "@/components/VerticalBar";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 import moment from "moment";
 
 import "./style.css";
 
-import Input from "@/components/Input";
 import HorizontalBar from "@/components/HorizontalBar";
+import Input from "@/components/Input";
 import tasksReducer from "@/hooks/useReducter";
 // import { resourceUsage } from "process";
 
@@ -69,11 +69,11 @@ export default function About() {
   };
 
   const [taskCount, setTaskCount] = useState(0);
-const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
-  tasks: [],
-  isLoading: false,
-  count: 0,
-});
+  const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
+    tasks: [],
+    isLoading: false,
+    count: 0,
+  });
 
   useEffect(() => {
     setTaskCount(tasks.length);
@@ -123,9 +123,9 @@ const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
           setCountCompleted(countCompleted + 1);
         }
       },
-      [tasks]
+      [tasks],
     );
-    console.log('task count completed', countCompleted);
+    console.log("task count completed", countCompleted);
   }, [tasks]);
 
   // useEffect(() => {
@@ -225,7 +225,9 @@ const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
                 // </div>
                 <div>
                   loading
-                  <span className="opacity-0 animate-fadeInOut text-slate-400 text-sm">.</span>
+                  <span className="opacity-0 animate-fadeInOut text-slate-400 text-sm">
+                    .
+                  </span>
                   <span className="opacity-0 animate-fadeInOut animation-delay-500 text-slate-400 text-sm">
                     .
                   </span>
@@ -255,7 +257,7 @@ const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
                       <div
                         className={`w-6 h-3 rounded-full border-2 transition-colors duration-300 ${
                           status
-                            ? "bg-blue-500 border-blue-500"
+                            ? "bg-green-600 border-green-600"
                             : "bg-black border-black"
                         }`}
                       >
@@ -281,7 +283,7 @@ const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
                           type="checkbox"
                           className={`rounded-full ${
                             task.completed
-                              ? "bg-blue-500 border-blue-500"
+                              ? "bg-green-600 border-green-600"
                               : "bg-black border-black"
                           }`}
                           checked={task.completed}
@@ -299,7 +301,7 @@ const [tasksState, dispatchTashs] = useReducer(tasksReducer, {
                       </div>
 
                       <div className="col-span-2">
-                        <p className="bg-blue-300 px-2 rounded-2xl">
+                        <p className="bg-green-300 px-2 rounded-2xl">
                           {task.status}
                         </p>
                       </div>

@@ -13,12 +13,12 @@ export default function Header() {
     router.push("/register");
   };
   return (
-    <div className="header flex items-center justify-center w-full border-solid border-b-2 border-0 border-[#232323]">
+    <div className="header flex items-center justify-center w-full border-solid border-b-1 border-0 border-[#ffffff]">
       <div className="container px-6 py-4 flex flex-col items-center justify-center w-full max-w-screen-2xl text-center">
         <div className="flex flex-row items-center justify-between w-full">
           <div className="col-span-1 flex flex-row items-center sm:gap-2">
             <Image src="/logo.svg" alt="logo" width={40} height={40} />
-            <h2>manounous</h2>
+            <h2>Manounous</h2>
           </div>
           <div className="col-span-1 sm:col-span-2">
             <Menu />

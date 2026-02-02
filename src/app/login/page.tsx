@@ -93,7 +93,7 @@ export default function Home() {
                 onClick={handleSubmit}
                 className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${
                   isValidate
-                    ? "bg-blue-500 text-white border-blue-500"
+                    ? "bg-orange-500 text-white border-orange-500"
                     : "bg-gray-300 border-red-500 text-gray-900"
                 }`}
                 disabled={!isValidate}
@@ -136,7 +136,7 @@ export default function Home() {
                 </Buttons>
                 <Buttons
                   onClick={() => {}}
-                  className="px-6 py-5 hover:bg-blue-900 transition duration-200"
+                  className="px-6 py-5 hover:bg-green-900 transition duration-200"
                 >
                   <div className="flex gap-2 flex-row justify-between items-center">
                     <Image
@@ -156,7 +156,7 @@ export default function Home() {
                   className={`
                   ${
                     onFocus
-                      ? "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-orange-500 text-white hover:bg-orange-600"
                       : "bg-gray-300 text-gray-900"
                   }border-black border-2 shadow-sm
                   `}

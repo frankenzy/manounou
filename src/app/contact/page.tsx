@@ -1,9 +1,9 @@
 "use client";
+import HEAD from "@/components/header";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Layout from "../layout";
-import HEAD from "@/components/header";
 import * as styles from "./style.css";
-import { motion } from "framer-motion";
 
 const Contact = () => {
   return (
@@ -180,7 +180,7 @@ const ContactForms = () => {
 
       {/* <button
         type="submit"
-        className={`bg-blue-500 text-white p-2 rounded-lg h-16 ${
+        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${
           isAccepted ? "" : "opacity-50 cursor-not-allowed"
         }`}
         disabled={!isAccepted}
@@ -190,7 +190,7 @@ const ContactForms = () => {
 
       <motion.button
         type="submit"
-        className={`bg-blue-500 text-white p-2 rounded-lg h-16 ${
+        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${
           isAccepted ? "" : "opacity-50 cursor-not-allowed"
         }`}
         disabled={!isAccepted}
