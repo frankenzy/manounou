@@ -1,5 +1,6 @@
 "use client";
 import { AnnouncementModal } from "@/components/Announcement";
+import Comment from "@/components/comments/comment";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { GetCreatedAt } from "@/utils/getCreatedAt";
 import {
@@ -40,54 +41,34 @@ export default function BlueskyLayout() {
   const [annonces, setAnnonces] = useState<IAnnouncementDTO[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
-  const [createdAt, setCreatedAt] = useState('');
   const [activeNavTab, setActiveNavTab] = useState<NavTabs>(NavTabs.Annonces);
-
-  // const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
+  const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
 
   function fncreatedAt(date: Date | number | string) {
-
-    console.log('Date', date)
-    const d = GetCreatedAt(date)
-
-
-    console.log("Date de creation: ", d)
-
-    return d;
+    return GetCreatedAt(date);
   }
 
 
 
+  const handleCommentModalOpen = () => {
+    setCommentModalOpen(true);
+  };
+
+  const handleCommentModalClose = () => {
+    setCommentModalOpen(false);
+  };
 
   const fetchAnnonces = async () => {
     try {
       const response = await fetch("/api/announcements");
       const data = await response.json();
 
-      console.log("Fetched data:", data);
-
       if (Array.isArray(data)) {
-        // appeler fncreatedAt pour chaque annonce afin de forcer son exécution au chargement
-        data.forEach((item: IAnnouncementDTO) => {
-          try {
-            fncreatedAt(item.created_at ? item.created_at : "");
-          } catch (e) {
-            console.error("fncreatedAt error on item:", e);
-          }
-        });
         setAnnonces(data);
       } else if (data && Array.isArray(data.data)) {
-        data.data.forEach((item: IAnnouncementDTO) => {
-          try {
-            fncreatedAt(item.created_at ? item.created_at : "");
-          } catch (e) {
-            console.error("fncreatedAt error on item:", e);
-          }
-        });
         setAnnonces(data.data);
       } else {
-        console.log("Data is not an array:", data);
         setAnnonces([]);
       }
     } catch (error) {
@@ -115,20 +96,20 @@ export default function BlueskyLayout() {
 
         {/* Onglets Discover/Following */}
         <div className="bg-gray-100 rounded-lg p-1 flex gap-4 justify-between">
-          <button className={`"flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 w-full px-4 text-sm font-semibold shadow-sm"`}
-            onClick={
-              () => {
-                setActiveNavTab(NavTabs.Annonces);
-              }
-            }>
+          <button
+            className={`flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 w-full px-4 text-sm font-semibold shadow-sm`}
+            onClick={() => {
+              setActiveNavTab(NavTabs.Annonces);
+            }}
+          >
             Nouveau
           </button>
-          <button className={`"flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm w-full font-semibold shadow-sm"`}
-            onClick={
-              () => {
-                setActiveNavTab(NavTabs.MesAnnonces);
-              }
-            }>
+          <button
+            className={`flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm w-full font-semibold shadow-sm`}
+            onClick={() => {
+              setActiveNavTab(NavTabs.MesAnnonces);
+            }}
+          >
             Mes postes
           </button>
         </div>
@@ -200,7 +181,7 @@ export default function BlueskyLayout() {
     );
   };
 
-  const handleOpenMOdal = () => {
+  const handleOpenModal = () => {
     setSelectedAnnouncement(undefined); // Reset pour création
     setIsModalOpen(true);
   };
@@ -373,7 +354,7 @@ export default function BlueskyLayout() {
 
         {/* Bouton New Post */}
         <button
-          onClick={handleOpenMOdal}
+          onClick={handleOpenModal}
           className="mt-6 w-full bg-orange-500 text-white rounded-full py-3 px-6 flex items-center justify-center gap-2 font-semibold hover:bg-orange-600"
         >
           <Plus className="w-5 h-5" />
@@ -382,6 +363,7 @@ export default function BlueskyLayout() {
       </section>
     );
   };
+
 
 
 
@@ -441,83 +423,83 @@ export default function BlueskyLayout() {
             /> */}
           </div>
         </div>
-        {/* Posts */}
-        <div className="divide-y divide-gray-200">
-          {Array.isArray(annonces) && annonces.length > 0 ? (
-            annonces.map((annonce: IAnnouncementDTO) => {
+        {Array.isArray(annonces) && annonces.length > 0 ? (
+          annonces.map((annonce: IAnnouncementDTO) => {
+            const metadata = annonce.metadata;
+            const bgClass = metadata?.background || metadata?.backgroundColor;
+            const metaColor = metadata?.backgroundColor;
+            const metaSize = metadata?.fontSize;
+            return (
+              <div key={annonce.id} className="p-4 hover:bg-gray-50">
+                <div className="flex gap-3">
+                  <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
 
-              console.log('Announce', annonce)
-
-
-              const metadata = annonce.metadata;
-              const bgClass = metadata?.background || metadata?.backgroundColor;
-              const metaColor = metadata?.backgroundColor;
-              const metaSize = metadata?.fontSize;
-              return (
-                <div key={annonce.id} className="p-4 hover:bg-gray-50">
-                  <div className="flex gap-3">
-                    <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
-
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-semibold">{annonce.title}</span>
-                          <span className="text-gray-500 text-sm">
-                            {/* @{annonce.created_at?.toDateString()} */}
-                            @{annonce.created_at ? new Date(annonce.created_at as any).toLocaleDateString() : ""}
-                          </span>
-                          <span className="text-gray-500 text-sm items-end">{fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}</span>
-                        </div>
-
-                        <PostMenu announcementId={annonce.id} />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-semibold">{annonce.title}</span>
+                        <span className="text-gray-500 text-sm">
+                          @{annonce.created_at ? new Date(annonce.created_at as any).toLocaleDateString() : ""}
+                        </span>
+                        <span className="text-gray-500 text-sm items-end">
+                          {fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}
+                        </span>
                       </div>
 
-                      <div
-                        className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-64 items-center flex justify-center`}
-                        style={{
-                          backgroundColor: metaColor,
-                          fontSize: metaSize,
+                      <PostMenu announcementId={annonce.id} />
+                    </div>
+
+                    <div
+                      className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-64 items-center flex justify-center`}
+                      style={{
+                        backgroundColor: metaColor,
+                        fontSize: metaSize,
+                      }}
+                    >
+                      <p
+                        className={`${metaSize ?? "text-lg"} ${bgClass ? "text-white" : "text-black"} font-semibold mb-3`}
+                      >
+                        {annonce.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-8 text-gray-500 text-sm">
+                      <button
+                        className="flex items-center gap-2 hover:text-green-600"
+                        onClick={() => {
+                          setSelectedAnnouncement(annonce);
+                          handleCommentModalOpen();
                         }}
                       >
-                        <p
-                          className={`${metaSize ?? "text-lg"} ${bgClass ? "text-white" : "text-black"} font-semibold mb-3`}
-                        >
-                          {annonce.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-8 text-gray-500 text-sm">
-                        <button className="flex items-center gap-2 hover:text-green-600">
-                          <MessageCircle className="w-4 h-4" />
-                          <span>10</span>
-                        </button>
-                        <button className="flex items-center gap-2 hover:text-green-500">
-                          <Repeat2 className="w-4 h-4" />
-                          <span>187</span>
-                        </button>
-                        <button className="flex items-center gap-2 hover:text-red-500">
-                          <Heart className="w-4 h-4" />
-                          <span>1K</span>
-                        </button>
-                        <button className="hover:text-orange-500">
-                          <Share className="w-4 h-4" />
-                        </button>
-                        <button className="hover:text-gray-700">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </button>
-                      </div>
+                        <MessageCircle className="w-4 h-4" />
+                        <span>10</span>
+                      </button>
+                      <button className="flex items-center gap-2 hover:text-green-500">
+                        <Repeat2 className="w-4 h-4" />
+                        <span>187</span>
+                      </button>
+                      <button className="flex items-center gap-2 hover:text-red-500">
+                        <Heart className="w-4 h-4" />
+                        <span>1K</span>
+                      </button>
+                      <button className="hover:text-orange-500">
+                        <Share className="w-4 h-4" />
+                      </button>
+                      <button className="hover:text-gray-700">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
-              );
-            })
-          ) : (
-            <div className="p-8 text-center text-gray-500">
-              {annonces.length === 0
-                ? "Aucune annonce pour le moment"
-                : "Chargement..."}
-            </div>
-          )}
-        </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="p-8 text-center text-gray-500">
+            {annonces.length === 0
+              ? "Aucune annonce pour le moment"
+              : "Chargement..."}
+          </div>
+        )}
       </div>
     );
   };
@@ -540,6 +522,14 @@ export default function BlueskyLayout() {
         onSuccess={fetchAnnonces}
         announcement={selectedAnnouncement}
       />
+
+      {selectedAnnouncement && (
+        <Comment
+          isOpen={commentModalOpen}
+          onClose={handleCommentModalClose}
+          annonce={selectedAnnouncement}
+        />
+      )}
     </div>
   );
 }
