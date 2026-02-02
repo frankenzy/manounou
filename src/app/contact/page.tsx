@@ -3,7 +3,7 @@ import HEAD from "@/components/header";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Layout from "../layout";
-import * as styles from "./style.css";
+import "./style.css";
 
 const Contact = () => {
   return (
@@ -20,16 +20,16 @@ const Contact = () => {
           >
             <div className="grid grid-cols-2">
               <div
-                className={`${styles.leftCol} cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center`}
+                className={`cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center`}
               >
                 <div
-                  className={`${styles.leftColOverlay} flex justify-center items-center w-full max-h-full bg-black bg-opacity-25`}
+                  className={`flex justify-center items-center w-full max-h-full bg-black bg-opacity-25`}
                 >
                   <p className="text-white font-bold hidden">Contact</p>
                 </div>
               </div>
               <div
-                className={`${styles.rightCol} cols flex flex-col bg-black h-screen pt-10`}
+                className={`cols flex flex-col bg-black h-screen pt-10`}
               >
                 <div className="flex w-full justify-center">
                   <motion.h1
@@ -62,7 +62,7 @@ const ContactForms = () => {
   });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);

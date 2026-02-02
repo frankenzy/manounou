@@ -5,34 +5,34 @@
 
 // Pour les réponses (sans password)
 export interface UserResponseDTO {
-  id?: number;
-  username: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  created_at?: Date;
-  updated_at?: Date;
+   id?: number;
+   username: string;
+   email: string;
+   firstName?: string;
+   lastName?: string;
+   created_at?: Date;
+   updated_at?: Date;
 }
 
 // Pour les créations
 export interface CreateUserDTO {
-  username: string;
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
+   username: string;
+   email: string;
+   password: string;
+   firstName?: string;
+   lastName?: string;
 }
 
 // Pour les mises à jour
 export interface UpdateUserDTO {
-  username?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
+   username?: string;
+   email?: string;
+   firstName?: string;
+   lastName?: string;
 }
 
 // Pour les recherches
 export interface UserCredentialsDTO {
-  email: string;
-  password: string;
+   email: string;
+   password: string;
 }

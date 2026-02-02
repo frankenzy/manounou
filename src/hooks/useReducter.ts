@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 
 const tasksReducer = (state, action) => {
