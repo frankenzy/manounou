@@ -45,16 +45,12 @@ export default function AnnouncementModal({
       } else {
          result = await createAnnouncement(formData);
       }
-      // if (result.success) {
-      //    setShowSuccess(true);
-      //    setTimeout(() => {
-      //       setShowSuccess(false);
-      //       handleCloseModal();
-      //       if (onSuccess) onSuccess();
-      //    }, 2000);
-      // } else {
-      //    alert(result.error);
-      // }
+      if (result && result.success !== false && !result.error) {
+         handleCloseModal();
+         if (onSuccess) onSuccess();
+      } else {
+         alert(result?.error || 'Erreur lors de la soumission de l\'annonce');
+      }
    };
 
 
