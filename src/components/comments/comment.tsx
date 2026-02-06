@@ -54,7 +54,7 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
 
    return (
       <Modal isOpen={isOpen} onClose={onClose}>
-         <div className="space-y-4 p-8 gap-4">
+         <div className="space-y-4 p-8 gap-4 bg-neutral-100 block rounded-lg">
             <div className="flex justify-between items-center">
                <div className="rounded-full bg-slate-200">
                   <UserIcon name="comments" size={24} className="text-gray-600 m-2" />
@@ -63,10 +63,10 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
                   <p className="">
                      Commentaires:
                   </p>
-                  <span className="font-semibold text-sm p-2 bg-slate-200 rounded-full">10</span>
+                  <span className="font-semibold text-sm p-2 rounded-full">10</span>
                </div>
             </div>
-            <div className="p-4 block">
+            <div className="p-4 block  max-h-96 overflow-y-auto bg-neutral-100">
                <p className="text-gray-800">{annonce.description}</p>
             </div>
 
@@ -80,12 +80,12 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
                   onChange={(e) => setComment(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
                   disabled={isSubmitting}
-                  className="w-full p-2 focus:outline-none focus:border-blue-500 px-4 py-8 "
+                  className="w-full p-2 focus:outline-none focus:border-blue-500 px-4 py-8 bg-white rounded-lg border border-gray-300 transition"
                />
                <button
                   onClick={handleSubmit}
                   disabled={isSubmitting || !comment.trim()}
-                  className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
+                  className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
                >
                   {isSubmitting ? "commentaitre..." : "Commenter"}
                </button>
