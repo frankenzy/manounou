@@ -14,10 +14,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'GET':
             return announcementController.getAllAnnouncements(req, res);
-        
+
         case 'POST':
             return announcementController.createAnnouncement(req, res);
-        
+
         case 'PUT':
             return announcementController.searchAnnouncements(req, res);
 

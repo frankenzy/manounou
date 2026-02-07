@@ -4,10 +4,10 @@ import Modal from "@/components/Modal";
 import UploadImage, { UploadImageRef } from "@/components/uploadImage";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import {
-    faCalendar,
-    faClock,
-    faImage,
-    faUser,
+  faCalendar,
+  faClock,
+  faImage,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,10 +81,10 @@ export default function CreateAnnouncement({
     if (announcement && isOpen) {
       setAnnouncementTitle(announcement.title || "");
       setInputValue(announcement.description || "");
-      
+
       if (announcement.metadata) {
         setMetadata(announcement.metadata as IMetadata);
-        
+
         // Restaurer le style de fond si présent
         const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
         if (bgColor) {
@@ -162,12 +162,12 @@ export default function CreateAnnouncement({
 
   const handleSubmit = async () => {
     try {
-      const url = isEditMode 
-        ? `/api/announcements/${announcement?.id}` 
+      const url = isEditMode
+        ? `/api/announcements/${announcement?.id}`
         : "/api/announcements";
-      
+
       const method = isEditMode ? "PUT" : "POST";
-      
+
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -193,8 +193,8 @@ export default function CreateAnnouncement({
         onClose();
         if (onSuccess) onSuccess();
         alert(
-          isEditMode 
-            ? "Annonce modifiée avec succès !" 
+          isEditMode
+            ? "Annonce modifiée avec succès !"
             : "Annonce créée avec succès !"
         );
       } else {
@@ -253,7 +253,6 @@ export default function CreateAnnouncement({
       ...prev,
       image: "",
     }));
-    // Ne pas appeler resetStyles() ici pour garder le texte
   };
 
   const handleSetUser = () => {
@@ -283,9 +282,9 @@ export default function CreateAnnouncement({
     <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
       <div className="p-6">
         <div className="modalHeader flex items-center justify-between">
-          <div className="void"></div>
+          <div className="void">x</div>
           <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
-            {isEditMode ? "Modifier l'annonce" : "Publier une annonce"}
+            {isEditMode ? "Modifier l'annonce" : "Publier"}
           </h2>
           <button
             className="flex items-end justify-end text-3xl mb-4"
@@ -310,8 +309,8 @@ export default function CreateAnnouncement({
           />
           {showUploadImage && (
             <div className="flex flex-auto items-center justify-start">
-              <UploadImage 
-                ref={uploadImageRef} 
+              <UploadImage
+                ref={uploadImageRef}
                 onUpload={handleImageUpload}
                 onRemove={handleImageRemove}
               />

@@ -3,7 +3,7 @@
 import Modal from "@/components/Modal";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import AnnouncementForm from "./AnnouncementCreateForm";
 import { AnnouncementModalProps } from "./types";
 import { useAnnouncementForm } from "./useAnnouncementForm";
@@ -19,16 +19,15 @@ export default function AnnouncementModal({
    // Déterminer le mode automatiquement si non spécifié
    const isEditMode = mode === "edit" || !!announcement;
 
-   // Hook pour la logique du formulaire
    const formLogic = useAnnouncementForm(announcement);
 
-   // Hook pour la logique de soumission
    const { isSubmitting, error, createAnnouncement, updateAnnouncement } = useAnnouncementSubmit();
 
-   // Reset du formulaire à la fermeture
+
    useEffect(() => {
       if (!isOpen) {
          formLogic.resetForm();
+         // setShowSuccess(false);
       }
    }, [isOpen]);
 
@@ -46,22 +45,47 @@ export default function AnnouncementModal({
       } else {
          result = await createAnnouncement(formData);
       }
-
-      if (result.success) {
+      if (result && result.success !== false && !result.error) {
          handleCloseModal();
          if (onSuccess) onSuccess();
-         alert(
-            isEditMode
-               ? "Annonce modifiée avec succès !"
-               : "Annonce créée avec succès !"
-         );
       } else {
-         alert(result.error);
+         alert(result?.error || 'Erreur lors de la soumission de l\'annonce');
       }
    };
 
+
+   const tabsContainerRef = useRef<HTMLDivElement | null>(null);
+   const btnJobRef = useRef<HTMLButtonElement | null>(null);
+   const btnEmpRef = useRef<HTMLButtonElement | null>(null);
+   const [indicator, setIndicator] = useState<{ left: string; width: string }>({ left: "0px", width: "0px" });
+
+
+   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
+   useEffect(() => {
+      const update = () => {
+         const container = tabsContainerRef.current;
+         const activeBtn = tabs === "job-seeker" ? btnJobRef.current : btnEmpRef.current;
+         if (container && activeBtn) {
+            const cRect = container.getBoundingClientRect();
+            const bRect = activeBtn.getBoundingClientRect();
+            setIndicator({ left: `${bRect.left - cRect.left}px`, width: `${bRect.width}px` });
+         }
+      };
+      update();
+      window.addEventListener("resize", update);
+      return () => window.removeEventListener("resize", update);
+   }, [tabs]);
+
+
    return (
       <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
+         {/* {showSuccess && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/95 z-50 rounded-lg">
+               <div className="w-64 h-64">
+                  {succesSVG}
+               </div>
+            </div>
+         )} */}
          <div className="p-6">
             <div className="modalHeader flex items-center justify-between">
                <div className="void"></div>
@@ -75,6 +99,34 @@ export default function AnnouncementModal({
                >
                   <FontAwesomeIcon icon={faClose} />
                </button>
+            </div>
+
+            <div className="relative">
+               <div className="flex bg-gray-100 p-2 rounded-md">
+                  <button
+
+                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                     onClick={() => setTabs("job-seeker")}
+                     aria-pressed={tabs === "job-seeker"}
+                  >
+                     Je cherche un travail
+                  </button>
+
+                  {/* <div className="mx-2 bg-orange-500 w-0.5 self-stretch" /> */}
+
+                  <button
+
+                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                     onClick={() => setTabs("employer")}
+                     aria-pressed={tabs === "employer"}
+                  >
+                     J’ai besoin de quelqu’un
+                  </button>
+               </div>
+               <span
+                  aria-hidden
+                  className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
+               />
             </div>
             <hr className="mb-4" />
 

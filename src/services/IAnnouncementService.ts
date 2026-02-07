@@ -2,7 +2,7 @@ import { IAnnouncement, IAnnouncementDTO } from "@/models/Annnouncements";
 
 export interface IAnnouncementService {
   createAnnouncement(
-    announcement: Omit<IAnnouncement, "id" | "created_ad" | "updated_at">,
+    announcement: Omit<IAnnouncement, "id" | "created_at" | "updated_at">,
   ): Promise<IAnnouncementDTO>;
   getAnnouncementById(id: number): Promise<IAnnouncementDTO | null>;
   getAllAnnouncements(): Promise<IAnnouncementDTO[]>;
