@@ -42,9 +42,17 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
             annonceId: annonce.id,
             content: comment
          }
+        const response = await fetch("/api/comments", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+         });
          console.log("Commentaire envoyé:", data);
-
          setComment("");
+
+         response.ok ? console.log("Commentaire enregistré avec succès") : console.error("Erreur lors de l'enregistrement du commentaire");
       } catch (error) {
          console.error("Erreur lors de l'envoi du commentaire:", error);
       } finally {
@@ -80,7 +88,7 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
                   onChange={(e) => setComment(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
                   disabled={isSubmitting}
-                  className="w-full p-2 focus:outline-none focus:border-blue-500 px-4 py-8 bg-white rounded-lg border border-gray-300 transition"
+                  className="w-full p-2 focus:outline-none text-black focus:border-blue-500 px-4 py-8 bg-white rounded-lg border border-gray-300 transition"
                />
                <button
                   onClick={handleSubmit}
