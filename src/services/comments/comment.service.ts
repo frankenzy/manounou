@@ -11,8 +11,14 @@ export class CommentService {
         return await this.commentRepository.create(IComment);
     }
 
-    async findAll(): Promise<CommentEntity[]> {
-        return await this.commentRepository.findAll();
+    async findAll(announceId?: number): Promise<CommentEntity[]> {
+        const comments = await this.commentRepository.findAll();
+
+        if (announceId !== undefined) {
+            return comments.filter(comment => comment.announce_id === announceId);
+        }
+
+        return comments;
     }
 
     async findOne(id: number): Promise<CommentEntity> {
