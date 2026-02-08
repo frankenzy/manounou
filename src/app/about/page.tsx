@@ -1,7 +1,5 @@
 "use client";
 import Image from "next/image";
-import Layout from '../layout';
-
 
 import Buttons from "@/components/buttons";
 import Header from "@/components/header";
@@ -10,6 +8,7 @@ import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import "./style.css";
+import { Layout } from "lucide-react";
 
 
 
@@ -30,12 +29,12 @@ const FadeInImage = styled(Image)`
 `;
 
 
-export default function  about() {
-    
-      const router = useRouter();
-      const handleCall = () => {
-        router.push("/login");
-      };
+export default function about() {
+
+  const router = useRouter();
+  const handleCall = () => {
+    router.push("/login");
+  };
   return (
     <Layout>
       <Header />
@@ -52,7 +51,7 @@ export default function  about() {
                       Ma <strong>Nounou</strong>
                     </h3>
                     <p className="text-xl text-center my-4">
-                     Trouve ta fille de menage
+                      Trouve ta fille de menage
                     </p>
                   </div>
                   <div className="flex justify-start items-center">

@@ -1,5 +1,6 @@
 "use client";
 import { AnnouncementModal } from "@/components/Announcement";
+import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { GetCreatedAt } from "@/utils/getCreatedAt";
@@ -390,7 +391,7 @@ export default function BlueskyLayout() {
   const Main = () => {
     return (
       <div className="flex-1 max-w-2xl border-r border-gray-200">
-        {/* Header avec tabs (avec indicateur animé) */}
+
         <div className="sticky top-0 bg-gray-100 border-b border-gray-200 z-10 p-2">
           <div ref={tabsContainerRef} className="relative">
             <div className="flex">
@@ -413,14 +414,14 @@ export default function BlueskyLayout() {
               </button>
             </div>
 
-            {/* <span
+            <span
               aria-hidden
               className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
               style={{
                 left: indicator.left,
                 width: indicator.width,
               }}
-            /> */}
+            />
           </div>
         </div>
         {Array.isArray(annonces) && annonces.length > 0 ? (
@@ -494,10 +495,8 @@ export default function BlueskyLayout() {
             );
           })
         ) : (
-          <div className="p-8 text-center text-gray-500">
-            {annonces.length === 0
-              ? "Aucune annonce pour le moment"
-              : "Chargement..."}
+          <div className="p-4 text-center text-gray-500">
+            <AnnounceSkeleton />
           </div>
         )}
       </div>

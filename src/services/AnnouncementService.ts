@@ -36,9 +36,10 @@ export class AnnouncementService implements IAnnouncementService {
     return this.announcementRepository.findById(id);
   }
 
-  async getAllAnnouncements(): Promise<IAnnouncementDTO[]> {
-    console.log('🔍 Service: Appel de getAllAnnouncements...');
-    const result = await this.announcementRepository.findAll();
+  async getAllAnnouncements(page: number = 1, limit: number = 20): Promise<IAnnouncementDTO[]> {
+    console.log(`🔍 Service: Appel de getAllAnnouncements (page: ${page}, limit: ${limit})...`);
+    const offset = (page - 1) * limit;
+    const result = await this.announcementRepository.findAll(limit, offset);
     console.log(`✅ Service: ${result.length} annonces retournées`);
     return result;
   }

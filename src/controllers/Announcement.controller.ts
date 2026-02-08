@@ -10,7 +10,9 @@ export class AnnouncementController extends BaseController {
 
   async getAllAnnouncements(req: NextApiRequest, res: NextApiResponse) {
     await this.handleRequest(req, res, async () => {
-      const announcements = await this.announcementService.getAllAnnouncements();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const announcements = await this.announcementService.getAllAnnouncements(page, limit);
       return announcements;
     });
   }

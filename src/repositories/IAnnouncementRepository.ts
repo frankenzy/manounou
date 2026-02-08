@@ -3,7 +3,7 @@ import { IAnnouncement, IAnnouncementDTO } from "@/models/Annnouncements";
 export interface IAnnouncementRepository {
   create(announcement: IAnnouncement): Promise<IAnnouncementDTO>;
   findById(id: number): Promise<IAnnouncementDTO | null>;
-  findAll(): Promise<IAnnouncementDTO[]>;
+  findAll(limit?: number, offset?: number): Promise<IAnnouncementDTO[]>;
   update(id: number, announcement: Partial<IAnnouncement>): Promise<IAnnouncementDTO | null>;
   delete(id: number): Promise<boolean>;
   findByUserId(user_id: string): Promise<IAnnouncementDTO[]>;

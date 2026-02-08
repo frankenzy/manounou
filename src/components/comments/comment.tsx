@@ -3,6 +3,7 @@ import Modal from "../Modal";
 import { useState } from "react";
 import { UserIcon } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
+import CommentSkeleton from "./AnnounceSkeleton";
 
 interface CommentProps {
    annonce: IAnnouncementDTO;
@@ -49,7 +50,7 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
 
             <div className="p-4 block max-h-96 overflow-y-auto bg-neutral-100">
                {isLoading ? (
-                  <p className="text-gray-500 text-center">Chargement des commentaires...</p>
+                  <CommentSkeleton />
                ) : error ? (
                   <p className="text-red-500 text-center">{error}</p>
                ) : comments.length === 0 ? (

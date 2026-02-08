@@ -2,8 +2,8 @@
 import HEAD from "@/components/header";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import Layout from "../layout";
 import * as styles from "./style.css";
+import { Layout } from "lucide-react";
 
 const Contact = () => {
   return (
@@ -62,7 +62,11 @@ const ContactForms = () => {
   });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -190,9 +194,8 @@ const ContactForms = () => {
 
       <motion.button
         type="submit"
-        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${
-          isAccepted ? "" : "opacity-50 cursor-not-allowed"
-        }`}
+        className={`bg-orange-500 text-white p-2 rounded-lg h-16 ${isAccepted ? "" : "opacity-50 cursor-not-allowed"
+          }`}
         disabled={!isAccepted}
         whileHover={{ scale: isAccepted ? 1.05 : 1 }}
         transition={{ duration: 0.3 }}

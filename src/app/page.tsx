@@ -7,9 +7,6 @@ import Logo from "@/components/Logo";
 import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
-import { Layout } from "lucide-react";
-
-
 
 
 const FadeInImage = styled(Image)`

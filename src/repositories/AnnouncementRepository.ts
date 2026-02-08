@@ -36,15 +36,26 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     return new Announcement(result.rows[0]).Announcement();
   }
 
-  async findAll(): Promise<IAnnouncementDTO[]> {
-    console.log("🔍 Repository: Requête SELECT * FROM announcements...");
-    const result = await pool.query(
-      `SELECT * FROM ${this.tableName} ORDER BY created_at DESC`,
-    );
+  async findAll(limit?: number, offset?: number): Promise<IAnnouncementDTO[]> {
+    console.log("🔍 Repository: Requête SELECT avec pagination...");
+    
+    let query = `SELECT * FROM ${this.tableName} ORDER BY created_at DESC`;
+    const params: any[] = [];
+    
+    if (limit !== undefined) {
+      params.push(limit);
+      query += ` LIMIT $${params.length}`;
+    }
+    
+    if (offset !== undefined) {
+      params.push(offset);
+      query += ` OFFSET $${params.length}`;
+    }
+    
+    const result = await pool.query(query, params);
     console.log(
       `✅ Repository: ${result.rows.length} lignes récupérées de la BD`,
     );
-    console.log("📦 Données brutes:", JSON.stringify(result.rows, null, 2));
     return result.rows.map((row) => new Announcement(row).Announcement());
   }
 

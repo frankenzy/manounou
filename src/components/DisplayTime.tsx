@@ -1,14 +1,12 @@
 import React from 'react';
-import moment from 'moment';
-
-
+import { format } from 'date-fns';
 
 interface ComponentProps{
     className?:string;
 }
 export default function DisplayTime({className}:ComponentProps){
-    const fixedTime = moment('2023-10-01T14:40:00');
-    const formattedTime = fixedTime.format('hh:mm A');
+    const fixedTime = new Date('2023-10-01T14:40:00');
+    const formattedTime = format(fixedTime, 'hh:mm a');
 
     return(
         <>

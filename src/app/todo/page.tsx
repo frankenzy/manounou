@@ -2,35 +2,28 @@
 import { useEffect, useReducer, useState } from "react";
 
 import Header from "@/components/header";
-
-import RootLayout from "../layout";
-
 import Badge from "@/components/Badge";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faPaperclip,
+  faFaceSmile,
+  faChevronDown,
+  faGripVertical,
+  faChevronRight
+} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
-import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
-
-import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
-import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
-
 import VerticalBar from "@/components/VerticalBar";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-
-import moment from "moment";
+import { format } from "date-fns";
 
 import "./style.css";
 
 import HorizontalBar from "@/components/HorizontalBar";
 import Input from "@/components/Input";
 import tasksReducer from "@/hooks/useReducter";
-// import { resourceUsage } from "process";
+import RootLayout from "../layout";
 
 export default function About() {
   const [tasks, setTasks] = useState([
@@ -57,13 +50,11 @@ export default function About() {
       ],
     },
   ]);
-  // const [showTasks, setShowTasks] = React.useState(true);
-  // const [completed, setCompleted] = React.useState(false);
+
 
   const [countCompleted, setCountCompleted] = useState(0);
   const [title, setTitle] = useState("");
   const [Isloading, setIsLoading] = useState(false);
-  // const [loading, setLoading] = React.useState(false);
   const handleClick = () => {
     alert("option ....");
   };
@@ -80,7 +71,6 @@ export default function About() {
   }, [tasks]);
 
   const handleCompleted = (index: number) => {
-    // setCompleted(!completed);
     const updatedTodos = tasks.map((todo, idx) => {
       if (idx === index) {
         console.log(todo);
@@ -88,7 +78,6 @@ export default function About() {
         console.log(todo);
         return updatedTodo;
       }
-      //console.log(todo.completed);
       return todo;
     });
     setTasks(updatedTodos);
@@ -98,7 +87,7 @@ export default function About() {
     const data = {
       title: title,
       content: "",
-      date: moment(new Date()).format("YYYY-MM-DD"),
+      date: format(new Date(), "yyyy-MM-dd"),
       priority: "medium",
       status: "pending",
       completed: false,
@@ -251,20 +240,18 @@ export default function About() {
                       <Input
                         type="checkbox"
                         className="sr-only"
-                        // checked={completed}
-                        //onChange={handleCompleted}
+                      // checked={completed}
+                      //onChange={handleCompleted}
                       />
                       <div
-                        className={`w-6 h-3 rounded-full border-2 transition-colors duration-300 ${
-                          status
-                            ? "bg-green-600 border-green-600"
-                            : "bg-black border-black"
-                        }`}
+                        className={`w-6 h-3 rounded-full border-2 transition-colors duration-300 ${status
+                          ? "bg-green-600 border-green-600"
+                          : "bg-black border-black"
+                          }`}
                       >
                         <div
-                          className={`w-3 h-full rounded-full transition-transform duration-300 ${
-                            status ? "translate-x-2 bg-white" : "bg-white"
-                          }`}
+                          className={`w-3 h-full rounded-full transition-transform duration-300 ${status ? "translate-x-2 bg-white" : "bg-white"
+                            }`}
                         ></div>
                       </div>
                     </label>
@@ -281,20 +268,18 @@ export default function About() {
                       <div className="col-span-1">
                         <Input
                           type="checkbox"
-                          className={`rounded-full ${
-                            task.completed
-                              ? "bg-green-600 border-green-600"
-                              : "bg-black border-black"
-                          }`}
+                          className={`rounded-full ${task.completed
+                            ? "bg-green-600 border-green-600"
+                            : "bg-black border-black"
+                            }`}
                           checked={task.completed}
                           onChange={() => handleCompleted(index)}
                         />
                       </div>
                       <div className="col-span-4">
                         <h3
-                          className={`text-sm ${
-                            task.completed ? "line-through" : ""
-                          }`}
+                          className={`text-sm ${task.completed ? "line-through" : ""
+                            }`}
                         >
                           {task.title}
                         </h3>

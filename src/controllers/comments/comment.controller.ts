@@ -2,7 +2,6 @@ import { IComment, ICreateCommentDTO } from "@/models/Comment";
 import { CommentService } from "@/services/comments/comment.service";
 import { NextApiRequest, NextApiResponse } from "next";
 import { BaseController } from "../BaseController";
-import { updateLocale } from "moment";
 
 export class CommentController extends BaseController {
     constructor(private readonly commentService: CommentService) {
