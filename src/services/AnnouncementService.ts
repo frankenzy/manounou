@@ -1,5 +1,7 @@
 import { IAnnouncement, IAnnouncementDTO } from "@/models/Annnouncements";
+
 import { IAnnouncementRepository } from "@/repositories/IAnnouncementRepository";
+
 import { IAnnouncementService } from "./IAnnouncementService";
 
 export class AnnouncementService implements IAnnouncementService {
@@ -8,20 +10,22 @@ export class AnnouncementService implements IAnnouncementService {
   constructor(announcementRepository: IAnnouncementRepository) {
     this.announcementRepository = announcementRepository;
   }
-    getAnnouncementsByLocation(location: string): Promise<IAnnouncementDTO[]> {
-       const result = this.announcementRepository.findAll().then(announcements =>
-        announcements.filter(announcement => announcement.location === location)
-      );
-      return result;
-    }
-    searchAnnouncements(query: string): Promise<IAnnouncementDTO[]> {
-      const result = this.announcementRepository.findAll().then(announcements =>
-        announcements.filter(announcement =>
-          announcement.title.includes(query) || announcement.description.toString().includes(query)
-        )
-      );
-      return result;
-    }
+  getAnnouncementsByLocation(location: string): Promise<IAnnouncementDTO[]> {
+
+    const result = this.announcementRepository.findAll().then(announcements =>
+
+      announcements.filter(announcement => announcement.location === location)
+    );
+    return result;
+  }
+  searchAnnouncements(query: string): Promise<IAnnouncementDTO[]> {
+    const result = this.announcementRepository.findAll().then(announcements =>
+      announcements.filter(announcement =>
+        announcement.title.includes(query) || announcement.description.toString().includes(query)
+      )
+    );
+    return result;
+  }
 
   async createAnnouncement(announcement: IAnnouncement): Promise<IAnnouncementDTO> {
 

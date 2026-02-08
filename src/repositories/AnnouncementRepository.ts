@@ -5,6 +5,9 @@ import {
   IAnnouncementDTO,
 } from "./../models/Annnouncements";
 import { IAnnouncementRepository } from "./IAnnouncementRepository";
+
+
+
 export class AnnouncementRepository implements IAnnouncementRepository {
   private readonly tableName = "announcements";
 

@@ -2,8 +2,7 @@ export interface IComment {
     id: string;
     announce_id: string;
     content: string;
-    authorId: string;
-    postId: string;
-    createdAt: Date;
-    updatedAt: Date;
+    author_id: string;
+    create_at: Date;
+    update_at: Date;
 }
