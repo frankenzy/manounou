@@ -20,7 +20,8 @@ export class CommentController extends BaseController {
 
     async findAll(req: NextApiRequest, res: NextApiResponse) {
         try {
-            const comments = await this.commentService.findAll();
+            const announceId = req.query.announce_id as string | undefined;
+            const comments = await this.commentService.findAll(announceId ? parseInt(announceId) : undefined);
             this.sendSuccess(res, comments);
         } catch (error) {
             this.handleError(res, error);
