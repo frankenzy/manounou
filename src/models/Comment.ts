@@ -1,6 +1,6 @@
 export interface IComment {
     id: number;
-    announce_id: string;
+    announce_id: number;
     comment: string;
     author_id: string;
     create_at: Date;
@@ -11,7 +11,7 @@ export interface IComment {
 
 export interface ICommentDTO {
     id: number;
-    announce_id: string;
+    announce_id: number;
     comment: string;
     author_id: string;
     create_at: Date;
@@ -20,7 +20,7 @@ export interface ICommentDTO {
 
 
 export interface ICreateCommentDTO {
-    announce_id: string;
+    announce_id: number;
     comment: string;
     author_id: string;
 }
