@@ -7,6 +7,9 @@ interface UseCommentsResult {
    error: string | null;
    refetch: () => Promise<void>;
    addComment: (comment: string, authorId: string) => Promise<boolean>;
+   deleteComment: (commentId: number) => Promise<boolean>;
+   updateComment: (commentId: number, newContent: string) => Promise<boolean>;
+   countComments: () => Promise<number>;
 }
 
 export function useComments(announceId: number | undefined): UseCommentsResult {
@@ -73,6 +76,81 @@ export function useComments(announceId: number | undefined): UseCommentsResult {
       }
    }, [announceId, fetchComments]);
 
+   const deleteComment = useCallback(async (commentId: number): Promise<boolean> => {
+      try {
+         const response = await fetch(`/api/comments/${commentId}`, {
+            method: "DELETE"
+         });
+
+         if (!response.ok) {
+            throw new Error(`Failed to delete comment: ${response.statusText}`);
+         }
+
+         await fetchComments();
+         return true;
+      } catch (err) {
+         const errorMessage = err instanceof Error ? err.message : "Failed to delete comment";
+         setError(errorMessage);
+         console.error("Error deleting comment:", err);
+         return false;
+      }
+   }, [fetchComments]);
+
+
+   const updateComment = useCallback(async (commentId: number, newContent: string): Promise<boolean> => {
+      if (!newContent.trim()) return false;
+
+      try {
+         const response = await fetch(`/api/comments/${commentId}`, {
+            method: "PUT",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ comment: newContent.trim() })
+         });
+
+         if (!response.ok) {
+            throw new Error(`Failed to update comment: ${response.statusText}`);
+         }
+
+         await fetchComments();
+         return true;
+      } catch (err) {
+         const errorMessage = err instanceof Error ? err.message : "Failed to update comment";
+         setError(errorMessage);
+         console.error("Error updating comment:", err);
+         return false;
+      }
+   }, [fetchComments]);
+
+
+
+   // count comments for the current announcement
+   const countComments = useCallback(async (): Promise<number> => {
+      if (!announceId) return 0;
+
+      try {
+         const response = await fetch(`/api/comments/count?announce_id=${announceId}`);
+
+         if (!response.ok) {
+            throw new Error(`Failed to count comments: ${response.statusText}`);
+         }
+
+         const data = await response.json();
+
+         if (data.success && typeof data.data === "number") {
+            return data.data;
+         } else {
+            throw new Error("Invalid response format");
+         }
+      } catch (err) {
+         const errorMessage = err instanceof Error ? err.message : "An error occurred while counting comments";
+         setError(errorMessage);
+         console.error("Error counting comments:", err);
+         return 0;
+      }
+   }, [announceId]);
+
    useEffect(() => {
       fetchComments();
    }, [fetchComments]);
@@ -82,6 +160,9 @@ export function useComments(announceId: number | undefined): UseCommentsResult {
       isLoading,
       error,
       refetch: fetchComments,
-      addComment
+      addComment,
+      deleteComment,
+      updateComment,
+      countComments
    };
 }
