@@ -7,6 +7,7 @@ import { GetCreatedAt } from "@/utils/getCreatedAt";
 import {
   Bell,
   Bookmark,
+  ChevronDown,
   Edit,
   Hash,
   Heart,
@@ -24,7 +25,7 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 
 const enum Tabs {
@@ -46,15 +47,21 @@ export default function BlueskyLayout() {
   const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
 
+  const [openCommentId, setOpenCommentId] = useState<string | number | null>(null);
+
+  const [totalComments, setTotalComments] = useState<number>(0);
+
+  const handleOpenComment = (announcementId: string | number) => {
+    if (openCommentId === announcementId) {
+      setOpenCommentId(null);
+    } else {
+      setOpenCommentId(announcementId);
+    }
+  };
+
   function fncreatedAt(date: Date | number | string) {
     return GetCreatedAt(date);
   }
-
-
-
-  const handleCommentModalOpen = () => {
-    setCommentModalOpen(true);
-  };
 
   const handleCommentModalClose = () => {
     setCommentModalOpen(false);
@@ -451,7 +458,7 @@ export default function BlueskyLayout() {
                     </div>
 
                     <div
-                      className={`${bgClass ?? "bg-gray-200"} p-4 rounded-lg mb-3 h-64 items-center flex justify-center`}
+                      className={`${bgClass ?? "bg-gray-200"} p-4 rounded-t-lg h-64 items-center flex justify-center`}
                       style={{
                         backgroundColor: metaColor,
                         fontSize: metaSize,
@@ -463,16 +470,18 @@ export default function BlueskyLayout() {
                         {annonce.description}
                       </p>
                     </div>
-                    <div className="flex items-center gap-8 text-gray-500 text-sm">
+                    <div className="flex justify-between items-center gap-4 text-gray-500 text-sm bg-neutral-100 px-2 py-4 rounded-b-lg">
                       <button
                         className="flex items-center gap-2 hover:text-green-600"
-                        onClick={() => {
-                          setSelectedAnnouncement(annonce);
-                          handleCommentModalOpen();
-                        }}
+                        // onClick={() => {
+                        //   setSelectedAnnouncement(annonce);
+                        //   handleCommentModalOpen();
+                        // }}
+                        onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)}
+
                       >
                         <MessageCircle className="w-4 h-4" />
-                        <span>10</span>
+                        <span>{annonce.commentCount || 0}</span>
                       </button>
                       <button className="flex items-center gap-2 hover:text-green-500">
                         <Repeat2 className="w-4 h-4" />
@@ -482,13 +491,25 @@ export default function BlueskyLayout() {
                         <Heart className="w-4 h-4" />
                         <span>1K</span>
                       </button>
-                      <button className="hover:text-orange-500">
+                      <button className="flex hover:text-orange-500">
                         <Share className="w-4 h-4" />
                       </button>
-                      <button className="hover:text-gray-700">
-                        <MoreHorizontal className="w-4 h-4" />
+                      <button className="flex hover:text-gray-700">
+                        <ChevronDown className="w-4 h-4"
+                          onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)} />
                       </button>
                     </div>
+                    {
+                      openCommentId === annonce.id && (
+                        <div className="min-h-20 m-h-60 relative z-10 rounded-b-lg -mt-2">
+                          <Comment
+                            isOpen={true}
+                            onClose={() => setOpenCommentId(null)}
+                            annonce={annonce}
+                          />
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
               </div>
