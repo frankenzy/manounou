@@ -27,7 +27,11 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 
   async findById(id: number): Promise<IAnnouncementDTO | null> {
     const result = await pool.query(
-      `SELECT * FROM ${this.tableName} WHERE id = $1`,
+      `SELECT a.*, COUNT(c.id) as "commentCount"
+       FROM ${this.tableName} a
+       LEFT JOIN comments c ON a.id = c.announce_id
+       WHERE a.id = $1
+       GROUP BY a.id`,
       [id],
     );
     if (result.rows.length === 0) {
@@ -37,21 +41,27 @@ export class AnnouncementRepository implements IAnnouncementRepository {
   }
 
   async findAll(limit?: number, offset?: number): Promise<IAnnouncementDTO[]> {
-    console.log("🔍 Repository: Requête SELECT avec pagination...");
-    
-    let query = `SELECT * FROM ${this.tableName} ORDER BY created_at DESC`;
+    console.log("🔍 Repository: Requête SELECT avec pagination et count des commentaires...");
+
+    let query = `
+      SELECT a.*, COUNT(c.id) as "commentCount"
+      FROM ${this.tableName} a
+      LEFT JOIN comments c ON a.id = c.announce_id
+      GROUP BY a.id
+      ORDER BY a.created_at DESC
+    `;
     const params: any[] = [];
-    
+
     if (limit !== undefined) {
       params.push(limit);
       query += ` LIMIT $${params.length}`;
     }
-    
+
     if (offset !== undefined) {
       params.push(offset);
       query += ` OFFSET $${params.length}`;
     }
-    
+
     const result = await pool.query(query, params);
     console.log(
       `✅ Repository: ${result.rows.length} lignes récupérées de la BD`,
@@ -89,7 +99,12 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 
   async findByUserId(user_id: string): Promise<IAnnouncementDTO[]> {
     const result = await pool.query(
-      `SELECT * FROM ${this.tableName} WHERE user_id = $1`,
+      `SELECT a.*, COUNT(c.id) as "commentCount"
+       FROM ${this.tableName} a
+       LEFT JOIN comments c ON a.id = c.announce_id
+       WHERE a.user_id = $1
+       GROUP BY a.id
+       ORDER BY a.created_at DESC`,
       [user_id],
     );
     return result.rows.map((row) => new Announcement(row).Announcement());
@@ -97,7 +112,12 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 
   async findByLocation(location: string): Promise<IAnnouncementDTO[]> {
     const result = await pool.query(
-      `SELECT * FROM ${this.tableName} WHERE location = $1`,
+      `SELECT a.*, COUNT(c.id) as "commentCount"
+       FROM ${this.tableName} a
+       LEFT JOIN comments c ON a.id = c.announce_id
+       WHERE a.location = $1
+       GROUP BY a.id
+       ORDER BY a.created_at DESC`,
       [location],
     );
     return result.rows.map((row) => new Announcement(row).Announcement());
@@ -105,7 +125,12 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 
   async search(query: string): Promise<IAnnouncementDTO[]> {
     const result = await pool.query(
-      `SELECT * FROM ${this.tableName} WHERE title ILIKE $1 OR description ILIKE $1`,
+      `SELECT a.*, COUNT(c.id) as "commentCount"
+       FROM ${this.tableName} a
+       LEFT JOIN comments c ON a.id = c.announce_id
+       WHERE a.title ILIKE $1 OR a.description ILIKE $1
+       GROUP BY a.id
+       ORDER BY a.created_at DESC`,
       [`%${query}%`],
     );
     return result.rows.map((row) => new Announcement(row).Announcement());
