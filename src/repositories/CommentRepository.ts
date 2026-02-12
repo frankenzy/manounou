@@ -15,7 +15,7 @@ export class CommentRepository implements ICommentRepository {
    }
 
    async findAll(): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName}`);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} ORDER BY create_at DESC`);
       return result.rows;
    }
 
@@ -25,12 +25,12 @@ export class CommentRepository implements ICommentRepository {
    }
 
    async findByPost(postId: string): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1`, [postId]);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY create_at DESC`, [postId]);
       return result.rows;
    }
 
    async findByAuthor(authorId: string): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE author_id = $1`, [authorId]);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE author_id = $1 ORDER BY create_at DESC`, [authorId]);
       return result.rows;
    }
 
