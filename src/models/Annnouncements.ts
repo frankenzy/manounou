@@ -18,6 +18,7 @@ export interface IAnnouncementDTO {
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, any>;
+  commentCount?: number;
 }
 
 export class Announcement implements IAnnouncement {
@@ -29,8 +30,9 @@ export class Announcement implements IAnnouncement {
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, any>;
+  commentCount?: number;
 
-  constructor(data: IAnnouncement) {
+  constructor(data: IAnnouncement & { commentCount?: number | string }) {
     this.id = data.id;
     this.user_id = data.user_id;
     this.title = data.title;
@@ -39,6 +41,7 @@ export class Announcement implements IAnnouncement {
     this.created_at = data.created_at;
     this.updated_at = data.updated_at;
     this.metadata = data.metadata;
+    this.commentCount = typeof data.commentCount === 'string' ? parseInt(data.commentCount, 10) : data.commentCount;
   }
 
   Announcement(): IAnnouncementDTO {
@@ -51,6 +54,7 @@ export class Announcement implements IAnnouncement {
       created_at: this.created_at,
       updated_at: this.updated_at,
       metadata: this.metadata,
+      commentCount: this.commentCount,
     };
   }
 }
