@@ -2,7 +2,9 @@ import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { useState } from "react";
 import { HeartIcon, UserCircle } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
+import { useRelativeTime } from "@/hooks/useRelativeTime";
 import CommentSkeleton from "./AnnounceSkeleton";
+import { CommentTime } from "./CommentTime";
 
 interface CommentProps {
    annonce: IAnnouncementDTO;
@@ -70,7 +72,7 @@ export default function Comment({ annonce }: CommentProps) {
 
 
                      <div className="flex-col justify-end items-center ml-auto">
-                        <div className="text-xs text-gray-400 ml-auto mt-1">{new Date(c.create_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" })} </div>
+                        <CommentTime date={c.create_at} />
                         <div className="flex justify-normal item">
                            <HeartIcon size={16} className="text-gray-400 mt-1 ml-auto cursor-pointer" />
                            <span className="text-xs text-gray-400 ml-auto mt-1">22</span>

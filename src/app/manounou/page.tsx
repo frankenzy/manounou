@@ -4,7 +4,7 @@ import { AnnouncementModal } from "@/components/Announcement";
 import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
-import { GetCreatedAt } from "@/utils/getCreatedAt";
+import { RelativeTime } from "@/components/RelativeTime";
 import {
   Bell,
   Bookmark,
@@ -52,10 +52,6 @@ export default function BlueskyLayout() {
       setOpenCommentId(announcementId);
     }
   };
-
-  function fncreatedAt(date: Date | number | string) {
-    return GetCreatedAt(date);
-  }
 
   const handleCommentModalClose = () => {
     setCommentModalOpen(false);
@@ -444,7 +440,7 @@ export default function BlueskyLayout() {
                           @{annonce.created_at ? new Date(annonce.created_at as unknown as Date).toLocaleDateString() : ""}
                         </span>
                         <span className="text-gray-500 text-sm items-end">
-                          {fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}
+                          <RelativeTime date={annonce.created_at ? annonce.created_at : annonce.updated_at || ""} />
                         </span>
                       </div>
 

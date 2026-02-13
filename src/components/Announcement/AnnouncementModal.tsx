@@ -27,9 +27,8 @@ export default function AnnouncementModal({
    useEffect(() => {
       if (!isOpen) {
          formLogic.resetForm();
-         // setShowSuccess(false);
       }
-   }, [isOpen, formLogic]);
+   }, [isOpen]);
 
    const handleCloseModal = () => {
       formLogic.resetForm();
