@@ -29,7 +29,7 @@ const FadeInImage = styled(Image)`
 `;
 
 
-export default function about() {
+export default function About() {
 
   const router = useRouter();
   const handleCall = () => {

@@ -2,7 +2,6 @@ import { CommentController } from "@/controllers/comments/comment.controller";
 import { CommentRepository } from "@/repositories/CommentRepository";
 import { CommentService } from "@/services/comments/comment.service";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
 
 
 const commentRepository = new CommentRepository();

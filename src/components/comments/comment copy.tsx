@@ -20,7 +20,7 @@ export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
       if (!comment.trim()) return;
 
       setIsSubmitting(true);
-      const success = await addComment(comment, "1"); // TODO: Récupérer l'ID de l'utilisateur connecté
+      const success = await addComment(comment, "1");
 
       if (success) {
          setComment("");

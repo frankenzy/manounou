@@ -50,7 +50,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
       GROUP BY a.id
       ORDER BY a.created_at DESC
     `;
-    const params: any[] = [];
+    const params: (string | number)[] = [];
 
     if (limit !== undefined) {
       params.push(limit);

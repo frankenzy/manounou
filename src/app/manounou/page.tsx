@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { AnnouncementModal } from "@/components/Announcement";
 import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
@@ -25,13 +26,8 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-
-const enum Tabs {
-  JobSeeker = 'job-seeker',
-  Employer = 'employer',
-}
 
 const enum NavTabs {
   Annonces = 'annonces',
@@ -48,8 +44,6 @@ export default function BlueskyLayout() {
   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
 
   const [openCommentId, setOpenCommentId] = useState<string | number | null>(null);
-
-  const [totalComments, setTotalComments] = useState<number>(0);
 
   const handleOpenComment = (announcementId: string | number) => {
     if (openCommentId === announcementId) {
@@ -323,7 +317,7 @@ export default function BlueskyLayout() {
           <button className="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left font-semibold">
             <Home className="w-6 h-6" />
             <span>
-              <a href="/">Accueil</a>
+              <Link href="/">Accueil</Link>
             </span>
           </button>
           <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
@@ -433,9 +427,9 @@ export default function BlueskyLayout() {
         </div>
         {Array.isArray(annonces) && annonces.length > 0 ? (
           annonces.map((annonce: IAnnouncementDTO) => {
-            const metadata = annonce.metadata;
+            const metadata = annonce.metadata as Record<string, string> | undefined;
             const bgClass = metadata?.background || metadata?.backgroundColor;
-            const metaColor = metadata?.backgroundColor;
+            const metaColor = metadata?.backgroundColor as string | undefined;
             const metaSize = metadata?.fontSize;
             return (
               <div key={annonce.id} className="p-4 hover:bg-gray-50">
@@ -447,7 +441,7 @@ export default function BlueskyLayout() {
                       <div className="flex items-center justify-between gap-2">
                         <span className="font-semibold">{annonce.title}</span>
                         <span className="text-gray-500 text-sm">
-                          @{annonce.created_at ? new Date(annonce.created_at as any).toLocaleDateString() : ""}
+                          @{annonce.created_at ? new Date(annonce.created_at as unknown as Date).toLocaleDateString() : ""}
                         </span>
                         <span className="text-gray-500 text-sm items-end">
                           {fncreatedAt(annonce.created_at ? annonce.created_at : annonce.updated_at || "")}

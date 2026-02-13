@@ -20,4 +20,8 @@ pool.on("error", (err) => {
   console.error("❌ Erreur de connexion à la base de données:", err);
 });
 
+export const query = (text: string, params?: unknown[]) => {
+  return pool.query(text, params);
+};
+
 export default pool;

@@ -1,6 +1,3 @@
-import { Announcement } from './../models/Annnouncements';
-
-
 const Login = {
   async loginService(telephone: string) {
     try {

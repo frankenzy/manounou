@@ -1,5 +1,3 @@
-import { creerUtilisateur } from '../../../services/utilisateurs';
-
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { nom, email } = req.body;

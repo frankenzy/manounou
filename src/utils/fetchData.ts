@@ -1,7 +1,7 @@
 
 
-const fetchData = () =>{
-    return new Promise((resolve, reject) => {
+const fetchData = () => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve('Data fetched successfully');
         }, 2000);

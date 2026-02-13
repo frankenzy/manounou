@@ -91,11 +91,10 @@ export default function Home() {
               />
               <Buttons
                 onClick={handleSubmit}
-                className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${
-                  isValidate
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-gray-300 border-red-500 text-gray-900"
-                }`}
+                className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isValidate
+                  ? "bg-orange-500 text-white border-orange-500"
+                  : "bg-gray-300 border-red-500 text-gray-900"
+                  }`}
                 disabled={!isValidate}
               >
                 Continuer avec un Numero
@@ -107,7 +106,7 @@ export default function Home() {
 
               <div className="flex flex-row gap-1 justify-between items-center w-full">
                 <Buttons
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="px-6 py-5 bg-white text-gray-900 hover:bg-slate-300 transition duration-200"
                 >
                   <div className="flex gap-2 flex-row justify-between items-center">
@@ -121,7 +120,7 @@ export default function Home() {
                   </div>
                 </Buttons>
                 <Buttons
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="px-6 py-5 bg-violet-500  hover:bg-violet-800 transition duration-200"
                 >
                   <div className="flex gap-2 flex-row justify-between items-center">
@@ -135,7 +134,7 @@ export default function Home() {
                   </div>
                 </Buttons>
                 <Buttons
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="px-6 py-5 hover:bg-green-900 transition duration-200"
                 >
                   <div className="flex gap-2 flex-row justify-between items-center">
@@ -152,13 +151,12 @@ export default function Home() {
 
               <div className="flex flex-col gap-2 items-center w-full">
                 <Buttons
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className={`
-                  ${
-                    onFocus
+                  ${onFocus
                       ? "bg-orange-500 text-white hover:bg-orange-600"
                       : "bg-gray-300 text-gray-900"
-                  }border-black border-2 shadow-sm
+                    }border-black border-2 shadow-sm
                   `}
                 >
                   <div className="flex gap-2 flex-row justify-center items-center text-xl">
@@ -173,7 +171,7 @@ export default function Home() {
                   </div>
                 </Buttons>
                 <Buttons
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="py-4 px-5 w-full bg-inherit border border-solid bottom-2 border-gray-600 rounded-xl hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] transition-shadow duration-200"
                 >
                   <div className="flex gap-2 flex-row justify-center items-center text-xl">
@@ -191,7 +189,7 @@ export default function Home() {
 
             <div className="w-full py-2 bg-[#575656] text-black rounded-2xl px-3">
               <p className="text-center text-xl">
-                Vous n'avez pas de compte ?
+                Vous n&apos;avez pas de compte ?
                 <span className="underline ml-2">
                   <RegisterLink className="text-white" />
                 </span>

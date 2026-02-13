@@ -1,4 +1,4 @@
-import { IAnnoncement } from "@/api/interface/IAnnouncement";
+import { IAnnouncementDTO } from "@/models/Annnouncements";
 
 export class QueryService {
 
@@ -6,19 +6,19 @@ export class QueryService {
 
     // publication d'announce
 
-    constructor (){
+    constructor() {
 
     }
 
 
-    async publishAnnouncement(message:IAnnoncement) {
+    async publishAnnouncement(message: IAnnouncementDTO) {
         try {
             const response = await fetch('/api/Announcements/Publish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message})
+                body: JSON.stringify({ message })
             });
 
             const data = await response.json();
@@ -39,6 +39,6 @@ export class QueryService {
                 error: error instanceof Error ? error.message : 'Une erreur est survenue'
             };
         }
-    
+
     }
 }

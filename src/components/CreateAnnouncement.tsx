@@ -83,7 +83,7 @@ export default function CreateAnnouncement({
       setInputValue(announcement.description || "");
 
       if (announcement.metadata) {
-        setMetadata(announcement.metadata as IMetadata);
+        setMetadata(announcement.metadata as unknown as IMetadata);
 
         // Restaurer le style de fond si présent
         const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
@@ -222,7 +222,7 @@ export default function CreateAnnouncement({
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    let value = e.target.value;
+    const value = e.target.value;
     if (value.length > lengthLimit) {
       resetStyles();
     } else if (value.length <= lengthLimit && lastSelectedColor) {

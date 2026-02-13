@@ -64,7 +64,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
       setInputValue(announcement.description || "");
       
       if (announcement.metadata) {
-        setMetadata(announcement.metadata as IMetadata);
+        setMetadata(announcement.metadata as unknown as IMetadata);
         
         const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
         if (bgColor) {

@@ -1,5 +1,4 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import type { Metadata } from "next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,10 +11,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Manounous - Plateforme de mise en relation",
-  description: "Plateforme de mise en relation entre employeurs et chercheurs d'emploi",
-};
+// export const metadata: Metadata = {
+//   title: "Manounous - Plateforme de mise en relation",
+//   description: "Plateforme de mise en relation entre employeurs et chercheurs d'emploi",
+// };
 
 export default function RootLayout({
   children,

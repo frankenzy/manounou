@@ -29,7 +29,7 @@ export default function AnnouncementModal({
          formLogic.resetForm();
          // setShowSuccess(false);
       }
-   }, [isOpen]);
+   }, [isOpen, formLogic]);
 
    const handleCloseModal = () => {
       formLogic.resetForm();
@@ -57,18 +57,13 @@ export default function AnnouncementModal({
    const tabsContainerRef = useRef<HTMLDivElement | null>(null);
    const btnJobRef = useRef<HTMLButtonElement | null>(null);
    const btnEmpRef = useRef<HTMLButtonElement | null>(null);
-   const [indicator, setIndicator] = useState<{ left: string; width: string }>({ left: "0px", width: "0px" });
-
-
    const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
    useEffect(() => {
       const update = () => {
          const container = tabsContainerRef.current;
          const activeBtn = tabs === "job-seeker" ? btnJobRef.current : btnEmpRef.current;
          if (container && activeBtn) {
-            const cRect = container.getBoundingClientRect();
-            const bRect = activeBtn.getBoundingClientRect();
-            setIndicator({ left: `${bRect.left - cRect.left}px`, width: `${bRect.width}px` });
+            // Tab indicator styling could be added here if needed
          }
       };
       update();

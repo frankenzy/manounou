@@ -2,7 +2,6 @@ import { CommentController } from "@/controllers/comments/comment.controller";
 import { CommentRepository } from "@/repositories/CommentRepository";
 import { CommentService } from "@/services/comments/comment.service";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextRequest } from "next/server";
 
 
 
@@ -17,7 +16,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
    switch (method) {
       case 'GET':
 
-         return commentController.findOne(req, res);
+         return commentController.findOne(req);
 
       case 'PUT':
          return commentController.update(req, res);

@@ -1,7 +1,6 @@
 import { IAnnouncementDTO } from "@/models/Annnouncements";
-import Modal from "../Modal";
 import { useState } from "react";
-import { HeartIcon, UserCircle, UserCircle2, UserIcon } from "lucide-react";
+import { HeartIcon, UserCircle } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
 import CommentSkeleton from "./AnnounceSkeleton";
 
@@ -11,7 +10,7 @@ interface CommentProps {
    onClose: () => void;
 }
 
-export default function Comment({ annonce, isOpen, onClose }: CommentProps) {
+export default function Comment({ annonce }: CommentProps) {
    const [comment, setComment] = useState("");
    const { comments, isLoading, error, addComment } = useComments(annonce?.id);
    const [isSubmitting, setIsSubmitting] = useState(false);

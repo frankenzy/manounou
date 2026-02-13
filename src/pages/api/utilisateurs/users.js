@@ -1,5 +1,4 @@
 
-import { users } from '/../../services/utilisateurs';
 
 
 export default async function users(req, res) {
@@ -7,7 +6,7 @@ export default async function users(req, res) {
     if (req.method === 'GET') {
         const { rows } = await db.query('SELECT * FROM  next_js.users_table()');
         res.status(200).json(rows);
-    }else {
+    } else {
         res.setHeader('Allow', ['GET']);
         res.status(405);
     }

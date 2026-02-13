@@ -1,5 +1,3 @@
-import { lireUtilisateur } from '../../../services/utilisateurs';
-
 export default async function handler(req, res) {
     if (req.method === 'GET') {
         const { id } = req.query;

@@ -28,7 +28,7 @@ export class CommentController extends BaseController {
     }
 
 
-    async findOne(req: NextApiRequest, res: NextApiResponse) {
+    async findOne(req: NextApiRequest) {
         const id = this.parseId(req);
         return await this.commentService.findOne(id);
     }

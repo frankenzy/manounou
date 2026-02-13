@@ -16,7 +16,6 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
   maxSize = 5 * 1024 * 1024
 }, ref) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,7 +41,6 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
     }
 
     setError(null);
-    setFile(selectedFile);
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -56,7 +54,6 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
   };
 
   const handleRemove = () => {
-    setFile(null);
     setPreview(null);
     setError(null);
     if (onRemove) onRemove();
@@ -83,11 +80,13 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
       {preview && (
         <div className="preview-container mt-4 w-full">
           <div className="relative w-full max-w-[20rem]">
-            <img
-              src={preview}
-              alt="Aperçu"
-              className="w-full h-auto max-h-80 rounded-lg"
-            />
+            <picture>
+              <img
+                src={preview}
+                alt="Aperçu"
+                className="w-full h-auto max-h-80 rounded-lg"
+              />
+            </picture>
             <button
               onClick={handleRemove}
               className="absolute top-2 right-2 bg-red-500  text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
@@ -104,3 +103,4 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
 UploadImage.displayName = 'UploadImage';
 
 export default UploadImage;
+

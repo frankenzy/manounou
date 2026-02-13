@@ -6,7 +6,7 @@ export interface IAnnouncement {
   location: string; // Changé de number à string pour correspondre à la BD
   created_at?: Date;
   updated_at?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface IAnnouncementDTO {
@@ -17,7 +17,7 @@ export interface IAnnouncementDTO {
   location: string; // Changé de number à string pour correspondre à la BD
   created_at?: Date;
   updated_at?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   commentCount?: number;
 }
 
@@ -29,7 +29,7 @@ export class Announcement implements IAnnouncement {
   location: string; // Changé de number à string pour correspondre à la BD
   created_at?: Date;
   updated_at?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   commentCount?: number;
 
   constructor(data: IAnnouncement & { commentCount?: number | string }) {

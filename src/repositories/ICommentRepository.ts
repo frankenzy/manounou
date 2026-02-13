@@ -1,5 +1,4 @@
 import { IComment, ICreateCommentDTO, IUpdateCommentDTO } from "@/models/Comment";
-import { Interface } from "readline";
 
 export interface ICommentRepository {
     create(createCommentDto: ICreateCommentDTO): Promise<IComment>;

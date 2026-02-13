@@ -2,7 +2,7 @@
 import HEAD from "@/components/header";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import * as styles from "./style.css";
+import "./style.css";
 import { Layout } from "lucide-react";
 
 const Contact = () => {
@@ -20,16 +20,16 @@ const Contact = () => {
           >
             <div className="grid grid-cols-2">
               <div
-                className={`${styles.leftCol} cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center`}
+                className="leftCol cols flex flex-row bg-[url(/sd.jpg)] bg-cover bg-no-repeat bg-center"
               >
                 <div
-                  className={`${styles.leftColOverlay} flex justify-center items-center w-full max-h-full bg-black bg-opacity-25`}
+                  className="leftColOverlay flex justify-center items-center w-full max-h-full bg-black bg-opacity-25"
                 >
                   <p className="text-white font-bold hidden">Contact</p>
                 </div>
               </div>
               <div
-                className={`${styles.rightCol} cols flex flex-col bg-black h-screen pt-10`}
+                className="rightCol cols flex flex-col bg-black h-screen pt-10"
               >
                 <div className="flex w-full justify-center">
                   <motion.h1
@@ -60,16 +60,12 @@ const ContactForms = () => {
     email: "",
     message: "",
   });
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
     message?: string;
   }>({});
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -77,25 +73,25 @@ const ContactForms = () => {
   };
 
   useEffect(() => {
+    const formValidator = () => {
+      const errors: Record<string, string> = {};
+      if (formData.name === "") {
+        errors.name = "Le nom est requis";
+      }
+      if (!formData.email) {
+        errors.email = "L'email est requis";
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        errors.email = "L'email est invalide";
+      }
+      if (!formData.message) {
+        errors.message = "Le message est requis";
+      }
+      setErrors(errors);
+      setIsFormValid(Object.keys(errors).length === 0);
+    };
     formValidator();
-  }, ["name", "email", "message"]);
+  }, [formData]);
 
-  const formValidator = () => {
-    const errors: any = {};
-    if (formData.name === "") {
-      errors.name = "Le nom est requis";
-    }
-    if (!formData.email) {
-      errors.email = "L'email est requis";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "L'email est invalide";
-    }
-    if (!formData.message) {
-      errors.message = "Le message est requis";
-    }
-    setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
