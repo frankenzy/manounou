@@ -28,7 +28,7 @@ export default function AnnouncementModal({
       if (!isOpen) {
          formLogic.resetForm();
       }
-   }, [isOpen]);
+   }, [isOpen, formLogic.resetForm]);
 
    const handleCloseModal = () => {
       formLogic.resetForm();

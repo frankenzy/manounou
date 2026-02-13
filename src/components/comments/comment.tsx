@@ -2,7 +2,6 @@ import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { useState } from "react";
 import { HeartIcon, UserCircle } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
-import { useRelativeTime } from "@/hooks/useRelativeTime";
 import CommentSkeleton from "./AnnounceSkeleton";
 import { CommentTime } from "./CommentTime";
 

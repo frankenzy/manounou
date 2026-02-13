@@ -153,7 +153,7 @@ export function useComments(announceId: number | undefined): UseCommentsResult {
 
    useEffect(() => {
       fetchComments();
-   }, [announceId]);
+   }, [announceId, fetchComments]);
 
    return {
       comments,
