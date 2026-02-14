@@ -10,6 +10,10 @@ export interface IMetadata {
   calendar: string;
   idCard: string;
   image: string;
+  imagePublicId: string;
+  imageResourceType: string;
+  imageFormat: string;
+  imageBytes: string;
   tags: string[];
   category: string;
   author: string;

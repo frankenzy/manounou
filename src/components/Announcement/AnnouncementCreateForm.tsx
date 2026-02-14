@@ -1,6 +1,6 @@
 "use client";
 
-import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import UploadImage, { UploadImageRef, type UploadResult } from "@/components/uploadImage";
 import {
    faCalendar,
    faClock,
@@ -18,6 +18,7 @@ interface AnnouncementCreateFormProps {
    showUploadImage: boolean;
    announcementTitle: string;
    textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+   entityId?: string | number;
 
    // Handlers
    onInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -25,7 +26,7 @@ interface AnnouncementCreateFormProps {
    onColorSelect: (color: string) => void;
    onResetStyles: () => void;
    onLoadImage: () => void;
-   onImageUpload: (file: File) => void;
+   onImageUpload: (result: UploadResult) => void;
    onImageRemove: () => void;
    onSetUser: () => void;
    onSetCalendar: () => void;
@@ -38,6 +39,7 @@ export default function AnnouncementCreateForm({
    inputColor,
    showUploadImage,
    textareaRef,
+   entityId,
    onInput,
    onColorSelect,
    onResetStyles,
@@ -75,6 +77,7 @@ export default function AnnouncementCreateForm({
                <div className="flex flex-auto items-center justify-start">
                   <UploadImage
                      ref={uploadImageRef}
+                     entityId={entityId}
                      onUpload={onImageUpload}
                      onRemove={onImageRemove}
                   />

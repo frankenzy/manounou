@@ -1,7 +1,7 @@
 "use client";
 
 import Modal from "@/components/Modal";
-import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import UploadImage, { UploadImageRef, type UploadResult } from "@/components/uploadImage";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import {
   faCalendar,
@@ -30,6 +30,10 @@ interface IMetadata {
   calendar: string;
   idCard: string;
   image: string;
+  imagePublicId: string;
+  imageResourceType: string;
+  imageFormat: string;
+  imageBytes: string;
 }
 
 const lengthLimit = 140;
@@ -61,6 +65,10 @@ export default function CreateAnnouncement({
     calendar: "",
     idCard: "",
     image: "",
+    imagePublicId: "",
+    imageResourceType: "",
+    imageFormat: "",
+    imageBytes: "",
   });
 
   const adjustTextareaHeight = () => {
@@ -153,6 +161,10 @@ export default function CreateAnnouncement({
       calendar: "",
       idCard: "",
       image: "",
+      imagePublicId: "",
+      imageResourceType: "",
+      imageFormat: "",
+      imageBytes: "",
     });
 
     if (textareaRef.current) {
@@ -239,11 +251,15 @@ export default function CreateAnnouncement({
     }, 100);
   };
 
-  const handleImageUpload = (file: File) => {
-    console.log("Image uploaded: ", file);
+  const handleImageUpload = (result: UploadResult) => {
+    console.log("Upload result:", result.secureUrl);
     setMetadata((prev) => ({
       ...prev,
-      image: file.name,
+      image: result.secureUrl,
+      imagePublicId: result.publicId,
+      imageResourceType: result.resourceType,
+      imageFormat: result.format,
+      imageBytes: String(result.bytes),
     }));
   };
 
@@ -252,6 +268,10 @@ export default function CreateAnnouncement({
     setMetadata((prev) => ({
       ...prev,
       image: "",
+      imagePublicId: "",
+      imageResourceType: "",
+      imageFormat: "",
+      imageBytes: "",
     }));
   };
 
@@ -311,6 +331,7 @@ export default function CreateAnnouncement({
             <div className="flex flex-auto items-center justify-start">
               <UploadImage
                 ref={uploadImageRef}
+                entityId={announcement?.id}
                 onUpload={handleImageUpload}
                 onRemove={handleImageRemove}
               />

@@ -1,5 +1,6 @@
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import { useEffect, useRef, useState } from "react";
+import type { UploadResult } from "@/components/uploadImage";
 import { AnnouncementFormData, IMetadata, LENGTH_LIMIT } from "./types";
 
 export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
@@ -22,6 +23,10 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     calendar: "",
     idCard: "",
     image: "",
+    imagePublicId: "",
+    imageResourceType: "",
+    imageFormat: "",
+    imageBytes: "",
    tags: [],
    category: "",
    author: "",
@@ -43,7 +48,6 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
    updatedAt: "",
   });
 
-  // Ajustement automatique de la hauteur du textarea
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -57,7 +61,6 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     adjustTextareaHeight();
   }, [inputValue]);
 
-  // Pré-remplir le formulaire en mode édition
   useEffect(() => {
     if (announcement) {
       setAnnouncementTitle(announcement.title || "");
@@ -132,6 +135,10 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
       calendar: "",
       idCard: "",
       image: "",
+      imagePublicId: "",
+      imageResourceType: "",
+      imageFormat: "",
+      imageBytes: "",
       tags: [],
       category: "",
       author: "",
@@ -175,11 +182,15 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setShowUploadImage(true);
   };
 
-  const handleImageUpload = (file: File) => {
-    console.log("Image uploaded: ", file);
+  const handleImageUpload = (result: UploadResult) => {
+    console.log("Upload result:", result.secureUrl);
     setMetadata((prev) => ({
       ...prev,
-      image: file.name,
+      image: result.secureUrl,
+      imagePublicId: result.publicId,
+      imageResourceType: result.resourceType,
+      imageFormat: result.format,
+      imageBytes: String(result.bytes),
     }));
   };
 
@@ -188,6 +199,10 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setMetadata((prev) => ({
       ...prev,
       image: "",
+      imagePublicId: "",
+      imageResourceType: "",
+      imageFormat: "",
+      imageBytes: "",
     }));
   };
 

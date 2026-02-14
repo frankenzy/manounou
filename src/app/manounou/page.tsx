@@ -27,6 +27,7 @@ import {
   User,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import UploadWidget from "@/components/UploadWidget";
 
 
 const enum NavTabs {
@@ -179,6 +180,11 @@ export default function BlueskyLayout() {
     );
   };
 
+  const uplaodImage = () => {
+    console.log("Upload image clicked");
+    UploadWidget();
+  }
+
   const handleOpenModal = () => {
     setSelectedAnnouncement(undefined); // Reset pour création
     setIsModalOpen(true);
@@ -316,7 +322,15 @@ export default function BlueskyLayout() {
               <Link href="/">Accueil</Link>
             </span>
           </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+
+           <button
+          onClick={handleOpenModal}
+          className="mt-6 w-full bg-orange-500 text-white rounded-full py-3 px-6 flex items-center justify-center gap-2 font-semibold hover:bg-orange-600"
+        >
+          <Plus className="w-5 h-5" />
+          Announce
+        </button>
+          <button className=" items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
             <LocateIcon className="w-6 h-6" />
             <span>Au tour de moi</span>
           </button>
@@ -348,16 +362,30 @@ export default function BlueskyLayout() {
             <Settings className="w-6 h-6" />
             <span>Paramètres</span>
           </button>
-        </nav>
 
-        {/* Bouton New Post */}
-        <button
-          onClick={handleOpenModal}
-          className="mt-6 w-full bg-orange-500 text-white rounded-full py-3 px-6 flex items-center justify-center gap-2 font-semibold hover:bg-orange-600"
-        >
-          <Plus className="w-5 h-5" />
-          Announce
-        </button>
+          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+            <Hash className="w-6 h-6" />
+            <span>Hashtags</span>
+          </button>
+
+          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+            <User className="w-6 h-6" />
+            <span>Utilisateurs</span>
+          </button>
+
+          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+            <Settings className="w-6 h-6" />
+            <span>Paramètres</span>
+          </button>
+
+          <button className="items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left"
+          onClick={
+            uplaodImage
+          }>
+            <Edit className="w-6 h-6" />
+            <span>Image</span>
+          </button>
+        </nav>       
       </section>
     );
   };
