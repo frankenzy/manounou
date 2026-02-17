@@ -1,0 +1,140 @@
+generator client {
+   provider = "prisma-client-js"
+}
+
+datasource db {
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
+}
+
+enum GlobalRole {
+   USER
+   ADMIN
+   SUPER_ADMIN
+}
+
+enum WorkspaceRole {
+   OWNER
+   ADMIN
+   MEMBER
+   VIEWER
+}
+
+enum SubscriptionStatus {
+   TRIALING
+   ACTIVE
+   PAST_DUE
+   CANCELED
+   UNPAID
+}
+
+model User {
+   id           String     @id @default(cuid())
+   email        String     @unique
+   passwordHash String?
+   firstName    String?
+   lastName     String?
+   globalRole   GlobalRole @default(USER)
+   createdAt    DateTime   @default(now())
+   updatedAt    DateTime   @updatedAt
+
+   memberships   Membership[]
+   announcements Announcement[]
+   auditLogs     AuditLog[]
+}
+
+model Workspace {
+   id        String   @id @default(cuid())
+   slug      String   @unique
+   name      String
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   memberships   Membership[]
+   announcements Announcement[]
+   featureFlags  WorkspaceFeatureFlag[]
+   subscription  Subscription?
+   auditLogs     AuditLog[]
+}
+
+model Membership {
+   id          String        @id @default(cuid())
+   userId      String
+   workspaceId String
+   role        WorkspaceRole
+   createdAt   DateTime      @default(now())
+
+   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+   @@unique([userId, workspaceId])
+   @@index([workspaceId, role])
+}
+
+model Announcement {
+   id          String   @id @default(cuid())
+   workspaceId String
+   authorId    String
+   title       String
+   description String
+   location    String
+   metadata    Json?
+   createdAt   DateTime @default(now())
+   updatedAt   DateTime @updatedAt
+
+   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+   @@index([workspaceId, createdAt(sort: Desc)])
+   @@index([authorId])
+}
+
+model FeatureFlag {
+   key         String   @id
+   description String?
+   createdAt   DateTime @default(now())
+   updatedAt   DateTime @updatedAt
+
+   workspaces WorkspaceFeatureFlag[]
+}
+
+model WorkspaceFeatureFlag {
+   id          String  @id @default(cuid())
+   workspaceId String
+   flagKey     String
+   enabled     Boolean @default(false)
+
+   workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+   flag      FeatureFlag @relation(fields: [flagKey], references: [key], onDelete: Cascade)
+
+   @@unique([workspaceId, flagKey])
+}
+
+model Subscription {
+   id                   String             @id @default(cuid())
+   workspaceId          String             @unique
+   stripeCustomerId     String?            @unique
+   stripeSubscriptionId String?            @unique
+   status               SubscriptionStatus @default(TRIALING)
+   currentPeriodEnd     DateTime?
+   createdAt            DateTime           @default(now())
+   updatedAt            DateTime           @updatedAt
+
+   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+   id          String   @id @default(cuid())
+   workspaceId String
+   userId      String?
+   action      String
+   resource    String
+   resourceId  String?
+   payload     Json?
+   createdAt   DateTime @default(now())
+
+   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+   user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+   @@index([workspaceId, createdAt(sort: Desc)])
+}

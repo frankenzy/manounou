@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## SaaS Architecture
+
+The project now includes a modular SaaS-oriented architecture with:
+
+- App Router API versioning (`/api/v1/...`)
+- Feature modules (`src/modules/*`)
+- Clean layering (`domain`, `application`, `infrastructure`, `presentation`)
+- Multi-tenant-ready Prisma schema
+
+See [ARCHITECTURE_SAAS.md](./ARCHITECTURE_SAAS.md) for full details and migration roadmap.
+
 ## Getting Started
 
 First, run the development server:
@@ -15,6 +26,14 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Prisma Setup
+
+```bash
+cp .env.example .env
+npx prisma generate
+npx prisma migrate dev --name init_saas
+```
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
