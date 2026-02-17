@@ -259,7 +259,7 @@ export default function BlueskyLayout() {
       try {
         const response = await fetch(`/api/announcements/${announcementId}`);
 
-      setIsOpen(false);
+        setIsOpen(false);
 
         if (response.ok) {
           const result = await response.json();

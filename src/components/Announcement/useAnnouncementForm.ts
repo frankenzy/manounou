@@ -165,7 +165,6 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     }
   }, []);
 
-  // Gestion de l'input
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length > LENGTH_LIMIT) {
@@ -176,7 +175,6 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setInputValue(value);
   };
 
-  // Gestion de l'image
   const handleLoadingImage = () => {
     resetStyles();
     setShowUploadImage(true);
@@ -244,9 +242,9 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     metadata,
     image: metadata.image
       ? {
-          url: metadata.image,
-          publicId: metadata.imagePublicId || "",
-        }
+        url: metadata.image,
+        publicId: metadata.imagePublicId || "",
+      }
       : undefined,
 
     // Setters

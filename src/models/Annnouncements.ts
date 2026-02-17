@@ -3,10 +3,12 @@ export interface IAnnouncement {
   user_id: string;
   title: string;
   description: string;
-  location: string; // Changé de number à string pour correspondre à la BD
+  location: string;
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, unknown>;
+  repost: string;
+  repostCount: number;
 }
 
 export interface IAnnouncementDTO {
@@ -14,11 +16,13 @@ export interface IAnnouncementDTO {
   user_id: string;
   title: string;
   description: string;
-  location: string; // Changé de number à string pour correspondre à la BD
+  location: string;
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, unknown>;
   commentCount?: number;
+  repost: string;
+  repostCount: number;
 }
 
 export class Announcement implements IAnnouncement {
@@ -26,11 +30,13 @@ export class Announcement implements IAnnouncement {
   user_id: string;
   title: string;
   description: string;
-  location: string; // Changé de number à string pour correspondre à la BD
+  location: string;
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, unknown>;
   commentCount?: number;
+  repost: string;
+  repostCount: number;
 
   constructor(data: IAnnouncement & { commentCount?: number | string }) {
     this.id = data.id;
@@ -41,6 +47,8 @@ export class Announcement implements IAnnouncement {
     this.created_at = data.created_at;
     this.updated_at = data.updated_at;
     this.metadata = data.metadata;
+    this.repost = data.repost;
+    this.repostCount = data.repostCount;
     this.commentCount = typeof data.commentCount === 'string' ? parseInt(data.commentCount, 10) : data.commentCount;
   }
 
@@ -55,6 +63,8 @@ export class Announcement implements IAnnouncement {
       updated_at: this.updated_at,
       metadata: this.metadata,
       commentCount: this.commentCount,
+      repost: this.repost,
+      repostCount: this.repostCount,
     };
   }
 }

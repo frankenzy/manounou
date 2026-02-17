@@ -1,5 +1,6 @@
-import { v2 as cloudinary } from "cloudinary";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { s3 } from "@/lib/minio";
 
 type DeleteSuccessResponse = {
    result: string;
@@ -7,16 +8,27 @@ type DeleteSuccessResponse = {
 
 type DeleteErrorResponse = {
    error: string;
-   details?: unknown;
 };
 
-const ensureCloudinaryConfig = () => {
-   cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME || process.env.KEY_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY || process.env.API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET || process.env.SECRET_KEY,
-      secure: true,
-   });
+const extractObjectKey = (publicId: string) => {
+   const trimmed = publicId.trim();
+
+   if (!trimmed) {
+      return "";
+   }
+
+   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      try {
+         const url = new URL(trimmed);
+         const parts = url.pathname.split("/").filter(Boolean);
+         if (parts.length >= 2) {
+            return decodeURIComponent(parts.slice(1).join("/"));
+         }
+      } catch {
+      }
+   }
+
+   return trimmed.replace(/^\/+/, "");
 };
 
 export default async function handler(
@@ -28,8 +40,6 @@ export default async function handler(
       return res.status(405).json({ error: "Method not allowed" });
    }
 
-   ensureCloudinaryConfig();
-
    try {
       const publicId = req.body?.public_id;
 
@@ -37,29 +47,29 @@ export default async function handler(
          return res.status(400).json({ error: "public_id is required" });
       }
 
-      const normalizedPublicId = publicId.trim().replace(/^uploads\//, "");
+      const objectKey = extractObjectKey(publicId);
 
-      console.log("Deleting image with public_id:", normalizedPublicId);
-
-      if (!normalizedPublicId) {
+      if (!objectKey) {
          return res.status(400).json({ error: "public_id is required" });
       }
 
-      const result = await cloudinary.uploader.destroy(normalizedPublicId);
+      const bucket = process.env.MINIO_BUCKET;
 
-      if (result.result !== "ok" && result.result !== "not found") {
-         return res.status(500).json({
-            error: "Delete failed",
-            details: result,
-         });
+      if (!bucket) {
+         return res.status(500).json({ error: "MINIO_BUCKET is not configured" });
       }
 
-      return res.status(200).json({ result: result.result });
-   } catch (error: unknown) {
-      const details = error instanceof Error ? error.message : error;
+      await s3.send(
+         new DeleteObjectCommand({
+            Bucket: bucket,
+            Key: objectKey,
+         })
+      );
+
+      return res.status(200).json({ result: "ok" });
+   } catch {
       return res.status(500).json({
          error: "Delete failed",
-         details,
       });
    }
 }

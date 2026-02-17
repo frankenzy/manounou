@@ -1,7 +1,13 @@
-import { v2 as cloudinary } from "cloudinary";
+import {
+   CreateBucketCommand,
+   HeadBucketCommand,
+   PutBucketPolicyCommand,
+   PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import formidable, { Fields, Files, File as FormidableFile } from "formidable";
 import fs from "node:fs/promises";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { s3 } from "@/lib/minio";
 
 export const config = {
    api: {
@@ -13,27 +19,66 @@ type UploadSuccessResponse = {
    url: string;
    secure_url: string;
    public_id: string;
-   format?: string;
-   resource_type?: string;
-   width?: number;
-   height?: number;
-   bytes?: number;
-   original_filename?: string;
 };
 
 type UploadErrorResponse = {
    error: string;
-   details?: unknown;
 };
 
+const ALLOWED_IMAGE_MIME_TYPES = new Set([
+   "image/jpeg",
+   "image/png",
+   "image/webp",
+   "image/gif",
+   "image/avif",
+]);
 
-const ensureCloudinaryConfig = () => {
-   cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME || process.env.KEY_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY || process.env.API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET || process.env.SECRET_KEY,
-      secure: true,
-   });
+const ensureBucketExists = async (bucket: string) => {
+   try {
+      await s3.send(new HeadBucketCommand({ Bucket: bucket }));
+   } catch {
+      await s3.send(new CreateBucketCommand({ Bucket: bucket }));
+   }
+};
+
+const ensureBucketPublicRead = async (bucket: string) => {
+   const policy = {
+      Version: "2012-10-17",
+      Statement: [
+         {
+            Sid: "PublicReadForObjects",
+            Effect: "Allow",
+            Principal: "*",
+            Action: ["s3:GetObject"],
+            Resource: [`arn:aws:s3:::${bucket}/*`],
+         },
+      ],
+   };
+
+   await s3.send(
+      new PutBucketPolicyCommand({
+         Bucket: bucket,
+         Policy: JSON.stringify(policy),
+      })
+   );
+};
+
+const getPublicUrl = (bucket: string, objectKey: string) => {
+   const baseEndpoint = (process.env.MINIO_PUBLIC_URL || process.env.MINIO_ENDPOINT || "").replace(/\/$/, "");
+   const normalizedObjectKey = objectKey.startsWith(`${bucket}/`)
+      ? objectKey.slice(bucket.length + 1)
+      : objectKey;
+   const encodedKey = normalizedObjectKey.split("/").map(encodeURIComponent).join("/");
+   return `${baseEndpoint}/${bucket}/${encodedKey}`;
+};
+
+const sanitizeFilename = (filename: string) => {
+   const sanitized = filename
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9._-]/g, "");
+
+   return sanitized || "file";
 };
 
 const parseForm = async (
@@ -79,8 +124,6 @@ export default async function handler(
       return res.status(405).json({ error: "Method not allowed" });
    }
 
-   ensureCloudinaryConfig();
-
    let tempFilePath: string | undefined;
 
    try {
@@ -96,31 +139,51 @@ export default async function handler(
          return res.status(400).json({ error: "Invalid file path" });
       }
 
+      const fileMimeType = file.mimetype || "";
+      if (!ALLOWED_IMAGE_MIME_TYPES.has(fileMimeType)) {
+         return res.status(400).json({ error: "Only image files are allowed" });
+      }
+
       tempFilePath = uploadFilePath;
 
       const folder = normalizeField(fields.folder as string | string[] | undefined) || "uploads";
+      const bucket = process.env.MINIO_BUCKET;
 
-      const result = await cloudinary.uploader.upload(uploadFilePath, {
-         folder,
-         resource_type: "auto",
-      });
+      if (!bucket) {
+         return res.status(500).json({ error: "MINIO_BUCKET is not configured" });
+      }
+
+      await ensureBucketExists(bucket);
+      await ensureBucketPublicRead(bucket);
+
+      const safeOriginalName = sanitizeFilename(file.originalFilename || file.newFilename || "file");
+      const normalizedFolder = folder.trim().replace(/^\/+|\/+$/g, "");
+      const effectiveFolder =
+         normalizedFolder && normalizedFolder !== bucket ? normalizedFolder : "";
+      const objectKey = effectiveFolder
+         ? `${effectiveFolder}/${Date.now()}-${safeOriginalName}`
+         : `${Date.now()}-${safeOriginalName}`;
+      const fileBuffer = await fs.readFile(uploadFilePath);
+
+      await s3.send(
+         new PutObjectCommand({
+            Bucket: bucket,
+            Key: objectKey,
+            Body: fileBuffer,
+            ContentType: fileMimeType,
+         })
+      );
+
+      const objectUrl = getPublicUrl(bucket, objectKey);
 
       return res.status(200).json({
-         url: result.secure_url,
-         secure_url: result.secure_url,
-         public_id: result.public_id,
-         format: result.format,
-         resource_type: result.resource_type,
-         width: result.width,
-         height: result.height,
-         bytes: result.bytes,
-         original_filename: result.original_filename,
+         url: objectUrl,
+         secure_url: objectUrl,
+         public_id: objectKey,
       });
-   } catch (error: unknown) {
-      const details = error instanceof Error ? error.message : error;
+   } catch {
       return res.status(500).json({
          error: "Upload failed",
-         details,
       });
    } finally {
       if (tempFilePath) {

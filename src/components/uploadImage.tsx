@@ -44,41 +44,21 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
     setPublicId(initialPublicId || null);
   }, [initialImageUrl, initialPublicId]);
 
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.KEY_NAME;
-
-  const uploadPreset = "ma_nounous";
-
-
   const handleFileUpload = async (file: File) => {
     setUploading(true);
     setError(null);
 
-    if (!cloudName) {
-      setError("Configuration Cloudinary manquante");
-      setUploading(false);
-      return;
-    }
-
     const formData = new FormData();
     formData.append("file", file);
     formData.append("folder", folder);
-    formData.append("upload_preset", uploadPreset);
 
     try {
-      // const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
-      //   method: "POST",
-      //   body: formData
-      // });
-
-      console.log("Envoi du fichier au serveur pour vers minio ...");
       const res = await fetch("/api/upload", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       const data = await res.json();
-
-      console.log(data);
 
       if (res.ok) {
         const uploadedUrl = data.secure_url || data.url;
@@ -148,8 +128,7 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
           console.log("Image supprimée avec succès")
         }
 
-      } catch (err) {
-        console.error("Erreur suppression:", err);
+      } catch {
         setError("Erreur serveur lors de la suppression");
         return;
       }
@@ -185,7 +164,7 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
             transition={{
               duration: 1.5,
               repeat: Infinity,
-              ease: [0.45, 0, 0.55, 1], // easing personnalisé pour un mouvement plus fluide
+              ease: [0.45, 0, 0.55, 1],
               times: [0, 0.5, 1]
             }}
           />
@@ -203,10 +182,6 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
           />
         </div>
       )}
-
-      <div className="bg-red-400 text-neutral-300 w-full rounded">
-
-      </div>
 
       {preview && (
         <div className="preview-container mt-4 w-full max-w-xs relative">
