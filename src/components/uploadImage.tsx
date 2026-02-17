@@ -65,7 +65,13 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
     formData.append("upload_preset", uploadPreset);
 
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+      // const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+      //   method: "POST",
+      //   body: formData
+      // });
+
+      console.log("Envoi du fichier au serveur pour vers minio ...");
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData
       });

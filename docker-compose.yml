@@ -1,0 +1,51 @@
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - ./minio-data:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+
+#  Backend service
+#   backend:
+#     build: .
+#     container_name: manounous-backend
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - NODE_ENV=production
+#       - PORT=3000
+#       - DB_HOST=db
+#       - DB_PORT=5432
+#       - DB_USER=postgres
+#       - DB_PASSWORD=postgres
+#       - DB_NAME=manounous
+#       - MINIO_ENDPOINT=minio
+#       - MINIO_PORT=9000
+#       - MINIO_ACCESS_KEY=admin
+#       - MINIO_SECRET_KEY=admin123
+#     depends_on:
+#       - db
+#       - minio
+#     restart: unless-stopped
+# #  Database service
+#   db:
+#     image: postgres:13
+#     container_name: manounous-db
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: manounous
+#     volumes:
+#       - ./db-data:/var/lib/postgresql/data
+#     restart: unless-stopped

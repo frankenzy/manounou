@@ -254,10 +254,27 @@ export default function BlueskyLayout() {
       setIsOpen(false);
     };
 
-    const handleShare = () => {
+    const handleShare = async () => {
       console.log("Share announcement:", announcementId);
+      try {
+        const response = await fetch(`/api/announcements/${announcementId}`);
+
       setIsOpen(false);
-      // Implémenter la logique de partage
+
+        if (response.ok) {
+          const result = await response.json();
+
+          console.log("Fetch response for edit:", result.data);
+
+          if (result.success) {
+            setSelectedAnnouncement(result.data);
+            setIsModalOpen(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching announcement for edit:", error);
+      }
+
     };
 
     return (
