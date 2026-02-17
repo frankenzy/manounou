@@ -130,6 +130,7 @@ export default function AnnouncementModal({
                inputColor={formLogic.inputColor}
                showUploadImage={formLogic.showUploadImage}
                announcementTitle={formLogic.announcementTitle}
+               image={formLogic.image}
                textareaRef={formLogic.textareaRef}
                onInput={formLogic.handleInput}
                onTitleChange={formLogic.setAnnouncementTitle}

@@ -81,21 +81,21 @@ export default function BlueskyLayout() {
 
   const InfoPanel = () => {
     return (
-      <section className="relative w-80 p-4 space-y-4">
+      <section className="relative w-80 p-4 space-y-4 hidden xl:block">
         {/* Barre de recherche */}
-        <div className="relative">
-          <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+        <div className="relative rounded-2xl border border-gray-200 bg-white/95 shadow-sm backdrop-blur px-3 py-2">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             type="text"
             placeholder="Recghercher"
-            className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full pl-8 pr-2 py-1.5 bg-transparent rounded-xl focus:outline-none text-sm"
           />
         </div>
 
         {/* Onglets Discover/Following */}
-        <div className="bg-gray-100 rounded-lg p-1 flex gap-4 justify-between">
+        <div className="bg-white border border-gray-200 rounded-2xl p-1.5 flex gap-2 justify-between shadow-sm">
           <button
-            className={`flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-white rounded-md" : "text-gray-600"} py-2 w-full px-4 text-sm font-semibold shadow-sm`}
+            className={`flex-1 ${activeNavTab === NavTabs.Annonces ? "bg-orange-50 text-orange-600 rounded-xl border border-orange-100" : "text-gray-600"} py-2 w-full px-4 text-sm font-semibold transition-all`}
             onClick={() => {
               setActiveNavTab(NavTabs.Annonces);
             }}
@@ -103,7 +103,7 @@ export default function BlueskyLayout() {
             Nouveau
           </button>
           <button
-            className={`flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-white rounded-md" : "text-gray-600"} py-2 px-4 text-sm w-full font-semibold shadow-sm`}
+            className={`flex-1 ${activeNavTab === NavTabs.MesAnnonces ? "bg-orange-50 text-orange-600 rounded-xl border border-orange-100" : "text-gray-600"} py-2 px-4 text-sm w-full font-semibold transition-all`}
             onClick={() => {
               setActiveNavTab(NavTabs.MesAnnonces);
             }}
@@ -220,8 +220,14 @@ export default function BlueskyLayout() {
       // Récupérer les données complètes de l'annonce
       try {
         const response = await fetch(`/api/announcements/${announcementId}`);
+
         if (response.ok) {
           const result = await response.json();
+
+          console.log("Fetch response for edit:", result.data);
+
+
+
           if (result.success) {
             setSelectedAnnouncement(result.data);
             setIsModalOpen(true);
@@ -258,31 +264,31 @@ export default function BlueskyLayout() {
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors border border-transparent hover:border-gray-200"
           aria-label="Options"
         >
           <MoreVertical className="w-5 h-5 text-gray-600" />
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+          <div className="absolute right-0 mt-1 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-1.5 z-50">
             <button
               onClick={handleEdit}
-              className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-sm"
+              className="w-full px-4 py-2.5 text-left hover:bg-gray-50 flex items-center gap-3 text-sm"
             >
               <Edit className="w-4 h-4" />
               Modifier
             </button>
             <button
               onClick={handleShare}
-              className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-sm"
+              className="w-full px-4 py-2.5 text-left hover:bg-gray-50 flex items-center gap-3 text-sm"
             >
               <Share className="w-4 h-4" />
               Partager
             </button>
             <button
               onClick={handleDelete}
-              className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-sm text-red-600"
+              className="w-full px-4 py-2.5 text-left hover:bg-red-50 flex items-center gap-3 text-sm text-red-600"
             >
               <Trash2 className="w-4 h-4" />
               Supprimer
@@ -295,69 +301,71 @@ export default function BlueskyLayout() {
 
   const Navigation = () => {
     return (
-      <section className="w-64 h-screen sticky top-0 border-r border-gray-200 p-4">
-        {/* Logo */}
-        <div className="mb-8">
-          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 3c-1.5 0-2.7 1.2-2.7 2.7 0 1.5 1.2 2.7 2.7 2.7s2.7-1.2 2.7-2.7S13.5 3 12 3z" />
-            </svg>
+      <section className="w-64 h-screen sticky top-20 p-4 hidden lg:block">
+        <div className="h-[calc(100vh-7rem)] rounded-2xl border border-gray-200 bg-white/95 shadow-sm backdrop-blur p-4">
+          {/* Logo */}
+          <div className="mb-8">
+            <div className="w-11 h-11 bg-orange-500 rounded-2xl flex items-center justify-center shadow-sm">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 3c-1.5 0-2.7 1.2-2.7 2.7 0 1.5 1.2 2.7 2.7 2.7s2.7-1.2 2.7-2.7S13.5 3 12 3z" />
+              </svg>
+            </div>
           </div>
+
+          <nav className="space-y-1.5">
+            <button className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-orange-50 w-full text-left font-semibold text-gray-800 transition-colors">
+              <Home className="w-6 h-6" />
+              <span>
+                <Link href="/">Accueil</Link>
+              </span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <LocateIcon className="w-6 h-6" />
+              <span>Au tour de moi</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <Hash className="w-6 h-6" />
+              <span>Agence</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <Bell className="w-6 h-6" />
+              <span>Notifications</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <MessageCircle className="w-6 h-6" />
+              <span>Parler direct</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <ListCheckIcon className="w-6 h-6" />
+              <span>Disponibles</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <Bookmark className="w-6 h-6" />
+              <span>À garder</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <User className="w-6 h-6" />
+              <span>Mon dossier</span>
+            </button>
+            <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
+              <Settings className="w-6 h-6" />
+              <span>Paramètres</span>
+            </button>
+          </nav>
+
+          {/* Bouton New Post */}
+          <button
+            onClick={handleOpenModal}
+            className="mt-6 w-full bg-orange-500 text-white rounded-xl py-3 px-6 flex items-center justify-center gap-2 font-semibold hover:bg-orange-600 transition-colors shadow-sm"
+          >
+            <Plus className="w-5 h-5" />
+            Announce
+          </button>
         </div>
-
-        <nav className="space-y-2">
-          <button className="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left font-semibold">
-            <Home className="w-6 h-6" />
-            <span>
-              <Link href="/">Accueil</Link>
-            </span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <LocateIcon className="w-6 h-6" />
-            <span>Au tour de moi</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <Hash className="w-6 h-6" />
-            <span>Agence</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <Bell className="w-6 h-6" />
-            <span>Notifications</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <MessageCircle className="w-6 h-6" />
-            <span>Parler direct</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <ListCheckIcon className="w-6 h-6" />
-            <span>Disponibles</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <Bookmark className="w-6 h-6" />
-            <span>À garder</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <User className="w-6 h-6" />
-            <span>Mon dossier</span>
-          </button>
-          <button className="hidden items-center gap-4 px-3 py-3 rounded-lg hover:bg-gray-100 w-full text-left">
-            <Settings className="w-6 h-6" />
-            <span>Paramètres</span>
-          </button>
-        </nav>
-
-        {/* Bouton New Post */}
-        <button
-          onClick={handleOpenModal}
-          className="mt-6 w-full bg-orange-500 text-white rounded-full py-3 px-6 flex items-center justify-center gap-2 font-semibold hover:bg-orange-600"
-        >
-          <Plus className="w-5 h-5" />
-          Announce
-        </button>
       </section>
     );
   };
@@ -387,14 +395,14 @@ export default function BlueskyLayout() {
 
   const Main = () => {
     return (
-      <div className="flex-1 max-w-2xl border-r border-gray-200">
+      <div className="w-full lg:flex-1 lg:max-w-3xl">
 
-        <div className="sticky top-0 bg-gray-100 border-b border-gray-200 z-10 p-2">
+        <div className="sticky top-[4.5rem] md:top-20 bg-white/90 border border-gray-200 rounded-2xl z-10 p-2 backdrop-blur shadow-sm">
           <div ref={tabsContainerRef} className="relative">
-            <div className="flex">
+            <div className="flex bg-gray-50 rounded-xl p-1">
               <button
                 ref={btnJobRef}
-                className={`flex-1 py-4 text-center font-semibold rounded-2xl transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm bg-white" : "text-gray-600 hover:bg-gray-100"}`}
                 onClick={() => setTabs("job-seeker")}
                 aria-pressed={tabs === "job-seeker"}
               >
@@ -403,7 +411,7 @@ export default function BlueskyLayout() {
 
               <button
                 ref={btnEmpRef}
-                className={`flex-1 py-4 text-center font-semibold rounded-md transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "employer" ? "text-orange-600 shadow-sm bg-white" : "text-gray-600 hover:bg-gray-100"}`}
                 onClick={() => setTabs("employer")}
                 aria-pressed={tabs === "employer"}
               >
@@ -413,7 +421,7 @@ export default function BlueskyLayout() {
 
             <span
               aria-hidden
-              className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
+              className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out"
               style={{
                 left: indicator.left,
                 width: indicator.width,
@@ -428,18 +436,19 @@ export default function BlueskyLayout() {
             const metaColor = metadata?.backgroundColor as string | undefined;
             const metaSize = metadata?.fontSize;
             return (
-              <div key={annonce.id} className="p-4 hover:bg-gray-50">
+              <div key={annonce.id} className="mt-3 md:mt-4 rounded-2xl border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow">
                 <div className="flex gap-3">
-                  <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-300 to-orange-500 rounded-2xl flex-shrink-0 shadow-sm"></div>
 
                   <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold">{annonce.title}</span>
-                        <span className="text-gray-500 text-sm">
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+
+                        <span className="font-semibold text-gray-900 text-sm md:text-base">{annonce.title}</span>
+                        <span className="text-gray-500 text-xs md:text-sm">
                           @{annonce.created_at ? new Date(annonce.created_at as unknown as Date).toLocaleDateString() : ""}
                         </span>
-                        <span className="text-gray-500 text-sm items-end">
+                        <span className="text-gray-500 text-xs md:text-sm items-end">
                           <RelativeTime date={annonce.created_at ? annonce.created_at : annonce.updated_at || ""} />
                         </span>
                       </div>
@@ -448,43 +457,57 @@ export default function BlueskyLayout() {
                     </div>
 
                     <div
-                      className={`${bgClass ?? "bg-gray-200"} p-4 rounded-t-lg h-64 items-center flex justify-center`}
+                      className={`${bgClass ? `${bgClass} items-center` : "bg-gray-50 items-start"} p-4 rounded-lg min-h-[180px] flex flex-col gap-4 justify-center overflow-hidden`}
                       style={{
                         backgroundColor: metaColor,
                         fontSize: metaSize,
                       }}
                     >
+
                       <p
-                        className={`${metaSize ?? "text-lg"} ${bgClass ? "text-white" : "text-black"} font-semibold mb-3`}
+                        className={`${metaSize ?? "text-base md:text-lg"} ${bgClass ? "text-white" : "text-neutral-500"} font-semibold mb-1 md:mb-2 leading-relaxed`}
                       >
                         {annonce.description}
                       </p>
+
+                      {/* Afficharge des images */}
+                      {metadata?.image && typeof metadata.image === "string" && (
+                        <figure className="w-full relative overflow-hidden rounded-xl border border-white/40 bg-black/5 aspect-[4/5] md:aspect-[16/10]">
+                          <img
+                            src={metadata.image}
+                            alt="Announcement Image"
+                            loading="lazy"
+                            decoding="async"
+                            fetchPriority="low"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 720px"
+                            className="object-cover w-full h-full relative z-0 transition-transform duration-500 hover:scale-[1.02]"
+                          />
+                        </figure>
+                      )}
+
                     </div>
-                    <div className="flex justify-between items-center gap-4 text-gray-500 text-sm bg-neutral-100 px-2 py-4 rounded-b-lg">
+                    <div className="flex justify-between items-center gap-1 md:gap-3 text-gray-500 text-xs md:text-sm bg-gray-50 px-2 md:px-3 py-2.5 md:py-3 rounded-xl mt-2 border border-gray-100 overflow-x-auto">
                       <button
-                        className="flex items-center gap-2 hover:text-green-600"
-                        // onClick={() => {
-                        //   setSelectedAnnouncement(annonce);
-                        //   handleCommentModalOpen();
-                        // }}
+                        className="flex items-center gap-1.5 md:gap-2 hover:text-green-600 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
+
                         onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)}
 
                       >
                         <MessageCircle className="w-4 h-4" />
                         <span>{annonce.commentCount || 0}</span>
                       </button>
-                      <button className="flex items-center gap-2 hover:text-green-500">
+                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
                         <Repeat2 className="w-4 h-4" />
                         <span>187</span>
                       </button>
-                      <button className="flex items-center gap-2 hover:text-red-500">
+                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-red-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
                         <Heart className="w-4 h-4" />
                         <span>1K</span>
                       </button>
-                      <button className="flex hover:text-orange-500">
+                      <button className="flex hover:text-orange-500 rounded-lg p-1.5 hover:bg-white transition-colors">
                         <Share className="w-4 h-4" />
                       </button>
-                      <button className="flex hover:text-gray-700">
+                      <button className="flex hover:text-gray-700 rounded-lg p-1.5 hover:bg-white transition-colors">
                         <ChevronDown className="w-4 h-4"
                           onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)} />
                       </button>
@@ -515,17 +538,26 @@ export default function BlueskyLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-16">
-      <div className="p-4 w-full fixed top-0 bg-white border-b border-gray-200 z-20 mb-8">
-        <h1 className="text-3xl font-bold text-center text-orange-500">Manounou Job</h1>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
+      <div className="p-4 w-full fixed top-0 bg-white/90 border-b border-gray-200 z-20 backdrop-blur">
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-orange-500 tracking-tight">Manounou Job</h1>
       </div>
-      <div className="max-w-7xl mx-auto flex">
+      <div className="max-w-7xl mx-auto flex gap-3 md:gap-4 px-2 sm:px-3 md:px-4 pb-24 lg:pb-0">
         <Navigation />
 
         <Main />
 
         <InfoPanel />
       </div>
+
+      <button
+        onClick={handleOpenModal}
+        className="fixed lg:hidden bottom-5 right-4 z-30 bg-orange-500 text-white rounded-2xl px-4 py-3 shadow-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+      >
+        <Plus className="w-5 h-5" />
+        <span className="text-sm font-semibold">Announce</span>
+      </button>
+
       <AnnouncementModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

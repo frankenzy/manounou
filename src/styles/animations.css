@@ -12,51 +12,184 @@
    */
 
 
-   .fade-in {
-    animation: fadeIn 1s ease-out forwards;
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  .fade-in.visible {
-    animation: fadeIn 1s ease-out forwards;
-  }
+}
+
+.fade-in.visible {
+  animation: fadeIn 1s ease-out forwards;
+}
 
 
 
-  .container {
-    overflow: hidden; /* Pour cacher le texte qui sort */
+.container {
+  overflow: hidden;
+  /* Pour cacher le texte qui sort */
 }
 
 .animated-text {
-    font-size: 3rem;
-    opacity: 1;
-    animation: entranceExit 2s forwards; /* Durée de l'animation */
+  font-size: 3rem;
+  opacity: 1;
+  animation: entranceExit 2s forwards;
+  /* Durée de l'animation */
 }
 
 @keyframes entranceExit {
-    0% {
-        transform: scale(0) translateX(-100%); /* Commence petit et à gauche */
-        opacity: 0;
-    }
-    20% {
-        transform: scale(1) translateX(0); /* Agrandit et se place au centre */
-        opacity: 1;
-    }
-    80% {
-        transform: scale(1) translateX(0); /* Reste au centre */
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0) translateX(100%); /* Rétrécit et sort à droite */
-        opacity: 0;
-    }
+  0% {
+    transform: scale(0) translateX(-100%);
+    /* Commence petit et à gauche */
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1) translateX(0);
+    /* Agrandit et se place au centre */
+    opacity: 1;
+  }
+
+  80% {
+    transform: scale(1) translateX(0);
+    /* Reste au centre */
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0) translateX(100%);
+    /* Rétrécit et sort à droite */
+    opacity: 0;
+  }
+}
+
+
+/* Animation pulse ultra-subtile pour le texte "+130 pays" */
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.01);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* Scroll smooth natif */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch feedback pour mobile */
+@media (hover: none) and (pointer: coarse) {
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Parallax subtil au scroll (optionnel) */
+@supports (scroll-timeline: --page-scroll) {
+  .parallax-section {
+    animation: parallax linear;
+    animation-timeline: scroll();
+  }
+}
+
+@keyframes parallax {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+/* Fade-in au scroll - Animation Apple-like */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-section {
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Stagger animation pour éléments multiples */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+/* Optimisation performance mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+img {
+  will-change: transform;
+}
+
+/* Hover states désactivés sur mobile */
+@media (hover: hover) and (pointer: fine) {
+  .hover\:scale-105:hover {
+    transform: scale(1.05);
+  }
+
+  .hover\:shadow-2xl:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Transitions fluides globales */
+* {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Safe area pour iPhone (notch) */
+@supports (padding: max(0px)) {
+  .safe-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
 }

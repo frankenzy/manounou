@@ -1,7 +1,7 @@
 "use client";
 
 import Modal from "@/components/Modal";
-import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import UploadImage, { UploadImageRef, UploadedImageData } from "@/components/uploadImage";
 import { IAnnouncementDTO } from "@/models/Annnouncements";
 import {
   faCalendar,
@@ -30,6 +30,7 @@ interface IMetadata {
   calendar: string;
   idCard: string;
   image: string;
+  imagePublicId: string;
 }
 
 const lengthLimit = 140;
@@ -61,6 +62,7 @@ export default function CreateAnnouncement({
     calendar: "",
     idCard: "",
     image: "",
+    imagePublicId: "",
   });
 
   const adjustTextareaHeight = () => {
@@ -153,6 +155,7 @@ export default function CreateAnnouncement({
       calendar: "",
       idCard: "",
       image: "",
+      imagePublicId: "",
     });
 
     if (textareaRef.current) {
@@ -178,8 +181,13 @@ export default function CreateAnnouncement({
           title: announcementTitle || "Nouvelle annonce",
           description: inputValue,
           location: metadata.location || announcement?.location || "Non spécifié",
-          metadata: metadata,
+          metadata: {
+            ...metadata,
+            image: metadata.image || announcement?.metadata?.image || "",
+            imagePublicId: metadata.imagePublicId || announcement?.metadata?.imagePublicId || "",
+          },
         }),
+
       });
 
       const result = await response.json();
@@ -239,11 +247,12 @@ export default function CreateAnnouncement({
     }, 100);
   };
 
-  const handleImageUpload = (file: File) => {
-    console.log("Image uploaded: ", file);
+  const handleImageUpload = ({ url, publicId }: UploadedImageData) => {
+    console.log("Image uploaded avec succes !!!: ", { url, publicId });
     setMetadata((prev) => ({
       ...prev,
-      image: file.name,
+      image: url,
+      imagePublicId: publicId,
     }));
   };
 
@@ -252,6 +261,7 @@ export default function CreateAnnouncement({
     setMetadata((prev) => ({
       ...prev,
       image: "",
+      imagePublicId: "",
     }));
   };
 

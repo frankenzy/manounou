@@ -1,6 +1,6 @@
 "use client";
 
-import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import UploadImage, { UploadImageRef, UploadedImageData } from "@/components/uploadImage";
 import {
    faCalendar,
    faClock,
@@ -25,7 +25,7 @@ interface AnnouncementEditFormProps {
    onColorSelect: (color: string) => void;
    onResetStyles: () => void;
    onLoadImage: () => void;
-   onImageUpload: (file: File) => void;
+   onImageUpload: (imageData: UploadedImageData) => void;
    onImageRemove: () => void;
    onSetUser: () => void;
    onSetCalendar: () => void;

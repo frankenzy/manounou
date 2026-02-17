@@ -1,17 +1,18 @@
 import { IAnnouncementDTO } from "@/models/Annnouncements";
-import { useEffect, useRef, useState } from "react";
+import { UploadedImageData } from "@/components/uploadImage";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnnouncementFormData, IMetadata, LENGTH_LIMIT } from "./types";
 
 export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
+
   const [inputValue, setInputValue] = useState("");
   const [inputBg, setInputBg] = useState("");
   const [inputColor, setInputColor] = useState("");
   const [lastSelectedColor, setLastSelectedColor] = useState("");
   const [showUploadImage, setShowUploadImage] = useState(false);
   const [announcementTitle, setAnnouncementTitle] = useState("");
-  
+
   const [metadata, setMetadata] = useState<IMetadata>({
     fontSize: "",
     backgroundColor: "",
@@ -22,25 +23,26 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     calendar: "",
     idCard: "",
     image: "",
-   tags: [],
-   category: "",
-   author: "",
-   contact: "",
-   startDate: "",
-   endDate: "",
-   visibility: "",
-   priority: "",
-   pinned: false,
-   link: "",
-   attachments: [],
-   textAlign: "",
-   fontWeight: "",
-   lineHeight: "",
-   ctaText: "",
-   ctaUrl: "",
-   locale: "",
-   createdAt: "",
-   updatedAt: "",
+    imagePublicId: "",
+    tags: [],
+    category: "",
+    author: "",
+    contact: "",
+    startDate: "",
+    endDate: "",
+    visibility: "",
+    priority: "",
+    pinned: false,
+    link: "",
+    attachments: [],
+    textAlign: "",
+    fontWeight: "",
+    lineHeight: "",
+    ctaText: "",
+    ctaUrl: "",
+    locale: "",
+    createdAt: "",
+    updatedAt: "",
   });
 
   // Ajustement automatique de la hauteur du textarea
@@ -62,10 +64,14 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     if (announcement) {
       setAnnouncementTitle(announcement.title || "");
       setInputValue(announcement.description || "");
-      
+
       if (announcement.metadata) {
         setMetadata(announcement.metadata as unknown as IMetadata);
-        
+
+        if (announcement.metadata.image) {
+          setShowUploadImage(true);
+        }
+
         const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
         if (bgColor) {
           setInputBg(`${bgColor} p-8`);
@@ -114,7 +120,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   };
 
   // Reset complet du formulaire
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setInputBg("bg-white");
     setInputColor("text-black");
     setLastSelectedColor("");
@@ -132,6 +138,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
       calendar: "",
       idCard: "",
       image: "",
+      imagePublicId: "",
       tags: [],
       category: "",
       author: "",
@@ -156,7 +163,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
-  };
+  }, []);
 
   // Gestion de l'input
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -175,11 +182,12 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setShowUploadImage(true);
   };
 
-  const handleImageUpload = (file: File) => {
-    console.log("Image uploaded: ", file);
+  const handleImageUpload = ({ url, publicId }: UploadedImageData) => {
+    console.log("Image uploaded: ", { url, publicId });
     setMetadata((prev) => ({
       ...prev,
-      image: file.name,
+      image: url,
+      imagePublicId: publicId,
     }));
   };
 
@@ -188,6 +196,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setMetadata((prev) => ({
       ...prev,
       image: "",
+      imagePublicId: "",
     }));
   };
 
@@ -225,7 +234,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   return {
     // Refs
     textareaRef,
-    
+
     // State
     inputValue,
     inputBg,
@@ -233,10 +242,16 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     showUploadImage,
     announcementTitle,
     metadata,
-    
+    image: metadata.image
+      ? {
+          url: metadata.image,
+          publicId: metadata.imagePublicId || "",
+        }
+      : undefined,
+
     // Setters
     setAnnouncementTitle,
-    
+
     // Handlers
     handleInput,
     handleInputBg,
@@ -248,7 +263,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     handleSetCalendar,
     resetStyles,
     resetForm,
-    
+
     // Utilities
     getFormData,
   };

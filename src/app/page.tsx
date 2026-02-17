@@ -33,15 +33,13 @@ export default function Home() {
   };
   return (
     <>
-      {/* <Layout> */}
       <Header />
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid pb-5 rounded-xl">
         <div className="flex flex-col w-full">
 
-          <div className="grid grid-cols-2 items-center justify-center w-full">
+          <div className="grid md:grid-cols-2 items-center justify-center w-full">
             <div className="col-span-1 px-12">
               <div className="flex flex-col justify-start items-center px-24 py-8">
-                <Logo className="items-start" />
                 <div className="w-full">
                   <div className="flex flex-col items-start w-full">
                     <h3 className="text-8xl font-bold text-start">
@@ -101,7 +99,7 @@ export default function Home() {
             </div>
           </section>
 
-          <FadeInSection>
+          <FadeInSection delay={100}>
             <section>
               <div className="flex flex-row items-center  gap-4 justify-center h-screen">
                 <div className="flex h-full flex-col w-full justify-center container ">
@@ -124,7 +122,6 @@ export default function Home() {
           </FadeInSection>
         </div>
       </main>
-      {/* </Layout> */}
-    </>
+=    </>
   );
 }
