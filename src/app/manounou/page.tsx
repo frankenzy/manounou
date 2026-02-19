@@ -4,6 +4,7 @@ import { AnnouncementModal } from "@/components/Announcement";
 import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
 import { IAnnouncementDTO } from "@/models/Announcement";
+import { IRepost } from "@/models/Repost";
 import { RelativeTime } from "@/components/RelativeTime";
 import {
   Bell,
@@ -38,7 +39,15 @@ const enum NavTabs {
 
 
 export default function BlueskyLayout() {
-  const [annonces, setAnnonces] = useState<IAnnouncementDTO[]>([]);
+  type FeedAnnouncement = IAnnouncementDTO & {
+    feedId: string;
+    feedType: "announcement" | "repost";
+    repostText?: string;
+    repostAuthorId?: number;
+    feedTimestamp: number;
+  };
+
+  const [annonces, setAnnonces] = useState<FeedAnnouncement[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
   const [activeNavTab, setActiveNavTab] = useState<NavTabs>(NavTabs.Annonces);
@@ -99,16 +108,80 @@ export default function BlueskyLayout() {
 
   const fetchAnnonces = async () => {
     try {
-      const announce = await fetch("/api/announcements");
-      const data = await announce.json();
+      const [announceResponse, repostResponse] = await Promise.all([
+        fetch("/api/announcements"),
+        fetch("/api/repost"),
+      ]);
 
-      if (Array.isArray(data)) {
-        setAnnonces(data);
-      } else if (data && Array.isArray(data.data)) {
-        setAnnonces(data.data);
-      } else {
-        setAnnonces([]);
-      }
+      const announcePayload = await announceResponse.json();
+      const repostPayload = await repostResponse.json();
+
+      const announcements: IAnnouncementDTO[] = Array.isArray(announcePayload)
+        ? announcePayload
+        : Array.isArray(announcePayload?.data)
+          ? announcePayload.data
+          : [];
+
+      const reposts: IRepost[] = Array.isArray(repostPayload)
+        ? repostPayload
+        : Array.isArray(repostPayload?.data)
+          ? repostPayload.data
+          : [];
+
+      const toTimestamp = (value: unknown): number => {
+        if (!value) return 0;
+        const date = new Date(value as string | number | Date);
+        const time = date.getTime();
+        return Number.isNaN(time) ? 0 : time;
+      };
+
+      const announcementsById = new Map<number, IAnnouncementDTO>();
+      announcements.forEach((announcement) => {
+        if (announcement.id !== undefined) {
+          announcementsById.set(Number(announcement.id), announcement);
+        }
+      });
+
+      const announcementFeed: FeedAnnouncement[] = announcements.map((announcement) => ({
+        ...announcement,
+        feedId: `announcement-${announcement.id}`,
+        feedType: "announcement",
+        feedTimestamp: toTimestamp(announcement.created_at),
+      }));
+
+      const repostFeed = reposts.reduce<FeedAnnouncement[]>((acc, repostItem) => {
+        const parentAnnouncement = announcementsById.get(Number(repostItem.announce_id));
+        if (!parentAnnouncement) {
+          return acc;
+        }
+
+        acc.push({
+          ...parentAnnouncement,
+          feedId: `repost-${repostItem.id}`,
+          feedType: "repost" as const,
+          repostText: repostItem.text,
+          repostAuthorId: repostItem.author_id,
+          created_at: repostItem.create_at || repostItem.created_at || parentAnnouncement.created_at,
+          feedTimestamp: toTimestamp(
+            repostItem.create_at || repostItem.created_at || parentAnnouncement.created_at
+          ),
+        });
+
+        return acc;
+      }, []);
+
+      const mergedFeed = [...announcementFeed, ...repostFeed].sort((a, b) => {
+        const timeDelta = b.feedTimestamp - a.feedTimestamp;
+        if (timeDelta !== 0) {
+          return timeDelta;
+        }
+
+        const aId = Number(a.id || 0);
+        const bId = Number(b.id || 0);
+        return bId - aId;
+      });
+
+      setAnnonces(mergedFeed);
     } catch (error) {
       console.error("Error fetching announcements:", error);
       setAnnonces([]);
@@ -501,17 +574,25 @@ export default function BlueskyLayout() {
           </div>
         </div>
         {Array.isArray(annonces) && annonces.length > 0 ? (
-          annonces.map((annonce: IAnnouncementDTO) => {
+          annonces.map((annonce: FeedAnnouncement) => {
             const metadata = annonce.metadata as Record<string, string> | undefined;
             const bgClass = metadata?.background || metadata?.backgroundColor;
             const metaColor = metadata?.backgroundColor as string | undefined;
             const metaSize = metadata?.fontSize;
+            const isRepostItem = annonce.feedType === "repost";
             return (
-              <div key={annonce.id} className="mt-3 md:mt-4 rounded-2xl border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow">
+              <div key={annonce.feedId} className="mt-3 md:mt-4 rounded-2xl border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow">
                 <div className="flex gap-3">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-300 to-orange-500 rounded-2xl flex-shrink-0 shadow-sm"></div>
 
                   <div className="flex-1">
+                    {isRepostItem && (
+                      <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-orange-50 px-2 py-1 text-[11px] font-semibold text-orange-700 border border-orange-100">
+                        <Repeat2 className="w-3.5 h-3.5" />
+                        Reposté par utilisateur #{annonce.repostAuthorId}
+                      </div>
+                    )}
+
                     <div className="flex justify-between items-center mb-3">
                       <div className="flex items-center justify-between gap-2 flex-wrap">
 
@@ -524,8 +605,14 @@ export default function BlueskyLayout() {
                         </span>
                       </div>
 
-                      <PostMenu announcementId={annonce.id} />
+                      {!isRepostItem && <PostMenu announcementId={annonce.id} />}
                     </div>
+
+                    {isRepostItem && annonce.repostText && (
+                      <p className="mb-3 text-sm text-gray-700 bg-gray-50 border border-gray-100 rounded-lg p-2">
+                        {annonce.repostText}
+                      </p>
+                    )}
 
                     <div
                       className={`${bgClass ? `${bgClass} items-center` : "bg-gray-50 items-start"} p-4 rounded-lg min-h-[180px] flex flex-col gap-4 justify-center overflow-hidden`}
@@ -570,7 +657,7 @@ export default function BlueskyLayout() {
                       <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
                         onClick={() => handleRepost(annonce.id as number)}>
                         <Repeat2 className="w-4 h-4" />
-                        <span>187</span>
+                        <span>{annonce.repostCount || 0}</span>
                       </button>
                       <button className="flex items-center gap-1.5 md:gap-2 hover:text-red-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
                         <Heart className="w-4 h-4" />
@@ -653,6 +740,7 @@ export default function BlueskyLayout() {
           annonce={selectedAnnouncement}
           isOpen={repost}
           onClose={() => setRepost(false)}
+          onSuccess={fetchAnnonces}
         />
       )}
 

@@ -13,7 +13,7 @@ export class RepostRepository {
    }
 
    async findAll(): Promise<IRepost[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} ORDER BY create_at DESC`);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} ORDER BY create_at DESC, id DESC`);
       return result.rows;
    }
 
@@ -23,12 +23,12 @@ export class RepostRepository {
    }
 
    async findByPost(postId: string): Promise<IRepost[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY create_at DESC`, [postId]);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY create_at DESC, id DESC`, [postId]);
       return result.rows;
    }
 
    async findByAuthor(authorId: string): Promise<IRepost[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE author_id = $1 ORDER BY create_at DESC`, [authorId]);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE author_id = $1 ORDER BY create_at DESC, id DESC`, [authorId]);
       return result.rows;
    }
 

@@ -47,10 +47,12 @@ export default class RepostController extends BaseController {
    async get(req: any, res: any) {
       try {
          const { announceId } = req.query;
-
-         if (!announceId) {
-            return res.status(400).json({ success: false, message: "Missing announceId" });
+         if (announceId) {
+            const reposts = await this.repostService.findRepostsByPost(String(announceId));
+            this.sendSuccess(res, reposts, 200, 'Reposts retrieved successfully');
+            return;
          }
+
          const reposts = await this.repostService.findAllReposts();
          this.sendSuccess(res, reposts, 200, 'Reposts retrieved successfully');
       } catch (error) {

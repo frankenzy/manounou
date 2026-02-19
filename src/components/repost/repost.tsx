@@ -3,9 +3,7 @@ import Modal from "../Modal";
 import { UserCircle } from "lucide-react";
 import { useState } from "react";
 
-
-
-export default function Repost({ annonce, isOpen, onClose }: RepostProps) {
+export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostProps) {
    const announcementImage = typeof annonce.metadata?.image === "string" ? annonce.metadata.image : undefined;
 
    const handleCloseModal = () => {
@@ -37,7 +35,8 @@ export default function Repost({ annonce, isOpen, onClose }: RepostProps) {
 
          if (response.ok) {
             alert("Repost créé avec succès !");
-
+            setRepostText("");
+            onSuccess?.();
             handleCloseModal();
 
          } else {
@@ -76,10 +75,11 @@ export default function Repost({ annonce, isOpen, onClose }: RepostProps) {
                <button
                   type="button"
                   onClick={handleRepostSubmit}
+                  disabled={isSubmitting}
                   className="bg-orange-600   rounded-lg px-2 py-2 text-sm font-semibold text-white hover:bg-orange-700"
                   aria-label="Close modal"
                >
-                  republier
+                  {isSubmitting ? "Publication..." : "republier"}
                </button>
             </div>
 

@@ -6,6 +6,7 @@ export interface IRepost {
    author_id: number;
    text?: string;
    create_at: Date;
+   created_at?: Date;
 }
 
 export interface ICreateRepostDTO {
@@ -21,6 +22,7 @@ export interface RepostProps {
    annonce: IAnnouncementDTO;
    isOpen: boolean;
    onClose: () => void;
+   onSuccess?: () => void;
 }
 
 export interface RepostApiResponse {

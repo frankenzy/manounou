@@ -11,8 +11,7 @@ const repostController = new RepostController(repostService);
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
-   res.setHeader('Allow', ['POST']);
+   res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
    if (req.method === 'POST') {
       return repostController.create(req, res);
    }
@@ -20,11 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    if (req.method === 'DELETE') {
       return repostController.delete(req, res);
    }
-   res.setHeader('Allow', ['DELETE']);
-   // return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });
+
    if (req.method === 'GET') {
       return repostController.get(req, res);
    }
-   res.setHeader('Allow', ['GET']);
-   // return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });
+
+   return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });
 }
