@@ -1,4 +1,4 @@
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 
 export interface IMetadata {
   fontSize: string;

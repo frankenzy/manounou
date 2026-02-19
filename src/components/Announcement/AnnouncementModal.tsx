@@ -19,7 +19,8 @@ export default function AnnouncementModal({
    // Déterminer le mode automatiquement si non spécifié
    const isEditMode = mode === "edit" || !!announcement;
 
-   const formLogic = useAnnouncementForm(announcement);
+   const [openSession, setOpenSession] = useState(0);
+   const formLogic = useAnnouncementForm(announcement, isOpen);
 
    const { isSubmitting, error, createAnnouncement, updateAnnouncement } = useAnnouncementSubmit();
 
@@ -29,6 +30,12 @@ export default function AnnouncementModal({
          formLogic.resetForm();
       }
    }, [isOpen, formLogic.resetForm]);
+
+   useEffect(() => {
+      if (isOpen) {
+         setOpenSession((prev) => prev + 1);
+      }
+   }, [isOpen]);
 
    const handleCloseModal = () => {
       formLogic.resetForm();
@@ -73,14 +80,7 @@ export default function AnnouncementModal({
 
    return (
       <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
-         {/* {showSuccess && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/95 z-50 rounded-lg">
-               <div className="w-64 h-64">
-                  {succesSVG}
-               </div>
-            </div>
-         )} */}
-         <div className="p-6">
+         <div className="p-6" key={`announcement-modal-session-${openSession}`}>
             <div className="modalHeader flex items-center justify-between">
                <div className="void"></div>
                <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
@@ -105,8 +105,6 @@ export default function AnnouncementModal({
                   >
                      Je cherche un travail
                   </button>
-
-                  {/* <div className="mx-2 bg-orange-500 w-0.5 self-stretch" /> */}
 
                   <button
 

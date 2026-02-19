@@ -1,8 +1,5 @@
 import pool from "../lib/db";
 import { IUser, IUserDTO } from "../models/User.model";
-import { IUserRepository } from "./IUserRepository";
-
-
 
 export interface UserRow {
   id: number;
@@ -15,8 +12,7 @@ export interface UserRow {
   updated_at: Date;
 }
 
-
-export class UserRepository implements IUserRepository {
+export class UserRepository {
   private readonly tableName = "users";
 
   async findAll(): Promise<IUserDTO[]> {

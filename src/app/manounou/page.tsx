@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AnnouncementModal } from "@/components/Announcement";
 import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 import { RelativeTime } from "@/components/RelativeTime";
 import {
   Bell,
@@ -27,6 +27,8 @@ import {
   User,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import Repost from "@/components/repost/repost";
+import DeleteModal from "@/components/modals/deleteModal";
 
 
 const enum NavTabs {
@@ -45,6 +47,11 @@ export default function BlueskyLayout() {
 
   const [openCommentId, setOpenCommentId] = useState<string | number | null>(null);
 
+  const [repost, setRepost] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | number | null>(null);
+  const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
+  const [isDeletingAnnouncement, setIsDeletingAnnouncement] = useState(false);
+
   const handleOpenComment = (announcementId: string | number) => {
     if (openCommentId === announcementId) {
       setOpenCommentId(null);
@@ -57,10 +64,43 @@ export default function BlueskyLayout() {
     setCommentModalOpen(false);
   };
 
+  const closeDeleteConfirmModal = () => {
+    setIsDeleteConfirmVisible(false);
+    window.setTimeout(() => {
+      setDeleteTargetId(null);
+    }, 220);
+  };
+
+  const openDeleteConfirmModal = (announcementId?: string | number) => {
+    if (announcementId === undefined) return;
+    setDeleteTargetId(announcementId);
+    requestAnimationFrame(() => setIsDeleteConfirmVisible(true));
+  };
+
+  const confirmDeleteAnnouncement = async () => {
+    if (deleteTargetId === null) return;
+
+    setIsDeletingAnnouncement(true);
+    try {
+      const response = await fetch(`/api/announcements/${deleteTargetId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        await fetchAnnonces();
+      }
+    } catch (error) {
+      console.error("Error deleting announcement:", error);
+    } finally {
+      setIsDeletingAnnouncement(false);
+      closeDeleteConfirmModal();
+    }
+  };
+
   const fetchAnnonces = async () => {
     try {
-      const response = await fetch("/api/announcements");
-      const data = await response.json();
+      const announce = await fetch("/api/announcements");
+      const data = await announce.json();
 
       if (Array.isArray(data)) {
         setAnnonces(data);
@@ -78,6 +118,21 @@ export default function BlueskyLayout() {
   useEffect(() => {
     fetchAnnonces();
   }, []);
+
+  useEffect(() => {
+    if (deleteTargetId === null) return;
+
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !isDeletingAnnouncement) {
+        closeDeleteConfirmModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [deleteTargetId, isDeletingAnnouncement]);
 
   const InfoPanel = () => {
     return (
@@ -186,10 +241,11 @@ export default function BlueskyLayout() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedAnnouncement(undefined); // Reset après fermeture
+    setSelectedAnnouncement(undefined);
   };
 
   // Menu pour les posts avec options (éditer, supprimer, etc.)
+
   const PostMenu = ({ announcementId }: { announcementId?: string | number }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -239,18 +295,7 @@ export default function BlueskyLayout() {
     };
 
     const handleDelete = async () => {
-      if (confirm("Êtes-vous sûr de vouloir supprimer cette annonce ?")) {
-        try {
-          const response = await fetch(`/api/announcements/${announcementId}`, {
-            method: "DELETE",
-          });
-          if (response.ok) {
-            fetchAnnonces();
-          }
-        } catch (error) {
-          console.error("Error deleting announcement:", error);
-        }
-      }
+      openDeleteConfirmModal(announcementId);
       setIsOpen(false);
     };
 
@@ -389,6 +434,15 @@ export default function BlueskyLayout() {
 
 
 
+  const handleRepost = (announcementId: number) => {
+
+    const annonceToRepost = annonces.find(a => a.id === announcementId);
+    if (annonceToRepost) {
+      setSelectedAnnouncement(annonceToRepost);
+      setRepost(true);
+    }
+
+  };
 
   const tabsContainerRef = useRef<HTMLDivElement | null>(null);
   const btnJobRef = useRef<HTMLButtonElement | null>(null);
@@ -414,25 +468,25 @@ export default function BlueskyLayout() {
     return (
       <div className="w-full lg:flex-1 lg:max-w-3xl">
 
-        <div className="sticky top-[4.5rem] md:top-20 bg-white/90 border border-gray-200 rounded-2xl z-10 p-2 backdrop-blur shadow-sm">
+        <div className="sticky top-[4rem] md:top-16 bg-white/90 border border-gray-100 rounded-2xl z-10 backdrop-blur shadow-sm">
           <div ref={tabsContainerRef} className="relative">
             <div className="flex bg-gray-50 rounded-xl p-1">
               <button
                 ref={btnJobRef}
-                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm bg-white" : "text-gray-600 hover:bg-gray-100"}`}
+                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "job-seeker" ? "text-orange-600" : "text-gray-600 hover:bg-gray-100"}`}
                 onClick={() => setTabs("job-seeker")}
                 aria-pressed={tabs === "job-seeker"}
               >
-                Je cherche un travail
+                Announce
               </button>
 
               <button
                 ref={btnEmpRef}
-                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "employer" ? "text-orange-600 shadow-sm bg-white" : "text-gray-600 hover:bg-gray-100"}`}
+                className={`flex-1 py-2.5 md:py-3 text-center text-xs md:text-sm font-semibold rounded-xl transition-colors duration-150 ${tabs === "employer" ? "text-orange-600" : "text-gray-600 hover:bg-gray-100"}`}
                 onClick={() => setTabs("employer")}
                 aria-pressed={tabs === "employer"}
               >
-                J’ai besoin de quelqu’un
+                feeds
               </button>
             </div>
 
@@ -513,7 +567,8 @@ export default function BlueskyLayout() {
                         <MessageCircle className="w-4 h-4" />
                         <span>{annonce.commentCount || 0}</span>
                       </button>
-                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
+                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
+                        onClick={() => handleRepost(annonce.id as number)}>
                         <Repeat2 className="w-4 h-4" />
                         <span>187</span>
                       </button>
@@ -589,6 +644,27 @@ export default function BlueskyLayout() {
           annonce={selectedAnnouncement}
         />
       )}
+
+      {selectedAnnouncement && repost && (
+        <Repost
+          date={selectedAnnouncement.created_at || new Date()}
+          announceId={selectedAnnouncement.id as number}
+          alreadyReposted={false}
+          annonce={selectedAnnouncement}
+          isOpen={repost}
+          onClose={() => setRepost(false)}
+        />
+      )}
+
+      {deleteTargetId !== null && (
+        <DeleteModal
+          isOpen={isDeleteConfirmVisible}
+          onClose={closeDeleteConfirmModal}
+          onConfirm={confirmDeleteAnnouncement}
+          isDeletingAnnouncement={isDeletingAnnouncement}
+        />
+      )}
+
     </div>
   );
 }

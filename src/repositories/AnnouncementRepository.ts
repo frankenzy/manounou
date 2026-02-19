@@ -3,21 +3,20 @@ import {
   Announcement,
   IAnnouncement,
   IAnnouncementDTO,
-} from "./../models/Annnouncements";
-import { IAnnouncementRepository } from "./IAnnouncementRepository";
+} from "./../models/Announcement";
 
+export class AnnouncementRepository {
 
-
-export class AnnouncementRepository implements IAnnouncementRepository {
   private readonly tableName = "announcements";
 
   async create(announcement: IAnnouncement): Promise<IAnnouncementDTO> {
     const result = await pool.query(
-      `INSERT INTO ${this.tableName} (user_id, title, description, location, metadata) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      `INSERT INTO ${this.tableName} (user_id, title, description, parent_id, location, metadata) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [
         announcement.user_id,
         announcement.title,
         announcement.description,
+        announcement.parent_id,
         announcement.location,
         announcement.metadata ? JSON.stringify(announcement.metadata) : null,
       ],
@@ -26,6 +25,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
   }
 
   async findById(id: number): Promise<IAnnouncementDTO | null> {
+
     const result = await pool.query(
       `SELECT a.*, COUNT(c.id) as "commentCount"
        FROM ${this.tableName} a
@@ -63,9 +63,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
     }
 
     const result = await pool.query(query, params);
-    console.log(
-      `✅ Repository: ${result.rows.length} lignes récupérées de la BD`,
-    );
+
     return result.rows.map((row) => new Announcement(row).Announcement());
   }
 

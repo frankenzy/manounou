@@ -98,43 +98,19 @@ const ContactForms = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //logique d'envoie
     console.log(formData);
     if (isFormValid) {
-      alert("Formulaire valide");
+      // TODO: Implement contact form submission endpoint
+      alert("Formulaire valide (envoi non implémenté)");
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+      setIsAccepted(false);
     } else {
       alert("Formulaire invalide");
       return;
-    }
-    //Ajoute la logique d'envois des données
-    try {
-      const response = await fetch("/api/utilisateurs/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nom: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }),
-      });
-
-      if (response.ok) {
-        alert("Message envoyé avec succès!");
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-
-        setIsAccepted(false);
-      } else {
-        throw new Error("Erreur lors de l'envoi du message");
-      }
-    } catch (error) {
-      console.error("Erreur:", error);
-      alert("Une erreur est survenue lors de l'envoi du message");
     }
   };
 

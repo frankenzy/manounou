@@ -5,7 +5,7 @@ export abstract class BaseController {
    * Wrapper pour gérer automatiquement les erreurs
    */
   protected async handleRequest(
-    req: NextApiRequest,
+    _req: NextApiRequest,
     res: NextApiResponse,
     handler: () => Promise<unknown>
   ): Promise<void> {

@@ -1,13 +1,10 @@
-import { IAnnouncement, IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncement, IAnnouncementDTO } from "@/models/Announcement";
+import { AnnouncementRepository } from "@/repositories/AnnouncementRepository";
 
-import { IAnnouncementRepository } from "@/repositories/IAnnouncementRepository";
+export class AnnouncementService {
+  private readonly announcementRepository: AnnouncementRepository;
 
-import { IAnnouncementService } from "./IAnnouncementService";
-
-export class AnnouncementService implements IAnnouncementService {
-  private readonly announcementRepository: IAnnouncementRepository;
-
-  constructor(announcementRepository: IAnnouncementRepository) {
+  constructor(announcementRepository: AnnouncementRepository) {
     this.announcementRepository = announcementRepository;
   }
   getAnnouncementsByLocation(location: string): Promise<IAnnouncementDTO[]> {

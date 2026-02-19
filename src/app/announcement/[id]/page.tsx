@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/header";
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Layout from "../../layout";

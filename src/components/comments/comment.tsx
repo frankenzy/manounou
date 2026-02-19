@@ -1,8 +1,8 @@
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 import { useState } from "react";
 import { HeartIcon, UserCircle } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
-import CommentSkeleton from "./AnnounceSkeleton";
+import AnnounceSkeleton from "../Announcement/AnnounceSkeleton";
 import { CommentTime } from "./CommentTime";
 
 interface CommentProps {
@@ -55,7 +55,7 @@ export default function Comment({ annonce }: CommentProps) {
 
          <div className="block max-h-96 overflow-y-auto bg-neutral-100">
             {isLoading ? (
-               <CommentSkeleton />
+               <AnnounceSkeleton />
             ) : error ? (
                <p className="text-red-500 text-center">{error}</p>
             ) : comments.length === 0 ? (

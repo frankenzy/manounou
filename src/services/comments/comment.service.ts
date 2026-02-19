@@ -1,10 +1,9 @@
 import { ICreateCommentDTO, IComment as CommentEntity, IUpdateCommentDTO } from "@/models/Comment";
-import { ICommentRepository } from "@/repositories/ICommentRepository";
-
+import { CommentRepository } from "@/repositories/CommentRepository";
 
 export class CommentService {
     constructor(
-        private readonly commentRepository: ICommentRepository,
+        private readonly commentRepository: CommentRepository,
     ) { }
 
     async create(IComment: ICreateCommentDTO): Promise<CommentEntity> {

@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import Buttons from "@/components/buttons";
 import Header from "@/components/header";
-import Logo from "@/components/Logo";
 import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
@@ -29,7 +28,7 @@ export default function Home() {
 
   const router = useRouter();
   const handleCall = () => {
-    router.push("/login");
+    // router.push("/login");
   };
   return (
     <>
@@ -99,7 +98,7 @@ export default function Home() {
             </div>
           </section>
 
-          <FadeInSection delay={100}>
+          <FadeInSection>
             <section>
               <div className="flex flex-row items-center  gap-4 justify-center h-screen">
                 <div className="flex h-full flex-col w-full justify-center container ">
@@ -122,6 +121,6 @@ export default function Home() {
           </FadeInSection>
         </div>
       </main>
-=    </>
+      =    </>
   );
 }

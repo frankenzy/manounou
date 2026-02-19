@@ -6,7 +6,6 @@ import Logo from "../../components/Logo";
 import Input from "../../components/Input";
 import Header from "../../components/header";
 import RegisterLink from "../../components/RegisterLink";
-import Login from "@/Auth/login";
 import Loyout from "../layout";
 import { useState } from "react";
 
@@ -37,18 +36,9 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await Login.loginService(telephone);
-      if (response.success) {
-        // Gérer la réponse positive
-        console.log("Login réussi");
-      } else {
-        // Gérer la réponse négative
-        console.log("Échec de la connexion");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la vérification:", error);
-    }
+    // TODO: Implement login endpoint
+    console.log("Login attempt:", telephone);
+    alert("Login non implémenté");
   };
 
   return (

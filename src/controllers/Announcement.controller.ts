@@ -1,4 +1,4 @@
-import { IAnnouncement } from "@/models/Annnouncements";
+import { IAnnouncement } from "@/models/Announcement";
 import { AnnouncementService } from "@/services/AnnouncementService";
 import { NextApiRequest, NextApiResponse } from "next";
 import { BaseController } from "./BaseController";
@@ -39,11 +39,11 @@ export class AnnouncementController extends BaseController {
       const id = this.parseId(req);
       const announcementData = this.getBody(req) as Partial<IAnnouncement>;
       const updatedAnnouncement = await this.announcementService.updateAnnouncement(id, announcementData);
-      
+
       if (!updatedAnnouncement) {
         return this.sendNotFound(res, 'Annonce non trouvée');
       }
-      
+
       this.sendSuccess(res, updatedAnnouncement, 200, 'Annonce mise à jour avec succès');
     } catch (error) {
       this.handleError(res, error);

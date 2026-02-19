@@ -1,8 +1,7 @@
 import { IComment, ICreateCommentDTO, IUpdateCommentDTO } from "@/models/Comment";
-import { ICommentRepository } from "./ICommentRepository";
 import pool from "@/lib/db";
 
-export class CommentRepository implements ICommentRepository {
+export class CommentRepository {
    private readonly tableName = "comments";
 
    async create(createCommentDto: ICreateCommentDTO): Promise<IComment> {
