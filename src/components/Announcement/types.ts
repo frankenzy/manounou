@@ -1,4 +1,4 @@
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 
 export interface IMetadata {
   fontSize: string;
@@ -10,6 +10,7 @@ export interface IMetadata {
   calendar: string;
   idCard: string;
   image: string;
+  imagePublicId: string;
   tags: string[];
   category: string;
   author: string;

@@ -1,12 +1,10 @@
-// src/services/UserService.ts
 import { UserValidator } from "@/validators/UserValidator";
 import bcrypt from "bcryptjs";
 import { IUser, IUserDTO } from "../models/User.model";
-import { IUserRepository } from "../repositories/IUserRepository";
-import { IUserService } from "./IUserService";
+import { UserRepository } from "../repositories/UserRepository";
 
-export class UserService implements IUserService {
-  constructor(private readonly userRepository: IUserRepository) {}
+export class UserService {
+  constructor(private readonly userRepository: UserRepository) { }
 
   async getAllUsers(): Promise<IUserDTO[]> {
     return await this.userRepository.findAll();

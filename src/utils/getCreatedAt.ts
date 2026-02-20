@@ -1,7 +1,7 @@
-export function GetCreatedAt(date: Date | string | number): string {
+export function GetCreatedAt(date: Date | string | number, now?: Date): string {
    const created = date instanceof Date ? date : new Date(date);
-   const now = new Date();
-   const diff = Math.max(0, now.getTime() - created.getTime());
+   const currentTime = now || new Date();
+   const diff = Math.max(0, currentTime.getTime() - created.getTime());
    const seconds = Math.floor(diff / 1000);
 
    if (seconds < 60) return `${seconds}s`;

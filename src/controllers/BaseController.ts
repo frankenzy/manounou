@@ -5,13 +5,13 @@ export abstract class BaseController {
    * Wrapper pour gérer automatiquement les erreurs
    */
   protected async handleRequest(
-    req: NextApiRequest,
+    _req: NextApiRequest,
     res: NextApiResponse,
-    handler: () => Promise<any>
+    handler: () => Promise<unknown>
   ): Promise<void> {
     try {
       const result = await handler();
-      
+
       if (result === null || result === undefined) {
         this.sendNotFound(res);
       } else {
@@ -27,11 +27,11 @@ export abstract class BaseController {
    */
   protected sendSuccess(
     res: NextApiResponse,
-    data: any,
+    data: unknown,
     statusCode: number = 200,
     message?: string
   ): void {
-    const response: any = {
+    const response: Record<string, unknown> = {
       success: true,
       data,
     };
@@ -50,7 +50,7 @@ export abstract class BaseController {
   /**
    * Envoie une réponse de création réussie
    */
-  protected sendCreated(res: NextApiResponse, data: any, message?: string): void {
+  protected sendCreated(res: NextApiResponse, data: unknown, message?: string): void {
     this.sendSuccess(res, data, 201, message || 'Resource created successfully');
   }
 
@@ -124,11 +124,11 @@ export abstract class BaseController {
    */
   protected parseId(req: NextApiRequest): number {
     const id = parseInt(req.query.id as string, 10);
-    
+
     if (isNaN(id)) {
       throw new Error('Invalid ID provided');
     }
-    
+
     return id;
   }
 

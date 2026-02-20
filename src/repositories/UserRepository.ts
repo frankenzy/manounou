@@ -1,8 +1,18 @@
 import pool from "../lib/db";
 import { IUser, IUserDTO } from "../models/User.model";
-import { IUserRepository } from "./IUserRepository";
 
-export class UserRepository implements IUserRepository {
+export interface UserRow {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export class UserRepository {
   private readonly tableName = "users";
 
   async findAll(): Promise<IUserDTO[]> {
@@ -108,7 +118,7 @@ export class UserRepository implements IUserRepository {
   async update(id: number, userData: Partial<IUser>): Promise<IUserDTO | null> {
     try {
       const fields: string[] = [];
-      const values: any[] = [];
+      const values: (string | number | boolean | undefined)[] = [];
       let paramIndex = 1;
 
       if (userData.username !== undefined) {
@@ -170,7 +180,7 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  private mapRowToDTO(row: any): IUserDTO {
+  private mapRowToDTO(row: UserRow): IUserDTO {
     return {
       id: row.id,
       username: row.username,
@@ -182,7 +192,7 @@ export class UserRepository implements IUserRepository {
     };
   }
 
-  private mapRowToUser(row: any): IUser {
+  private mapRowToUser(row: UserRow): IUser {
     return {
       id: row.id,
       username: row.username,

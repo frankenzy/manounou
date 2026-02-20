@@ -1,4 +1,4 @@
-import { IAnnouncementDTO } from "@/models/Annnouncements";
+import { IAnnouncementDTO } from "@/models/Announcement";
 import { useState } from "react";
 import { AnnouncementFormData } from "./types";
 

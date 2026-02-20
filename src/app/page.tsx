@@ -3,13 +3,9 @@ import Image from "next/image";
 
 import Buttons from "@/components/buttons";
 import Header from "@/components/header";
-import Logo from "@/components/Logo";
 import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
-import { Layout } from "lucide-react";
-
-
 
 
 const FadeInImage = styled(Image)`
@@ -28,7 +24,7 @@ const FadeInImage = styled(Image)`
 `;
 
 
-export default function about() {
+export default function Home() {
 
   const router = useRouter();
   const handleCall = () => {
@@ -36,15 +32,13 @@ export default function about() {
   };
   return (
     <>
-      {/* <Layout> */}
       <Header />
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid pb-5 rounded-xl">
         <div className="flex flex-col w-full">
 
-          <div className="grid grid-cols-2 items-center justify-center w-full">
+          <div className="grid md:grid-cols-2 items-center justify-center w-full">
             <div className="col-span-1 px-12">
               <div className="flex flex-col justify-start items-center px-24 py-8">
-                <Logo className="items-start" />
                 <div className="w-full">
                   <div className="flex flex-col items-start w-full">
                     <h3 className="text-8xl font-bold text-start">
@@ -127,7 +121,6 @@ export default function about() {
           </FadeInSection>
         </div>
       </main>
-      {/* </Layout> */}
-    </>
+      =    </>
   );
 }

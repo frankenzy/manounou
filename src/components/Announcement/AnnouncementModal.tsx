@@ -19,7 +19,8 @@ export default function AnnouncementModal({
    // Déterminer le mode automatiquement si non spécifié
    const isEditMode = mode === "edit" || !!announcement;
 
-   const formLogic = useAnnouncementForm(announcement);
+   const [openSession, setOpenSession] = useState(0);
+   const formLogic = useAnnouncementForm(announcement, isOpen);
 
    const { isSubmitting, error, createAnnouncement, updateAnnouncement } = useAnnouncementSubmit();
 
@@ -27,7 +28,12 @@ export default function AnnouncementModal({
    useEffect(() => {
       if (!isOpen) {
          formLogic.resetForm();
-         // setShowSuccess(false);
+      }
+   }, [isOpen, formLogic]);
+
+   useEffect(() => {
+      if (isOpen) {
+         setOpenSession((prev) => prev + 1);
       }
    }, [isOpen]);
 
@@ -45,34 +51,25 @@ export default function AnnouncementModal({
       } else {
          result = await createAnnouncement(formData);
       }
-      // if (result.success) {
-      //    setShowSuccess(true);
-      //    setTimeout(() => {
-      //       setShowSuccess(false);
-      //       handleCloseModal();
-      //       if (onSuccess) onSuccess();
-      //    }, 2000);
-      // } else {
-      //    alert(result.error);
-      // }
+      if (result && result.success !== false && !result.error) {
+         handleCloseModal();
+         if (onSuccess) onSuccess();
+      } else {
+         alert(result?.error || 'Erreur lors de la soumission de l\'annonce');
+      }
    };
 
 
    const tabsContainerRef = useRef<HTMLDivElement | null>(null);
    const btnJobRef = useRef<HTMLButtonElement | null>(null);
    const btnEmpRef = useRef<HTMLButtonElement | null>(null);
-   const [indicator, setIndicator] = useState<{ left: string; width: string }>({ left: "0px", width: "0px" });
-
-
    const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
    useEffect(() => {
       const update = () => {
          const container = tabsContainerRef.current;
          const activeBtn = tabs === "job-seeker" ? btnJobRef.current : btnEmpRef.current;
          if (container && activeBtn) {
-            const cRect = container.getBoundingClientRect();
-            const bRect = activeBtn.getBoundingClientRect();
-            setIndicator({ left: `${bRect.left - cRect.left}px`, width: `${bRect.width}px` });
+            // Tab indicator styling could be added here if needed
          }
       };
       update();
@@ -83,14 +80,7 @@ export default function AnnouncementModal({
 
    return (
       <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
-         {/* {showSuccess && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/95 z-50 rounded-lg">
-               <div className="w-64 h-64">
-                  {succesSVG}
-               </div>
-            </div>
-         )} */}
-         <div className="p-6">
+         <div className="p-6" key={`announcement-modal-session-${openSession}`}>
             <div className="modalHeader flex items-center justify-between">
                <div className="void"></div>
                <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
@@ -116,8 +106,6 @@ export default function AnnouncementModal({
                      Je cherche un travail
                   </button>
 
-                  {/* <div className="mx-2 bg-orange-500 w-0.5 self-stretch" /> */}
-
                   <button
 
                      className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
@@ -140,6 +128,7 @@ export default function AnnouncementModal({
                inputColor={formLogic.inputColor}
                showUploadImage={formLogic.showUploadImage}
                announcementTitle={formLogic.announcementTitle}
+               image={formLogic.image}
                textareaRef={formLogic.textareaRef}
                onInput={formLogic.handleInput}
                onTitleChange={formLogic.setAnnouncementTitle}

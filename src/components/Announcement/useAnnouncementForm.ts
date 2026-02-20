@@ -1,47 +1,51 @@
-import { IAnnouncementDTO } from "@/models/Annnouncements";
-import { useEffect, useRef, useState } from "react";
+import { IAnnouncementDTO } from "@/models/Announcement";
+import { UploadedImageData } from "@/components/uploadImage";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnnouncementFormData, IMetadata, LENGTH_LIMIT } from "./types";
 
-export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
+const getInitialMetadata = (): IMetadata => ({
+  fontSize: "",
+  backgroundColor: "",
+  background: "",
+  location: "",
+  audience: "",
+  relationSheep: "",
+  calendar: "",
+  idCard: "",
+  image: "",
+  imagePublicId: "",
+  tags: [],
+  category: "",
+  author: "",
+  contact: "",
+  startDate: "",
+  endDate: "",
+  visibility: "",
+  priority: "",
+  pinned: false,
+  link: "",
+  attachments: [],
+  textAlign: "",
+  fontWeight: "",
+  lineHeight: "",
+  ctaText: "",
+  ctaUrl: "",
+  locale: "",
+  createdAt: "",
+  updatedAt: "",
+});
+
+export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: boolean) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
+
   const [inputValue, setInputValue] = useState("");
   const [inputBg, setInputBg] = useState("");
   const [inputColor, setInputColor] = useState("");
   const [lastSelectedColor, setLastSelectedColor] = useState("");
   const [showUploadImage, setShowUploadImage] = useState(false);
   const [announcementTitle, setAnnouncementTitle] = useState("");
-  
-  const [metadata, setMetadata] = useState<IMetadata>({
-    fontSize: "",
-    backgroundColor: "",
-    background: "",
-    location: "",
-    audience: "",
-    relationSheep: "",
-    calendar: "",
-    idCard: "",
-    image: "",
-   tags: [],
-   category: "",
-   author: "",
-   contact: "",
-   startDate: "",
-   endDate: "",
-   visibility: "",
-   priority: "",
-   pinned: false,
-   link: "",
-   attachments: [],
-   textAlign: "",
-   fontWeight: "",
-   lineHeight: "",
-   ctaText: "",
-   ctaUrl: "",
-   locale: "",
-   createdAt: "",
-   updatedAt: "",
-  });
+
+  const [metadata, setMetadata] = useState<IMetadata>(getInitialMetadata());
 
   // Ajustement automatique de la hauteur du textarea
   const adjustTextareaHeight = () => {
@@ -56,27 +60,6 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   useEffect(() => {
     adjustTextareaHeight();
   }, [inputValue]);
-
-  // Pré-remplir le formulaire en mode édition
-  useEffect(() => {
-    if (announcement) {
-      setAnnouncementTitle(announcement.title || "");
-      setInputValue(announcement.description || "");
-      
-      if (announcement.metadata) {
-        setMetadata(announcement.metadata as IMetadata);
-        
-        const bgColor = announcement.metadata.background || announcement.metadata.backgroundColor;
-        if (bgColor) {
-          setInputBg(`${bgColor} p-8`);
-          setInputColor(
-            "text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center"
-          );
-          setLastSelectedColor(bgColor as string);
-        }
-      }
-    }
-  }, [announcement]);
 
   // Gestion du background color
   const handleInputBg = (color: string) => {
@@ -114,51 +97,60 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   };
 
   // Reset complet du formulaire
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setInputBg("bg-white");
     setInputColor("text-black");
     setLastSelectedColor("");
     setInputValue("");
     setAnnouncementTitle("");
     setShowUploadImage(false);
-
-    setMetadata({
-      fontSize: "",
-      backgroundColor: "",
-      background: "",
-      location: "",
-      audience: "",
-      relationSheep: "",
-      calendar: "",
-      idCard: "",
-      image: "",
-      tags: [],
-      category: "",
-      author: "",
-      contact: "",
-      startDate: "",
-      endDate: "",
-      visibility: "",
-      priority: "",
-      pinned: false,
-      link: "",
-      attachments: [],
-      textAlign: "",
-      fontWeight: "",
-      lineHeight: "",
-      ctaText: "",
-      ctaUrl: "",
-      locale: "",
-      createdAt: "",
-      updatedAt: "",
-    });
+    setMetadata(getInitialMetadata());
 
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
-  };
+  }, []);
 
-  // Gestion de l'input
+  // Pré-remplir le formulaire en mode édition sans conserver de traces précédentes
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    if (!announcement) {
+      resetForm();
+      return;
+    }
+
+    const announcementMetadata = (announcement.metadata || {}) as Partial<IMetadata>;
+    const mergedMetadata: IMetadata = {
+      ...getInitialMetadata(),
+      ...announcementMetadata,
+      tags: Array.isArray(announcementMetadata.tags) ? announcementMetadata.tags : [],
+      attachments: Array.isArray(announcementMetadata.attachments)
+        ? announcementMetadata.attachments
+        : [],
+    };
+
+    setAnnouncementTitle(announcement.title || "");
+    setInputValue(announcement.description || "");
+    setMetadata(mergedMetadata);
+    setShowUploadImage(Boolean(mergedMetadata.image));
+
+    const bgColor = mergedMetadata.background || mergedMetadata.backgroundColor;
+    if (bgColor) {
+      setInputBg(`${bgColor} p-8`);
+      setInputColor(
+        "text-white dark:text-black text-[clamp(1rem,2vw,2rem)] font-bold text-center"
+      );
+      setLastSelectedColor(bgColor);
+    } else {
+      setInputBg("bg-white");
+      setInputColor("text-black");
+      setLastSelectedColor("");
+    }
+  }, [announcement, isOpen, resetForm]);
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length > LENGTH_LIMIT) {
@@ -169,17 +161,17 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setInputValue(value);
   };
 
-  // Gestion de l'image
   const handleLoadingImage = () => {
     resetStyles();
     setShowUploadImage(true);
   };
 
-  const handleImageUpload = (file: File) => {
-    console.log("Image uploaded: ", file);
+  const handleImageUpload = ({ url, publicId }: UploadedImageData) => {
+    console.log("Image uploaded: ", { url, publicId });
     setMetadata((prev) => ({
       ...prev,
-      image: file.name,
+      image: url,
+      imagePublicId: publicId,
     }));
   };
 
@@ -188,6 +180,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     setMetadata((prev) => ({
       ...prev,
       image: "",
+      imagePublicId: "",
     }));
   };
 
@@ -225,7 +218,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
   return {
     // Refs
     textareaRef,
-    
+
     // State
     inputValue,
     inputBg,
@@ -233,10 +226,16 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     showUploadImage,
     announcementTitle,
     metadata,
-    
+    image: metadata.image
+      ? {
+        url: metadata.image,
+        publicId: metadata.imagePublicId || "",
+      }
+      : undefined,
+
     // Setters
     setAnnouncementTitle,
-    
+
     // Handlers
     handleInput,
     handleInputBg,
@@ -248,7 +247,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO) => {
     handleSetCalendar,
     resetStyles,
     resetForm,
-    
+
     // Utilities
     getFormData,
   };

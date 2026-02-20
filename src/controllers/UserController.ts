@@ -1,10 +1,10 @@
 import { IUser } from '@/models/User.model';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IUserService } from '../services/IUserService';
+import { UserService } from '../services/UserService';
 import { BaseController } from './BaseController';
 
 export class UserController extends BaseController {
-  constructor(private userService: IUserService) {
+  constructor(private userService: UserService) {
     super();
   }
 

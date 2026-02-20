@@ -1,6 +1,6 @@
 "use client";
 
-import UploadImage, { UploadImageRef } from "@/components/uploadImage";
+import UploadImage, { UploadImageRef, UploadedImageData } from "@/components/uploadImage";
 import {
    faCalendar,
    faClock,
@@ -18,6 +18,7 @@ interface AnnouncementCreateFormProps {
    showUploadImage: boolean;
    announcementTitle: string;
    textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+   image?: UploadedImageData;
 
    // Handlers
    onInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -25,7 +26,7 @@ interface AnnouncementCreateFormProps {
    onColorSelect: (color: string) => void;
    onResetStyles: () => void;
    onLoadImage: () => void;
-   onImageUpload: (file: File) => void;
+   onImageUpload: (imageData: UploadedImageData) => void;
    onImageRemove: () => void;
    onSetUser: () => void;
    onSetCalendar: () => void;
@@ -37,6 +38,7 @@ export default function AnnouncementCreateForm({
    inputBg,
    inputColor,
    showUploadImage,
+   image,
    textareaRef,
    onInput,
    onColorSelect,
@@ -59,7 +61,6 @@ export default function AnnouncementCreateForm({
 
    return (
       <div>
-         {/* Section formulaire */}
          <div
             className={`modal modalForms row justify-normal items-center rounded-lg gap-4 my-8 ${inputBg}`}
          >
@@ -71,18 +72,20 @@ export default function AnnouncementCreateForm({
                style={{ minHeight: "60px", maxHeight: "180px" }}
                onChange={onInput}
             />
+
             {showUploadImage && (
                <div className="flex flex-auto items-center justify-start">
                   <UploadImage
                      ref={uploadImageRef}
                      onUpload={onImageUpload}
                      onRemove={onImageRemove}
+                     initialImageUrl={image?.url}
+                     initialPublicId={image?.publicId}
                   />
                </div>
             )}
          </div>
 
-         {/* Boutons de couleur */}
          <div className="flex-auto flex flex-row gap-4 text-[clamp(1rem,2vw,1.5rem)] justify-start items-start mb-4">
             <button
                className="w-5 bg-orange-500 rounded-md h-6 p-2 text-white flex items-center justify-center"
