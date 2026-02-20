@@ -635,6 +635,7 @@ export default function BlueskyLayout() {
                           <Image
                             src={metadata.image}
                             alt="Announcement Image"
+                            fill
                             loading="lazy"
                             decoding="async"
                             fetchPriority="low"

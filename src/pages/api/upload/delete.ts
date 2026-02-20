@@ -35,8 +35,13 @@ export default async function handler(
    req: NextApiRequest,
    res: NextApiResponse<DeleteSuccessResponse | DeleteErrorResponse>
 ) {
-   if (req.method !== "DELETE") {
-      res.setHeader("Allow", "DELETE");
+   if (req.method === "OPTIONS") {
+      res.setHeader("Allow", "DELETE, POST, OPTIONS");
+      return res.status(204).end();
+   }
+
+   if (req.method !== "DELETE" && req.method !== "POST") {
+      res.setHeader("Allow", "DELETE, POST");
       return res.status(405).json({ error: "Method not allowed" });
    }
 
