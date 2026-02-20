@@ -50,7 +50,7 @@ const Modal = ({ children, className, isOpen = false, onClose }: CustomProps) =>
                 aria-label="Close Modal"
             />
 
-            <div className={`relative bg-white rounded-lg shadow-lg max-w-[640] min-h-max w-full mx-4 z-10 ${contentAnimation}`}>
+            <div className={`relative bg-white rounded-lg shadow-lg max-w-[640px] min-h-max w-full mx-4 z-10 ${contentAnimation}`}>
                 {children}
             </div>
         </div>
