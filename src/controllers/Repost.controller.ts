@@ -1,6 +1,7 @@
 import { RepostService } from "@/services/repost/repost.service";
 import { BaseController } from "./BaseController";
 import { ICreateRepostDTO, RepostCreateRequest, RepostDeleteRequest } from "@/models/Repost";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default class RepostController extends BaseController {
 
@@ -8,7 +9,7 @@ export default class RepostController extends BaseController {
       super();
    }
 
-   async create(req: any, res: any) {
+   async create(req: NextApiRequest, res: NextApiResponse) {
       try {
          const { announceId, authorId, text } = req.body as RepostCreateRequest;
 
@@ -29,7 +30,7 @@ export default class RepostController extends BaseController {
       }
    }
 
-   async delete(req: any, res: any) {
+   async delete(req: NextApiRequest, res: NextApiResponse) {
       try {
          const { announceId } = req.body as RepostDeleteRequest;
 
@@ -44,7 +45,7 @@ export default class RepostController extends BaseController {
       }
    }
 
-   async get(req: any, res: any) {
+   async get(req: NextApiRequest, res: NextApiResponse) {
       try {
          const { announceId } = req.query;
          if (announceId) {

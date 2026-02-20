@@ -2,6 +2,7 @@ import { RepostApiResponse, RepostCreateRequest, RepostProps } from "@/models/Re
 import Modal from "../Modal";
 import { UserCircle } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostProps) {
    const announcementImage = typeof annonce.metadata?.image === "string" ? annonce.metadata.image : undefined;
@@ -97,7 +98,7 @@ export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostPr
                   </div>
                   <>
                      {announcementImage && (
-                        <img
+                        <Image
                            src={announcementImage}
                            alt="Annonce image"
                            className="w-24 h-24 object-cover rounded-xl flex-shrink-0 shadow-sm"

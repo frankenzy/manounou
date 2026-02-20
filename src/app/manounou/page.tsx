@@ -27,9 +27,10 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Repost from "@/components/repost/repost";
 import DeleteModal from "@/components/modals/deleteModal";
+import Image from "next/image";
 
 
 const enum NavTabs {
@@ -106,7 +107,7 @@ export default function BlueskyLayout() {
     }
   };
 
-  const fetchAnnonces = async () => {
+  const fetchAnnonces = useCallback(async () => {
     try {
       const [announceResponse, repostResponse] = await Promise.all([
         fetch("/api/announcements"),
@@ -186,11 +187,11 @@ export default function BlueskyLayout() {
       console.error("Error fetching announcements:", error);
       setAnnonces([]);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchAnnonces();
-  }, []);
+  }, [fetchAnnonces]);
 
   useEffect(() => {
     if (deleteTargetId === null) return;
@@ -631,7 +632,7 @@ export default function BlueskyLayout() {
                       {/* Afficharge des images */}
                       {metadata?.image && typeof metadata.image === "string" && (
                         <figure className="w-full relative overflow-hidden rounded-xl border border-white/40 bg-black/5 aspect-[4/5] md:aspect-[16/10]">
-                          <img
+                          <Image
                             src={metadata.image}
                             alt="Announcement Image"
                             loading="lazy"

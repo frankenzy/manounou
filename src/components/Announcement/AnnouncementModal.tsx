@@ -29,7 +29,7 @@ export default function AnnouncementModal({
       if (!isOpen) {
          formLogic.resetForm();
       }
-   }, [isOpen, formLogic.resetForm]);
+   }, [isOpen, formLogic]);
 
    useEffect(() => {
       if (isOpen) {

@@ -7,10 +7,10 @@ import Buttons from "./buttons";
 export default function Header() {
   const router = useRouter();
   const handleLogin = () => {
-    // router.push("/login");
+    router.push("/login");
   };
   const handleRegister = () => {
-    // router.push("/register");
+    router.push("/register");
   };
   return (
     <div className="header flex items-center justify-center w-full border-solid border-b-1 border-0 border-[#ffffff]">

@@ -28,7 +28,7 @@ export default function Home() {
 
   const router = useRouter();
   const handleCall = () => {
-    // router.push("/login");
+    router.push("/login");
   };
   return (
     <>

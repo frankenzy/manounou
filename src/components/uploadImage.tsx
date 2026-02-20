@@ -2,6 +2,7 @@
 
 import { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface UploadImageProps {
   onUpload?: (imageData: UploadedImageData) => void;
@@ -185,7 +186,7 @@ const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(({
 
       {preview && (
         <div className="preview-container mt-4 w-full max-w-xs relative">
-          <img
+          <Image
             src={preview}
             alt="Aperçu"
             className="w-full h-auto max-h-80 rounded-lg"
