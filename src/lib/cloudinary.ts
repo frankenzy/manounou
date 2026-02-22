@@ -2,18 +2,24 @@ import crypto from "node:crypto";
 import path from "node:path";
 import fs from "node:fs/promises";
 
-const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-const apiKey = process.env.CLOUDINARY_API_KEY;
-const apiSecret = process.env.CLOUDINARY_API_SECRET;
+const getCloudinaryEnv = () => ({
+   cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+   apiKey: process.env.CLOUDINARY_API_KEY,
+   apiSecret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const ensureCloudinaryEnv = () => {
+   const { cloudName, apiKey, apiSecret } = getCloudinaryEnv();
+
    if (!cloudName || !apiKey || !apiSecret) {
       throw new Error("Cloudinary environment variables are not fully configured");
    }
+
+   return { cloudName, apiKey, apiSecret };
 };
 
 const signParams = (params: Record<string, string | number>) => {
-   ensureCloudinaryEnv();
+   const { apiSecret } = ensureCloudinaryEnv();
 
    const serialized = Object.entries(params)
       .filter(([, value]) => value !== undefined && value !== null && `${value}`.length > 0)
@@ -24,8 +30,8 @@ const signParams = (params: Record<string, string | number>) => {
    return crypto.createHash("sha1").update(`${serialized}${apiSecret}`).digest("hex");
 };
 
-export const uploadImageToCloudinary = async (filePath: string, folder?: string) => {
-   ensureCloudinaryEnv();
+export const uploadImageToCloudinary = async (filePath: string, folder?: string, mimeTypeOverride?: string) => {
+   const { cloudName, apiKey } = ensureCloudinaryEnv();
 
    const ext = path.extname(filePath).toLowerCase();
    const mimeTypeByExt: Record<string, string> = {
@@ -36,7 +42,7 @@ export const uploadImageToCloudinary = async (filePath: string, folder?: string)
       ".gif": "image/gif",
       ".avif": "image/avif",
    };
-   const mimeType = mimeTypeByExt[ext] || "application/octet-stream";
+   const mimeType = mimeTypeOverride || mimeTypeByExt[ext] || "application/octet-stream";
    const fileBuffer = await fs.readFile(filePath);
    const fileAsDataUri = `data:${mimeType};base64,${fileBuffer.toString("base64")}`;
 
@@ -65,14 +71,15 @@ export const uploadImageToCloudinary = async (filePath: string, folder?: string)
    });
 
    if (!response.ok) {
-      throw new Error("Cloudinary upload failed");
+      const errorBody = await response.text().catch(() => "");
+      throw new Error(`Cloudinary upload failed (${response.status}): ${errorBody || "no response body"}`);
    }
 
    return response.json();
 };
 
 export const destroyCloudinaryAsset = async (publicId: string) => {
-   ensureCloudinaryEnv();
+   const { cloudName, apiKey } = ensureCloudinaryEnv();
 
    const timestamp = Math.floor(Date.now() / 1000);
    const signature = signParams({ public_id: publicId, timestamp });
@@ -93,7 +100,8 @@ export const destroyCloudinaryAsset = async (publicId: string) => {
    });
 
    if (!response.ok) {
-      throw new Error("Cloudinary destroy failed");
+      const errorBody = await response.text().catch(() => "");
+      throw new Error(`Cloudinary destroy failed (${response.status}): ${errorBody || "no response body"}`);
    }
 
    return response.json();

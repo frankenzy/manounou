@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
+import { CldUploadButton } from 'next-cloudinary';
 
 interface AnnouncementCreateFormProps {
    // State
@@ -53,6 +54,10 @@ export default function AnnouncementCreateForm({
    const uploadImageRef = useRef<UploadImageRef>(null);
 
    const handleLoadImage = () => {
+
+
+
+
       onLoadImage();
       setTimeout(() => {
          uploadImageRef.current?.openFileDialog();
@@ -82,6 +87,7 @@ export default function AnnouncementCreateForm({
                      initialImageUrl={image?.url}
                      initialPublicId={image?.publicId}
                   />
+
                </div>
             )}
          </div>
