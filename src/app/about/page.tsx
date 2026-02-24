@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import Buttons from "@/components/buttons";
+import Buttons from "@/components/ui/buttons/buttons";
 import Header from "@/components/header";
 import Logo from "@/components/Logo";
 import FadeInSection from "@/utils/animationUtils";

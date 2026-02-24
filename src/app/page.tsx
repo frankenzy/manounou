@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import Buttons from "@/components/buttons";
+import Buttons from "@/components/ui/buttons/buttons";
 import Header from "@/components/header";
 import FadeInSection from "@/utils/animationUtils";
 import { useRouter } from "next/navigation";
@@ -89,9 +89,9 @@ export default function Home() {
               </div>
               <div className="flex h-full flex-col w-full justify-center items-center p-4">
                 <p className="text-center my-4 text-8xl font-bold">
-                  Participez à des défis provenant de divers pays
+                  Participez à des Gbairai tres torides
                   <span className="text-9xl font-bold  animated-text block text-red-500 ">
-                    +130 pays
+                    +130 Gbairais
                   </span>
                 </p>
               </div>

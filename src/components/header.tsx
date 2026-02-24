@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Menu from "./Menu";
-import Buttons from "./buttons";
+import Buttons from "./ui/buttons/buttons";
 
 export default function Header() {
   const router = useRouter();

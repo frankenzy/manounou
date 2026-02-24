@@ -1,9 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Buttons from "../../components/buttons";
+import Buttons from "../../components/ui/buttons/buttons";
 import Logo from "../../components/Logo";
-import Input from "../../components/Input";
+import Input from "../../components/ui/forms/Input";
 import Header from "../../components/header";
 import RegisterLink from "../../components/RegisterLink";
 import Loyout from "../layout";

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AnnouncementModal } from "@/components/Announcement";
 import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
 import Comment from "@/components/comments/comment";
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { Announcement, IAnnouncementDTO } from "@/models/Announcement";
 import { IRepost } from "@/models/Repost";
 import { RelativeTime } from "@/components/RelativeTime";
 import {
@@ -31,6 +31,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Repost from "@/components/repost/repost";
 import DeleteModal from "@/components/modals/deleteModal";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 
 const enum NavTabs {
@@ -538,8 +539,34 @@ export default function BlueskyLayout() {
     return () => window.removeEventListener("resize", update);
   }, [tabs]);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const Main = () => {
+
+    const cardVariants = {
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+    };
+
+    interface AnnouncementCardProps {
+      announcement: Announcement
+      index: number;
+    }
     return (
+
       <div className="w-full lg:flex-1 lg:max-w-3xl">
 
         <div className="sticky top-[4rem] md:top-16 bg-white/90 border border-gray-100 rounded-2xl z-10 backdrop-blur shadow-sm">
@@ -575,118 +602,142 @@ export default function BlueskyLayout() {
           </div>
         </div>
         {Array.isArray(annonces) && annonces.length > 0 ? (
-          annonces.map((annonce: FeedAnnouncement) => {
+          annonces.map((annonce: FeedAnnouncement, index: number) => {
             const metadata = annonce.metadata as Record<string, string> | undefined;
             const bgClass = metadata?.background || metadata?.backgroundColor;
             const metaColor = metadata?.backgroundColor as string | undefined;
             const metaSize = metadata?.fontSize;
             const isRepostItem = annonce.feedType === "repost";
             return (
-              <div key={annonce.feedId} className="mt-3 md:mt-4 rounded-2xl border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow">
-                <div className="flex gap-3">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-300 to-orange-500 rounded-2xl flex-shrink-0 shadow-sm"></div>
 
-                  <div className="flex-1">
-                    {isRepostItem && (
-                      <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-orange-50 px-2 py-1 text-[11px] font-semibold text-orange-700 border border-orange-100">
-                        <Repeat2 className="w-3.5 h-3.5" />
-                        Reposté par utilisateur #{annonce.repostAuthorId}
-                      </div>
-                    )}
+              <motion.div
+                layout
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                viewport={{ once: true, amount: 0.8 }} // Anime quand c'est visible
+                style={{
+                  width: '100%',
+                  minHeight: `${200 + (index % 3) * 50}px`,
+                  backgroundColor: bgClass ?? '#fff',
 
-                    <div className="flex justify-between items-center mb-3">
-                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                  overflow: 'hidden',
 
-                        <span className="font-semibold text-gray-900 text-sm md:text-base">{annonce.title}</span>
-                        <span className="text-gray-500 text-xs md:text-sm">
-                          @{annonce.created_at ? new Date(annonce.created_at as unknown as Date).toLocaleDateString() : ""}
-                        </span>
-                        <span className="text-gray-500 text-xs md:text-sm items-end">
-                          <RelativeTime date={annonce.created_at ? annonce.created_at : annonce.updated_at || ""} />
-                        </span>
-                      </div>
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: '20px',
+                  cursor: 'pointer',
+                }}
+              >
+                <div key={annonce.feedId} className="mt-3 md:mt-4 rounded-2xl border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow">
+                  <div className="flex gap-3">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-300 to-orange-500 rounded-2xl flex-shrink-0 shadow-sm"></div>
 
-                      {!isRepostItem && <PostMenu announcementId={annonce.id} />}
-                    </div>
-
-                    {isRepostItem && annonce.repostText && (
-                      <p className="mb-3 text-sm text-gray-700 bg-gray-50 border border-gray-100 rounded-lg p-2">
-                        {annonce.repostText}
-                      </p>
-                    )}
-
-                    <div
-                      className={`${bgClass ? `${bgClass} items-center` : "bg-gray-50 items-start"} p-4 rounded-lg min-h-[180px] flex flex-col gap-4 justify-center overflow-hidden`}
-                      style={{
-                        backgroundColor: metaColor,
-                        fontSize: metaSize,
-                      }}
-                    >
-
-                      <p
-                        className={`${metaSize ?? "text-base md:text-lg"} ${bgClass ? "text-white" : "text-neutral-500"} font-semibold mb-1 md:mb-2 leading-relaxed`}
-                      >
-                        {annonce.description}
-                      </p>
-
-                      {/* Afficharge des images */}
-                      {metadata?.image && typeof metadata.image === "string" && (
-                        <figure className="w-full relative overflow-hidden rounded-xl border border-white/40 bg-black/5 aspect-[4/5] md:aspect-[16/10]">
-                          <Image
-                            src={metadata.image}
-                            alt="Announcement Image"
-                            fill
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 720px"
-                            className="object-cover w-full h-full relative z-0 transition-transform duration-500 hover:scale-[1.02]"
-                          />
-                        </figure>
+                    <div className="flex-1">
+                      {isRepostItem && (
+                        <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-orange-50 px-2 py-1 text-[11px] font-semibold text-orange-700 border border-orange-100">
+                          <Repeat2 className="w-3.5 h-3.5" />
+                          Reposté par utilisateur #{annonce.repostAuthorId}
+                        </div>
                       )}
 
-                    </div>
-                    <div className="flex justify-between items-center gap-1 md:gap-3 text-gray-500 text-xs md:text-sm bg-gray-50 px-2 md:px-3 py-2.5 md:py-3 rounded-xl mt-2 border border-gray-100 overflow-x-auto">
-                      <button
-                        className="flex items-center gap-1.5 md:gap-2 hover:text-green-600 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
+                      <div className="flex justify-between items-center mb-3">
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
 
-                        onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)}
-
-                      >
-                        <MessageCircle className="w-4 h-4" />
-                        <span>{annonce.commentCount || 0}</span>
-                      </button>
-                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
-                        onClick={() => handleRepost(annonce.id as number)}>
-                        <Repeat2 className="w-4 h-4" />
-                        <span>{annonce.repostCount || 0}</span>
-                      </button>
-                      <button className="flex items-center gap-1.5 md:gap-2 hover:text-red-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
-                        <Heart className="w-4 h-4" />
-                        <span>1K</span>
-                      </button>
-                      <button className="flex hover:text-orange-500 rounded-lg p-1.5 hover:bg-white transition-colors">
-                        <Share className="w-4 h-4" />
-                      </button>
-                      <button className="flex hover:text-gray-700 rounded-lg p-1.5 hover:bg-white transition-colors">
-                        <ChevronDown className="w-4 h-4"
-                          onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)} />
-                      </button>
-                    </div>
-                    {
-                      openCommentId === annonce.id && (
-                        <div className="min-h-20 m-h-60 relative z-10 rounded-b-lg -mt-2">
-                          <Comment
-                            isOpen={true}
-                            onClose={() => setOpenCommentId(null)}
-                            annonce={annonce}
-                          />
+                          <span className="font-semibold text-gray-900 text-sm md:text-base">{annonce.title}</span>
+                          <span className="text-gray-500 text-xs md:text-sm">
+                            @{annonce.created_at ? new Date(annonce.created_at as unknown as Date).toLocaleDateString() : ""}
+                          </span>
+                          <span className="text-gray-500 text-xs md:text-sm items-end">
+                            <RelativeTime date={annonce.created_at ? annonce.created_at : annonce.updated_at || ""} />
+                          </span>
                         </div>
-                      )
-                    }
+
+                        {!isRepostItem && <PostMenu announcementId={annonce.id} />}
+                      </div>
+
+                      {isRepostItem && annonce.repostText && (
+                        <p className="mb-3 text-sm text-gray-700 bg-gray-50 border border-gray-100 rounded-lg p-2">
+                          {annonce.repostText}
+                        </p>
+                      )}
+
+                      <div
+                        className={`${bgClass ? `${bgClass} items-center` : "bg-gray-50 items-start"} p-4 rounded-lg min-h-[180px] flex flex-col gap-4 justify-center overflow-hidden`}
+                        style={{
+                          backgroundColor: metaColor,
+                          fontSize: metaSize,
+                        }}
+                      >
+
+                        <p
+                          className={`${metaSize ?? "text-base md:text-lg"} ${bgClass ? "text-white" : "text-neutral-500"} font-semibold mb-1 md:mb-2 leading-relaxed`}
+                        >
+                          {annonce.description}
+                        </p>
+
+                        {/* Afficharge des images */}
+                        {metadata?.image && typeof metadata.image === "string" && (
+                          <figure className="w-full relative overflow-hidden rounded-xl border border-white/40 bg-black/5 aspect-[4/5] md:aspect-[16/10]">
+                            <Image
+                              src={metadata.image}
+                              alt="Announcement Image"
+                              fill
+                              loading="lazy"
+                              decoding="async"
+                              fetchPriority="low"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 720px"
+                              className="object-cover w-full h-full relative z-0 transition-transform duration-500 hover:scale-[1.02]"
+                            />
+                          </figure>
+                        )}
+
+                      </div>
+                      <div className="flex justify-between items-center gap-1 md:gap-3 text-gray-500 text-xs md:text-sm bg-gray-50 px-2 md:px-3 py-2.5 md:py-3 rounded-xl mt-2 border border-gray-100 overflow-x-auto">
+                        <button
+                          className="flex items-center gap-1.5 md:gap-2 hover:text-green-600 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
+
+                          onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)}
+
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          <span>{annonce.commentCount || 0}</span>
+                        </button>
+                        <button className="flex items-center gap-1.5 md:gap-2 hover:text-green-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap"
+                          onClick={() => handleRepost(annonce.id as number)}>
+                          <Repeat2 className="w-4 h-4" />
+                          <span>{annonce.repostCount || 0}</span>
+                        </button>
+                        <button className="flex items-center gap-1.5 md:gap-2 hover:text-red-500 rounded-lg px-2 py-1 hover:bg-white transition-colors whitespace-nowrap">
+                          <Heart className="w-4 h-4" />
+                          <span>1K</span>
+                        </button>
+                        <button className="flex hover:text-orange-500 rounded-lg p-1.5 hover:bg-white transition-colors">
+                          <Share className="w-4 h-4" />
+                        </button>
+                        <button className="flex hover:text-gray-700 rounded-lg p-1.5 hover:bg-white transition-colors">
+                          <ChevronDown className="w-4 h-4"
+                            onClick={() => annonce.id !== undefined && handleOpenComment(annonce.id)} />
+                        </button>
+                      </div>
+                      {
+                        openCommentId === annonce.id && (
+                          <div className="min-h-20 m-h-60 relative z-10 rounded-b-lg -mt-2">
+                            <Comment
+                              isOpen={true}
+                              onClose={() => setOpenCommentId(null)}
+                              annonce={annonce}
+                            />
+                          </div>
+                        )
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>
+
+              </motion.div>
+
             );
           })
         ) : (
@@ -695,8 +746,11 @@ export default function BlueskyLayout() {
           </div>
         )}
       </div>
+
     );
   };
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
