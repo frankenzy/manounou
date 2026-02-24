@@ -8,37 +8,47 @@ import Header from "../../components/header";
 import RegisterLink from "../../components/RegisterLink";
 import Loyout from "../layout";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [telephone, setTelephone] = useState<string>("");
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [onFocus, setOnFocus] = useState<boolean>(false);
-  const [isValidate, setIsValidate] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTelephone(e.target.value);
-    const valueCompte = e.target.value.replace("/s/g", "").length;
-
-    if (valueCompte >= 10) {
-      setIsValidate(true);
-    } else {
-      setIsValidate(false);
-    }
-  };
+  const isValidate = email.includes("@") && password.length >= 1;
 
   const handleFocus = () => {
     setOnFocus(true);
-    console.log("Input focused");
   };
 
   const handleBlur = () => {
     setOnFocus(false);
-    console.log("Input lost focus");
   };
 
   const handleSubmit = async () => {
-    // TODO: Implement login endpoint
-    console.log("Login attempt:", telephone);
-    alert("Login non implémenté");
+    if (!isValidate) return;
+    setIsLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = (await res.json()) as { success: boolean; message?: string };
+      if (res.ok && data.success) {
+        router.push("/manounou");
+      } else {
+        setError(data.message || "Identifiants incorrects");
+      }
+    } catch {
+      setError("Erreur réseau, veuillez réessayer");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,22 +71,38 @@ export default function Home() {
               <div className="flex flex-col items-center w-full">
                 <h3 className="text-4xl font-bold">Connexion DJALO</h3>
                 <p className="text-xl text-center my-4">
-                  Sign in to v0 using your Vercel account.
+                  Connectez-vous à votre compte Manounou
                 </p>
               </div>
+
+              {error && (
+                <div className="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
 
               {/* input form */}
 
               <Input
-                disabled={false}
-                Placeholder="Numéro de telephone"
+                disabled={isLoading}
+                Placeholder="Adresse email"
                 className="w-full"
-                type="number"
-                name="numero"
-                value={telephone}
-                onChange={handleInput}
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(""); }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                required={true}
+              />
+              <Input
+                disabled={isLoading}
+                Placeholder="Mot de passe"
+                className="w-full"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(""); }}
                 required={true}
               />
               <Buttons
@@ -85,9 +111,9 @@ export default function Home() {
                   ? "bg-orange-500 text-white border-orange-500"
                   : "bg-gray-300 border-red-500 text-gray-900"
                   }`}
-                disabled={!isValidate}
+                disabled={!isValidate || isLoading}
               >
-                Continuer avec un Numero
+                {isLoading ? "Connexion en cours..." : "Se connecter"}
               </Buttons>
 
               <div className="flex flex-col items-center w-full">
