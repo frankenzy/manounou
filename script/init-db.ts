@@ -9,11 +9,13 @@ async function initDatabase() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
-        pseudo VARCHAR(255) UNIQUE,
-        email VARCHAR(255) UNIQUE,
-        phone VARCHAR(20),
-        role VARCHAR(50) NOT NULL, -- employer | nounou
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        username VARCHAR(50) UNIQUE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
@@ -27,6 +29,19 @@ async function initDatabase() {
         metadata JSONB,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS friendships (
+        id SERIAL PRIMARY KEY,
+        requester_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        addressee_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        status VARCHAR(10) NOT NULL DEFAULT 'PENDING'
+          CHECK (status IN ('PENDING', 'ACCEPTED', 'REJECTED')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (requester_id, addressee_id)
       );
     `);
 
