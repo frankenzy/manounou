@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Buttons from "../../components/ui/buttons/buttons";
 import Logo from "../../components/Logo";
