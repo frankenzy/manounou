@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Buttons from "../../components/buttons";
 import Logo from "../../components/Logo";
-import Input from "../../components/Input";
 import Header from "../../components/header";
 import Loyout from "../layout";
+import Input from "@/components/ui/forms/Input";
+import Buttons from "@/components/ui/buttons/buttons";
 
 interface RegisterFormData {
   username: string;
@@ -102,7 +102,7 @@ export default function Register() {
         transition={{ duration: 0.5 }}
       >
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
-          <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-md">
+          <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-2xl">
             <div className="flex flex-col gap-6 items-center w-full">
               <div className="flex flex-col items-center w-full">
                 <Logo />
@@ -195,11 +195,10 @@ export default function Register() {
 
               <Buttons
                 onClick={handleSubmit}
-                className={`w-full py-5 border-2 shadow-sm ${
-                  isFormValid
-                    ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
-                    : "bg-gray-300 border-gray-300 text-gray-600"
-                }`}
+                className={`w-full py-5 border-2 shadow-sm ${isFormValid
+                  ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
+                  : "bg-gray-300 border-gray-300 text-gray-600"
+                  }`}
                 disabled={!isFormValid || isLoading}
               >
                 {isLoading ? "Création en cours..." : "Créer mon compte"}
