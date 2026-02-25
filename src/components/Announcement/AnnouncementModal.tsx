@@ -96,19 +96,24 @@ export default function AnnouncementModal({
             </div>
 
             <div className="relative">
-               <div className="flex bg-gray-100 p-2 rounded-md">
-                  <button
+               <div className="flex rounded-md">
 
-                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+
+
+                  <button
+                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-100 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
                      onClick={() => setTabs("job-seeker")}
                      aria-pressed={tabs === "job-seeker"}
                   >
                      Je cherche un travail
                   </button>
 
+
+
+
                   <button
 
-                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-50 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-100 ${tabs === "employer" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
                      onClick={() => setTabs("employer")}
                      aria-pressed={tabs === "employer"}
                   >
