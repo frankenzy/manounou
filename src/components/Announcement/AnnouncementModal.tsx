@@ -1,6 +1,5 @@
 "use client";
 
-import Modal from "@/components/Modal";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +7,9 @@ import AnnouncementForm from "./AnnouncementCreateForm";
 import { AnnouncementModalProps } from "./types";
 import { useAnnouncementForm } from "./useAnnouncementForm";
 import { useAnnouncementSubmit } from "./useAnnouncementSubmit";
+import ModalV2 from "../modals/Modal_V2";
+import { AnimatePresence, motion } from "framer-motion";
+import { slideHorizontal, springs } from "../motion";
 
 export default function AnnouncementModal({
    isOpen,
@@ -16,7 +18,6 @@ export default function AnnouncementModal({
    announcement,
    mode,
 }: AnnouncementModalProps) {
-   // Déterminer le mode automatiquement si non spécifié
    const isEditMode = mode === "edit" || !!announcement;
 
    const [openSession, setOpenSession] = useState(0);
@@ -69,7 +70,12 @@ export default function AnnouncementModal({
          const container = tabsContainerRef.current;
          const activeBtn = tabs === "job-seeker" ? btnJobRef.current : btnEmpRef.current;
          if (container && activeBtn) {
-            // Tab indicator styling could be added here if needed
+            const containerRect = container.getBoundingClientRect();
+            const activeRect = activeBtn.getBoundingClientRect();
+            const left = activeRect.left - containerRect.left;
+            const width = activeRect.width;
+            container.style.setProperty("--underline-left", `${left}px`);
+            container.style.setProperty("--underline-width", `${width}px`);
          }
       };
       update();
@@ -79,7 +85,7 @@ export default function AnnouncementModal({
 
 
    return (
-      <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
+      <ModalV2 isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
          <div className="p-6" key={`announcement-modal-session-${openSession}`}>
             <div className="modalHeader flex items-center justify-between">
                <div className="void"></div>
@@ -101,15 +107,12 @@ export default function AnnouncementModal({
 
 
                   <button
-                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-100 ${tabs === "job-seeker" ? "text-orange-600 shadow-md rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
+                     className={`flex-1 py-4 text-center font-semibold transition-colors duration-100 ${tabs === "job-seeker" ? "text-orange-600 shadow-sm rounded-lg bg-white" : "text-gray-600 hover:bg-gray-50"}`}
                      onClick={() => setTabs("job-seeker")}
                      aria-pressed={tabs === "job-seeker"}
                   >
                      Je cherche un travail
                   </button>
-
-
-
 
                   <button
 
@@ -125,51 +128,56 @@ export default function AnnouncementModal({
                   className="absolute bottom-0 h-0.5 bg-orange-500 rounded-full transition-all duration-300 ease-out shadow-sm"
                />
             </div>
-            <hr className="mb-4" />
+            {/* <hr className="mb-4" /> */}
 
-            <AnnouncementForm
-               inputValue={formLogic.inputValue}
-               inputBg={formLogic.inputBg}
-               inputColor={formLogic.inputColor}
-               showUploadImage={formLogic.showUploadImage}
-               announcementTitle={formLogic.announcementTitle}
-               image={formLogic.image}
-               textareaRef={formLogic.textareaRef}
-               onInput={formLogic.handleInput}
-               onTitleChange={formLogic.setAnnouncementTitle}
-               onColorSelect={formLogic.handleInputBg}
-               onResetStyles={formLogic.resetStyles}
-               onLoadImage={formLogic.handleLoadingImage}
-               onImageUpload={formLogic.handleImageUpload}
-               onImageRemove={formLogic.handleImageRemove}
-               onSetUser={formLogic.handleSetUser}
-               onSetCalendar={formLogic.handleSetCalendar}
-               onSetIdCard={formLogic.handleSetIdCard}
-            />
 
-            {/* Affichage des erreurs */}
+            <AnimatePresence mode="wait">
+               <motion.div
+                  key={tabs}
+                  {...slideHorizontal(tabs === "job-seeker" ? 1 : -1)}
+               >
+                  <AnnouncementForm
+                     inputValue={formLogic.inputValue}
+                     inputBg={formLogic.inputBg}
+                     inputColor={formLogic.inputColor}
+                     showUploadImage={formLogic.showUploadImage}
+                     announcementTitle={formLogic.announcementTitle}
+                     image={formLogic.image}
+                     textareaRef={formLogic.textareaRef}
+                     onInput={formLogic.handleInput}
+                     onTitleChange={formLogic.setAnnouncementTitle}
+                     onColorSelect={formLogic.handleInputBg}
+                     onResetStyles={formLogic.resetStyles}
+                     onLoadImage={formLogic.handleLoadingImage}
+                     onImageUpload={formLogic.handleImageUpload}
+                     onImageRemove={formLogic.handleImageRemove}
+                     onSetUser={formLogic.handleSetUser}
+                     onSetCalendar={formLogic.handleSetCalendar}
+                     onSetIdCard={formLogic.handleSetIdCard}
+                  />
+
+               </motion.div>
+            </AnimatePresence>
+
             {error && (
                <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                   {error}
                </div>
             )}
 
-            {/* Bouton de soumission */}
             <div className="flex justify-center items-center mt-4">
-               <button
-                  className="mt-2 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+               <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={springs.soft}
+                  className="mt-2 px-4 py-2 bg-orange-500 text-white rounded w-full"
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  type="button"
                >
-                  {isSubmitting
-                     ? "En cours..."
-                     : isEditMode
-                        ? "Mettre à jour"
-                        : "Suivant"}
-               </button>
+                  {isSubmitting ? "En cours..." : "Suivant"}
+               </motion.button>
             </div>
          </div>
-      </Modal>
+      </ModalV2>
    );
 }
