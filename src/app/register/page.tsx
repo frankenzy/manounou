@@ -9,7 +9,6 @@ import Input from "@/components/ui/forms/Input";
 import Buttons from "@/components/ui/buttons/buttons";
 
 interface RegisterFormData {
-  username: string;
   email: string;
   password: string;
   firstName: string;
@@ -17,7 +16,6 @@ interface RegisterFormData {
 }
 
 interface FormErrors {
-  username?: string;
   email?: string;
   password?: string;
   general?: string;
@@ -26,7 +24,6 @@ interface FormErrors {
 export default function Register() {
   const router = useRouter();
   const [form, setForm] = useState<RegisterFormData>({
-    username: "",
     email: "",
     password: "",
     firstName: "",
@@ -37,11 +34,6 @@ export default function Register() {
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.username || form.username.length < 3) {
-      newErrors.username = "Le nom d'utilisateur doit contenir au moins 3 caractères";
-    } else if (!/^[a-zA-Z0-9_]+$/.test(form.username)) {
-      newErrors.username = "Lettres, chiffres et _ uniquement";
-    }
     if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = "Adresse email invalide";
     }
@@ -67,7 +59,6 @@ export default function Register() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: form.username,
           email: form.email,
           password: form.password,
           firstName: form.firstName || undefined,
@@ -88,9 +79,7 @@ export default function Register() {
   };
 
   const isFormValid =
-    form.username.length >= 3 &&
-    form.email.includes("@") &&
-    form.password.length >= 8;
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) && form.password.length >= 8;
 
   return (
     <Loyout>
@@ -143,22 +132,6 @@ export default function Register() {
                     disabled={isLoading}
                   />
                 </div>
-              </div>
-
-              <div className="flex flex-col w-full">
-                <Input
-                  Placeholder="Nom d'utilisateur"
-                  className="w-full"
-                  type="text"
-                  name="username"
-                  value={form.username}
-                  onChange={handleChange("username")}
-                  required
-                  disabled={isLoading}
-                />
-                {errors.username && (
-                  <span className="text-red-500 text-xs mt-1">{errors.username}</span>
-                )}
               </div>
 
               <div className="flex flex-col w-full">

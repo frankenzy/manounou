@@ -1,6 +1,5 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import Buttons from "../../components/ui/buttons/buttons";
 import Logo from "../../components/Logo";
 import Input from "../../components/ui/forms/Input";
@@ -17,12 +16,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const [isNumberValid, setIsNumberValid] = useState<boolean>(true);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [step, setStep] = useState<"phone" | "loading" | "password">("phone");
 
 
-  // const isValidate = email.includes("@") && password.length >= 1;
-  const isValidate = true;
+  const isEmailStepValid = email.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isPasswordStepValid = password.trim().length > 0;
 
   const handleFocus = () => {
     setInputFocus(true);
@@ -66,16 +65,21 @@ export default function Home() {
   };
 
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
     setError("");
-    setIsNumberValid(/^\d*$/.test(value));
+    setIsEmailValid(value.trim().length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
 
   const handleSubmit = async () => {
     setStep("loading");
-    if (!isValidate) return;
+    if (!isPasswordStepValid || !isEmailStepValid) {
+      setError("Email ou mot de passe invalide");
+      setIsLoading(false);
+      setStep("password");
+      return;
+    }
     setIsLoading(true);
     setError("");
     try {
@@ -99,7 +103,11 @@ export default function Home() {
   };
 
   const handleSubmitPhone = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    if (!isEmailStepValid) {
+      setError("Veuillez saisir une adresse email valide");
+      return;
+    }
+    setError("");
     setStep("password");
   };
 
@@ -140,30 +148,34 @@ export default function Home() {
 
                   <Input
                     disabled={isLoading}
-                    Placeholder="Numéro de téléphone"
+                    Placeholder="Adresse email"
                     className="w-full"
-                    type="tel"
-                    name="telephone"
+                    type="email"
+                    name="email"
                     value={email}
-                    onChange={handleNumberChange}
+                    onChange={handleEmailChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     required={true}
                   />
 
+                  {!isEmailValid && (
+                    <p className="text-sm text-red-500 mt-1">Adresse email invalide</p>
+                  )}
+
                   {inputFocus && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Entrez votre numéro de téléphone pour vous connecter
+                      Entrez votre email pour vous connecter
                     </p>
                   )}
 
                   <Buttons
                     onClick={handleSubmitPhone}
-                    className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isValidate
+                    className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isEmailStepValid
                       ? "bg-orange-500 text-white "
                       : "bg-gray-300  text-gray-900"
                       }`}
-                    disabled={!isValidate || isLoading}
+                    disabled={!isEmailStepValid || isLoading}
                   >
                     {isLoading ? "Connexion en cours..." : "Se connecter"}
                   </Buttons>
@@ -227,11 +239,11 @@ export default function Home() {
 
                   <Buttons
                     onClick={handleSubmit}
-                    className={`w-full py-5 border-2 shadow-sm ${isValidate
+                    className={`w-full py-5 border-2 shadow-sm ${isPasswordStepValid
                       ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
                       : "bg-gray-300 border-gray-300 text-gray-600"
                       }`}
-                    disabled={!isValidate || isLoading}
+                    disabled={!isPasswordStepValid || isLoading}
                   >
                     {isLoading ? "Connexion en cours..." : "Se connecter"}
                   </Buttons>

@@ -4,20 +4,18 @@ const JWT_SECRET = process.env.JWT_SECRET || "manounou-dev-secret-key-change-in-
 const JWT_EXPIRY_HOURS = 24;
 
 export interface JwtPayload {
-  userId: number;
+  userId: string;
   email: string;
-  username: string;
   iat: number;
   exp: number;
 }
 
-export function signToken(userId: number, email: string, username: string): string {
+export function signToken(userId: string, email: string): string {
   const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
   const now = Math.floor(Date.now() / 1000);
   const payload: JwtPayload = {
     userId,
     email,
-    username,
     iat: now,
     exp: now + JWT_EXPIRY_HOURS * 3600,
   };
