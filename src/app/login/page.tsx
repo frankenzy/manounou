@@ -7,6 +7,7 @@ import Header from "../../components/header";
 import Loyout from "../layout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import OtpComponent from "@/components/ui/forms/otp.component";
 
 export default function Home() {
   const router = useRouter();
@@ -15,9 +16,10 @@ export default function Home() {
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
+  const [otp, setOtp] = useState<string>("");
+  const [isOTPStepValid, setIsOTPStepValid] = useState<boolean>(true);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-  const [step, setStep] = useState<"phone" | "loading" | "password">("phone");
+  const [step, setStep] = useState<"phone" | "loading" | "password" | "otp" | "success">("phone");
 
 
   const isEmailStepValid = email.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -72,12 +74,33 @@ export default function Home() {
     setIsEmailValid(value.trim().length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
 
+  const handleSubmitOTP = async () => {
+    if (!isOTPStepValid) {
+      setError("Veuillez saisir un code OTP valide");
+      return;
+    }
+    setError("");
+    setStep("success");
+    try {
+      const res = await fetch("/api/auth/login/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp }),
+      });
+    } catch {
+      setError("Erreur réseau, veuillez réessayer");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     setStep("loading");
     if (!isPasswordStepValid || !isEmailStepValid) {
       setError("Email ou mot de passe invalide");
       setIsLoading(false);
-      setStep("password");
+      // setStep("password");
+      setStep("otp");
       return;
     }
     setIsLoading(true);
@@ -91,7 +114,7 @@ export default function Home() {
       const data = (await res.json()) as { success: boolean; message?: string };
       if (res.ok && data.success) {
         router.push("/manounou");
-        setStep("password");
+        setStep("otp");
       } else {
         setError(data.message || "Identifiants incorrects");
       }
@@ -108,7 +131,8 @@ export default function Home() {
       return;
     }
     setError("");
-    setStep("password");
+    // setStep("password");
+    setStep("otp");
   };
 
   return (
@@ -252,6 +276,40 @@ export default function Home() {
             </div>
           </motion.div>
         )}
+
+        {step === "otp" && (
+          <motion.div
+            key="otp"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <OtpComponent
+              number={4}
+              onChange={(value, isValid) => {
+                setOtp(value);
+                setIsOTPStepValid(isValid);
+              }}
+              onComplete={(value) => {
+                console.log("OTP complete:", value);
+              }}
+            />
+          </motion.div>
+        )}
+
+
+        {step === "success" && (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <h1>Connexion réussie</h1>
+            </div>
+          </motion.div>
+        )}*
 
       </AnimatePresence>
     </Loyout>
