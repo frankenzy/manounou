@@ -1,3 +1,7 @@
+// ===============================
+// GENERATOR & DATASOURCE
+// ===============================
+
 generator client {
    provider = "prisma-client-js"
 }
@@ -7,134 +11,377 @@ datasource db {
    url      = env("DATABASE_URL")
 }
 
-enum GlobalRole {
-   USER
+// ===============================
+// ENUMS
+// ===============================
+
+enum UserRole {
+   EMPLOYER
+   WORKER
+   AGENCY
    ADMIN
-   SUPER_ADMIN
 }
 
-enum WorkspaceRole {
-   OWNER
-   ADMIN
-   MEMBER
-   VIEWER
-}
-
-enum SubscriptionStatus {
-   TRIALING
+enum AccountStatus {
    ACTIVE
-   PAST_DUE
-   CANCELED
-   UNPAID
+   SUSPENDED
+   PENDING_VERIFICATION
 }
+
+enum DocumentType {
+   CNI
+   PASSPORT
+   CONTRACT
+   CERTIFICATE
+   OTHER
+}
+
+enum DocumentStatus {
+   PENDING
+   APPROVED
+   REJECTED
+}
+
+enum PostVisibility {
+   PUBLIC
+   FOLLOWERS
+   PRIVATE
+}
+
+enum MediaType {
+   IMAGE
+   VIDEO
+   DOCUMENT
+}
+
+enum JobType {
+   OFFER // Je propose mes services
+   REQUEST // Je cherche quelqu’un
+}
+
+enum JobStatus {
+   OPEN
+   MATCHED
+   CLOSED
+   CANCELLED
+}
+
+enum ReportReason {
+   SCAM
+   FAKE_PROFILE
+   INAPPROPRIATE
+   SPAM
+   OTHER
+}
+
+// ===============================
+// USER & PROFILE
+// ===============================
 
 model User {
-   id           String     @id @default(cuid())
-   email        String     @unique
-   passwordHash String?
-   firstName    String?
-   lastName     String?
-   globalRole   GlobalRole @default(USER)
-   createdAt    DateTime   @default(now())
-   updatedAt    DateTime   @updatedAt
+   id         String        @id @default(uuid())
+   phone      String        @unique
+   email      String?       @unique
+   password   String?
+   role       UserRole
+   status     AccountStatus @default(PENDING_VERIFICATION)
+   isVerified Boolean       @default(false)
+   trustScore Float         @default(0)
+   createdAt  DateTime      @default(now())
+   updatedAt  DateTime      @updatedAt
 
-   memberships   Membership[]
-   announcements Announcement[]
-   auditLogs     AuditLog[]
+   profile                 Profile?
+   documents               Document[]
+   posts                   Post[]
+   jobs                    Job[]
+   offers                  Offer[]
+   messages                Message[]
+   notifications           Notification[]
+   reportsMade             Report[]                  @relation("ReportsMade")
+   reportsReceived         Report[]                  @relation("ReportsReceived")
+   metaData                Json?
+   likes                   Like[]
+   comments                Comment[]
+   matches                 Match[]
+   followers               Follow[]                  @relation("UserFollowers")
+   following               Follow[]                  @relation("UserFollowing")
+   ConversationParticipant ConversationParticipant[]
+   GameScores              GameScore[]
+   UserSavedPosts          SavedPost[]
+
+   @@index([role])
 }
 
-model Workspace {
-   id        String   @id @default(cuid())
-   slug      String   @unique
-   name      String
-   createdAt DateTime @default(now())
-   updatedAt DateTime @updatedAt
-
-   memberships   Membership[]
-   announcements Announcement[]
-   featureFlags  WorkspaceFeatureFlag[]
-   subscription  Subscription?
-   auditLogs     AuditLog[]
+model Profile {
+   id         String    @id @default(uuid())
+   userId     String    @unique
+   fullName   String?
+   avatarUrl  String?
+   bio        Json?
+   gender     String?
+   experience Int?
+   rating     Float     @default(0)
+   locationId String?
+   user       User      @relation(fields: [userId], references: [id])
+   location   Location? @relation(fields: [locationId], references: [id])
 }
 
-model Membership {
-   id          String        @id @default(cuid())
-   userId      String
-   workspaceId String
-   role        WorkspaceRole
-   createdAt   DateTime      @default(now())
+// ===============================
+// LOCATION
+// ===============================
 
-   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+model Location {
+   id          String    @id @default(uuid())
+   city        String
+   commune     String?
+   area        String?
+   pada        String?
+   coordinates Json?
+   profiles    Profile[]
+   jobs        Job[]
 
-   @@unique([userId, workspaceId])
-   @@index([workspaceId, role])
+   @@index([city, commune])
 }
 
-model Announcement {
-   id          String   @id @default(cuid())
-   workspaceId String
-   authorId    String
-   title       String
-   description String
-   location    String
-   metadata    Json?
-   createdAt   DateTime @default(now())
-   updatedAt   DateTime @updatedAt
+// ===============================
+// DOCUMENTS (Vérification)
+// ===============================
 
-   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+model Document {
+   id        String         @id @default(uuid())
+   userId    String
+   type      DocumentType
+   fileUrl   String
+   status    DocumentStatus @default(PENDING)
+   createdAt DateTime       @default(now())
+   user      User           @relation(fields: [userId], references: [id])
 
-   @@index([workspaceId, createdAt(sort: Desc)])
+   @@index([userId])
+}
+
+// ===============================
+// SOCIAL FEED
+// ===============================
+
+model Post {
+   id         String         @id @default(uuid())
+   authorId   String
+   content    String
+   metaData   Json?
+   visibility PostVisibility @default(PUBLIC)
+   createdAt  DateTime       @default(now())
+   updatedAt  DateTime       @updatedAt
+   author     User           @relation(fields: [authorId], references: [id])
+   media      Media[]
+   likes      Like[]
+   comments   Comment[]
+   savedPosts SavedPost[]
+
    @@index([authorId])
+   @@index([createdAt])
 }
 
-model FeatureFlag {
-   key         String   @id
+model Media {
+   id        String    @id @default(uuid())
+   postId    String?
+   url       String
+   type      MediaType
+   createdAt DateTime  @default(now())
+
+   post Post? @relation(fields: [postId], references: [id])
+
+   @@index([postId])
+}
+
+model Like {
+   id     String @id @default(uuid())
+   userId String
+   postId String
+
+   user User @relation(fields: [userId], references: [id])
+   post Post @relation(fields: [postId], references: [id])
+
+   @@unique([userId, postId])
+}
+
+model Comment {
+   id        String   @id @default(uuid())
+   content   String
+   userId    String
+   postId    String
+   createdAt DateTime @default(now())
+
+   user User @relation(fields: [userId], references: [id])
+   post Post @relation(fields: [postId], references: [id])
+
+   @@index([postId])
+}
+
+// ===============================
+// JOB MARKETPLACE
+// ===============================
+
+model JobCategory {
+   id   String @id @default(uuid())
+   name String
+   jobs Job[]
+}
+
+model Job {
+   id          String      @id @default(uuid())
+   authorId    String
+   categoryId  String
+   locationId  String
+   type        JobType
+   title       String
    description String?
+   salaryMin   Int?
+   salaryMax   Int?
+   housing     Boolean     @default(false)
+   transport   Boolean     @default(false)
+   status      JobStatus   @default(OPEN)
+   createdAt   DateTime    @default(now())
+   updatedAt   DateTime    @updatedAt
+   author      User        @relation(fields: [authorId], references: [id])
+   category    JobCategory @relation(fields: [categoryId], references: [id])
+   location    Location    @relation(fields: [locationId], references: [id])
+   offers      Offer[]
+   matches     Match[]
+
+   @@index([locationId])
+   @@index([categoryId])
+   @@index([status])
+}
+
+model Offer {
+   id             String   @id @default(uuid())
+   jobPostId      String
+   workerId       String
+   proposedSalary Int
+   message        String?
+   createdAt      DateTime @default(now())
+
+   job    Job  @relation(fields: [jobPostId], references: [id])
+   worker User @relation(fields: [workerId], references: [id])
+
+   @@index([jobPostId])
+   @@index([workerId])
+}
+
+model Match {
+   id           String   @id @default(uuid())
+   jobPostId    String
+   workerId     String
+   agreedSalary Int
+   createdAt    DateTime @default(now())
+
+   job    Job  @relation(fields: [jobPostId], references: [id])
+   worker User @relation(fields: [workerId], references: [id])
+
+   @@index([workerId])
+}
+
+// ===============================
+// MESSAGING
+// ===============================
+
+model Conversation {
+   id           String                    @id @default(uuid())
+   createdAt    DateTime                  @default(now())
+   messages     Message[]
+   participants ConversationParticipant[]
+}
+
+model Message {
+   id             String   @id @default(uuid())
+   conversationId String
+   senderId       String
+   content        String
+   createdAt      DateTime @default(now())
+
+   conversation Conversation @relation(fields: [conversationId], references: [id])
+   sender       User         @relation(fields: [senderId], references: [id])
+
+   @@index([conversationId])
+}
+
+// ===============================
+// NOTIFICATIONS
+// ===============================
+
+model Notification {
+   id        String   @id @default(uuid())
+   userId    String
+   content   String
+   isRead    Boolean  @default(false)
+   createdAt DateTime @default(now())
+
+   user User @relation(fields: [userId], references: [id])
+
+   @@index([userId])
+}
+
+// ===============================
+// MODERATION & ANTI-FRAUDE
+// ===============================
+
+model Report {
+   id          String       @id @default(uuid())
+   reporterId  String
+   reportedId  String
+   reason      ReportReason
+   description String?
+   createdAt   DateTime     @default(now())
+
+   reporter User @relation("ReportsMade", fields: [reporterId], references: [id])
+   reported User @relation("ReportsReceived", fields: [reportedId], references: [id])
+
+   @@index([reportedId])
+}
+
+model Follow {
+   id          String   @id @default(uuid())
+   followerId  String
+   followingId String
    createdAt   DateTime @default(now())
-   updatedAt   DateTime @updatedAt
 
-   workspaces WorkspaceFeatureFlag[]
+   follower  User @relation("UserFollowing", fields: [followerId], references: [id])
+   following User @relation("UserFollowers", fields: [followingId], references: [id])
+
+   @@unique([followerId, followingId])
 }
 
-model WorkspaceFeatureFlag {
-   id          String  @id @default(cuid())
-   workspaceId String
-   flagKey     String
-   enabled     Boolean @default(false)
+model ConversationParticipant {
+   id             String @id @default(uuid())
+   conversationId String
+   userId         String
 
-   workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-   flag      FeatureFlag @relation(fields: [flagKey], references: [key], onDelete: Cascade)
+   conversation Conversation @relation(fields: [conversationId], references: [id])
+   user         User         @relation(fields: [userId], references: [id])
 
-   @@unique([workspaceId, flagKey])
+   @@unique([conversationId, userId])
 }
 
-model Subscription {
-   id                   String             @id @default(cuid())
-   workspaceId          String             @unique
-   stripeCustomerId     String?            @unique
-   stripeSubscriptionId String?            @unique
-   status               SubscriptionStatus @default(TRIALING)
-   currentPeriodEnd     DateTime?
-   createdAt            DateTime           @default(now())
-   updatedAt            DateTime           @updatedAt
+model SavedPost {
+   id     String @id @default(uuid())
+   userId String
+   postId String
 
-   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+   user User @relation(fields: [userId], references: [id])
+   post Post @relation(fields: [postId], references: [id])
+
+   @@unique([userId, postId])
 }
 
-model AuditLog {
-   id          String   @id @default(cuid())
-   workspaceId String
-   userId      String?
-   action      String
-   resource    String
-   resourceId  String?
-   payload     Json?
-   createdAt   DateTime @default(now())
+model GameScore {
+   id        String   @id @default(uuid())
+   userId    String
+   gameType  String
+   score     Int
+   level     Int
+   createdAt DateTime @default(now())
 
-   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-   user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+   user User @relation(fields: [userId], references: [id])
 
-   @@index([workspaceId, createdAt(sort: Desc)])
+   @@index([userId])
 }

@@ -8,21 +8,22 @@ import Loyout from "../layout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OtpComponent from "@/components/ui/forms/otp.component";
+import { Phone } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
   const [isOTPStepValid, setIsOTPStepValid] = useState<boolean>(true);
-  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
   const [step, setStep] = useState<"phone" | "loading" | "password" | "otp" | "success">("phone");
 
 
-  const isEmailStepValid = email.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isPhoneStepValid = phone.trim().length > 0 && /^[0-9]{10}$/.test(phone);
   const isPasswordStepValid = password.trim().length > 0;
 
   const handleFocus = () => {
@@ -67,11 +68,11 @@ export default function Home() {
   };
 
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setEmail(value);
+    setPhone(value);
     setError("");
-    setIsEmailValid(value.trim().length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+    setIsPhoneValid(value.trim().length === 0 || /^[0-9]{10}$/.test(value));
   };
 
   const handleSubmitOTP = async () => {
@@ -85,7 +86,7 @@ export default function Home() {
       const res = await fetch("/api/auth/login/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
+        body: JSON.stringify({ phone, otp }),
       });
     } catch {
       setError("Erreur réseau, veuillez réessayer");
@@ -96,8 +97,8 @@ export default function Home() {
 
   const handleSubmit = async () => {
     setStep("loading");
-    if (!isPasswordStepValid || !isEmailStepValid) {
-      setError("Email ou mot de passe invalide");
+    if (!isPasswordStepValid || !isPhoneStepValid) {
+      setError("Numéro de téléphone ou mot de passe invalide");
       setIsLoading(false);
       // setStep("password");
       setStep("otp");
@@ -109,7 +110,7 @@ export default function Home() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ phone, password }),
       });
       const data = (await res.json()) as { success: boolean; message?: string };
       if (res.ok && data.success) {
@@ -126,8 +127,8 @@ export default function Home() {
   };
 
   const handleSubmitPhone = async () => {
-    if (!isEmailStepValid) {
-      setError("Veuillez saisir une adresse email valide");
+    if (!isPhoneStepValid) {
+      setError("Veuillez saisir un numéro de téléphone valide");
       return;
     }
     setError("");
@@ -172,34 +173,34 @@ export default function Home() {
 
                   <Input
                     disabled={isLoading}
-                    Placeholder="Adresse email"
+                    Placeholder="Numéro de téléphone"
                     className="w-full"
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    type="tel"
+                    name="phone"
+                    value={phone}
+                    onChange={handlePhoneChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     required={true}
                   />
 
-                  {!isEmailValid && (
-                    <p className="text-sm text-red-500 mt-1">Adresse email invalide</p>
+                  {!isPhoneValid && (
+                    <p className="text-sm text-red-500 mt-1">Numéro de téléphone invalide</p>
                   )}
 
                   {inputFocus && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Entrez votre email pour vous connecter
+                      Entrez votre numéro de téléphone pour vous connecter
                     </p>
                   )}
 
                   <Buttons
                     onClick={handleSubmitPhone}
-                    className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isEmailStepValid
+                    className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isPhoneStepValid
                       ? "bg-orange-500 text-white "
                       : "bg-gray-300  text-gray-900"
                       }`}
-                    disabled={!isEmailStepValid || isLoading}
+                    disabled={!isPhoneStepValid || isLoading}
                   >
                     {isLoading ? "Connexion en cours..." : "Se connecter"}
                   </Buttons>
@@ -293,6 +294,7 @@ export default function Home() {
               onComplete={(value) => {
                 console.log("OTP complete:", value);
               }}
+              onBack={() => setStep("phone")}
             />
           </motion.div>
         )}

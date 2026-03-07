@@ -11,7 +11,7 @@ export const useAnnouncementSubmit = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/announcements", {
+      const response = await fetch("/api/v1/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

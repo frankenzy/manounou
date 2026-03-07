@@ -1,0 +1,3558 @@
+tylipro-web
+├── __tests__/
+│   ├── cookie.service.test.ts
+│   ├── permissionValidation.store.test.ts
+│   ├── request-cancellation.service.test.ts
+│   ├── useColumnVisibility.test.ts
+│   └── validator.test.ts
+├── .gitlab-ci/
+│   ├── preprod.yml
+│   ├── prod.yml
+│   └── qa.yml
+├── .idea/
+│   ├── .gitignore
+│   ├── copilot.data.migration.agent.xml
+│   ├── copilot.data.migration.ask.xml
+│   ├── copilot.data.migration.ask2agent.xml
+│   ├── copilot.data.migration.edit.xml
+│   ├── modules.xml
+│   ├── tylipro-web.iml
+│   └── vcs.xml
+├── .next/
+│   ├── build/
+│   │   └── chunks/
+│   │       ├── [root-of-the-server]__4b6f6259._.js
+│   │       ├── [root-of-the-server]__4b6f6259._.js.map
+│   │       ├── [root-of-the-server]__9abb3e35._.js
+│   │       ├── [root-of-the-server]__9abb3e35._.js.map
+│   │       ├── [turbopack-node]_transforms_postcss_ts_32dae4f3._.js
+│   │       ├── [turbopack-node]_transforms_postcss_ts_32dae4f3._.js.map
+│   │       ├── [turbopack]_runtime.js
+│   │       ├── [turbopack]_runtime.js.map
+│   │       ├── node_modules__pnpm_545ae431._.js
+│   │       └── node_modules__pnpm_545ae431._.js.map
+│   ├── cache/
+│   │   ├── .rscinfo
+│   │   └── chrome-devtools-workspace-uuid
+│   ├── server/
+│   │   ├── app/
+│   │   │   ├── _not-found/
+│   │   │   │   ├── page/
+│   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   ├── page.js
+│   │   │   │   └── page.js.map
+│   │   │   ├── dashboard/
+│   │   │   │   ├── employees/
+│   │   │   │   │   └── lists/
+│   │   │   │   │       ├── page/
+│   │   │   │   │       │   ├── app-build-manifest.json
+│   │   │   │   │       │   ├── app-paths-manifest.json
+│   │   │   │   │       │   ├── build-manifest.json
+│   │   │   │   │       │   ├── next-font-manifest.json
+│   │   │   │   │       │   ├── react-loadable-manifest.json
+│   │   │   │   │       │   └── server-reference-manifest.json
+│   │   │   │   │       ├── page_client-reference-manifest.js
+│   │   │   │   │       ├── page.js
+│   │   │   │   │       └── page.js.map
+│   │   │   │   ├── finances/
+│   │   │   │   │   ├── accounting/
+│   │   │   │   │   │   ├── page/
+│   │   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   │   ├── page.js
+│   │   │   │   │   │   └── page.js.map
+│   │   │   │   │   ├── collect-payment/
+│   │   │   │   │   │   ├── page/
+│   │   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   │   ├── page.js
+│   │   │   │   │   │   └── page.js.map
+│   │   │   │   │   └── transactions/
+│   │   │   │   │       ├── page/
+│   │   │   │   │       │   ├── app-build-manifest.json
+│   │   │   │   │       │   ├── app-paths-manifest.json
+│   │   │   │   │       │   ├── build-manifest.json
+│   │   │   │   │       │   ├── next-font-manifest.json
+│   │   │   │   │       │   ├── react-loadable-manifest.json
+│   │   │   │   │       │   └── server-reference-manifest.json
+│   │   │   │   │       ├── page_client-reference-manifest.js
+│   │   │   │   │       ├── page.js
+│   │   │   │   │       └── page.js.map
+│   │   │   │   ├── marketplace/
+│   │   │   │   │   ├── announcements/
+│   │   │   │   │   │   ├── page/
+│   │   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   │   ├── page.js
+│   │   │   │   │   │   └── page.js.map
+│   │   │   │   │   └── visits/
+│   │   │   │   │       ├── page/
+│   │   │   │   │       │   ├── app-build-manifest.json
+│   │   │   │   │       │   ├── app-paths-manifest.json
+│   │   │   │   │       │   ├── build-manifest.json
+│   │   │   │   │       │   ├── next-font-manifest.json
+│   │   │   │   │       │   ├── react-loadable-manifest.json
+│   │   │   │   │       │   └── server-reference-manifest.json
+│   │   │   │   │       ├── page_client-reference-manifest.js
+│   │   │   │   │       ├── page.js
+│   │   │   │   │       └── page.js.map
+│   │   │   │   ├── organisation/
+│   │   │   │   │   ├── documents/
+│   │   │   │   │   │   ├── page/
+│   │   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   │   ├── page.js
+│   │   │   │   │   │   └── page.js.map
+│   │   │   │   │   ├── pools/
+│   │   │   │   │   │   ├── page/
+│   │   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   │   ├── page.js
+│   │   │   │   │   │   └── page.js.map
+│   │   │   │   │   └── processes/
+│   │   │   │   │       ├── page/
+│   │   │   │   │       │   ├── app-build-manifest.json
+│   │   │   │   │       │   ├── app-paths-manifest.json
+│   │   │   │   │       │   ├── build-manifest.json
+│   │   │   │   │       │   ├── next-font-manifest.json
+│   │   │   │   │       │   ├── react-loadable-manifest.json
+│   │   │   │   │       │   └── server-reference-manifest.json
+│   │   │   │   │       ├── page_client-reference-manifest.js
+│   │   │   │   │       ├── page.js
+│   │   │   │   │       └── page.js.map
+│   │   │   │   ├── plans/
+│   │   │   │   │   ├── page/
+│   │   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   │   ├── page.js
+│   │   │   │   │   └── page.js.map
+│   │   │   │   └── properties/
+│   │   │   │       ├── create/
+│   │   │   │       │   ├── page/
+│   │   │   │       │   │   ├── app-build-manifest.json
+│   │   │   │       │   │   ├── app-paths-manifest.json
+│   │   │   │       │   │   ├── build-manifest.json
+│   │   │   │       │   │   ├── next-font-manifest.json
+│   │   │   │       │   │   ├── react-loadable-manifest.json
+│   │   │   │       │   │   └── server-reference-manifest.json
+│   │   │   │       │   ├── page_client-reference-manifest.js
+│   │   │   │       │   ├── page.js
+│   │   │   │       │   └── page.js.map
+│   │   │   │       ├── estates/
+│   │   │   │       │   ├── details/
+│   │   │   │       │   │   ├── page/
+│   │   │   │       │   │   │   ├── app-build-manifest.json
+│   │   │   │       │   │   │   ├── app-paths-manifest.json
+│   │   │   │       │   │   │   ├── build-manifest.json
+│   │   │   │       │   │   │   ├── next-font-manifest.json
+│   │   │   │       │   │   │   ├── react-loadable-manifest.json
+│   │   │   │       │   │   │   └── server-reference-manifest.json
+│   │   │   │       │   │   ├── page_client-reference-manifest.js
+│   │   │   │       │   │   ├── page.js
+│   │   │   │       │   │   └── page.js.map
+│   │   │   │       │   ├── page/
+│   │   │   │       │   │   ├── app-build-manifest.json
+│   │   │   │       │   │   ├── app-paths-manifest.json
+│   │   │   │       │   │   ├── build-manifest.json
+│   │   │   │       │   │   ├── next-font-manifest.json
+│   │   │   │       │   │   ├── react-loadable-manifest.json
+│   │   │   │       │   │   └── server-reference-manifest.json
+│   │   │   │       │   ├── page_client-reference-manifest.js
+│   │   │   │       │   ├── page.js
+│   │   │   │       │   └── page.js.map
+│   │   │   │       └── tenants/
+│   │   │   │           ├── page/
+│   │   │   │           │   ├── app-build-manifest.json
+│   │   │   │           │   ├── app-paths-manifest.json
+│   │   │   │           │   ├── build-manifest.json
+│   │   │   │           │   ├── next-font-manifest.json
+│   │   │   │           │   ├── react-loadable-manifest.json
+│   │   │   │           │   └── server-reference-manifest.json
+│   │   │   │           ├── page_client-reference-manifest.js
+│   │   │   │           ├── page.js
+│   │   │   │           └── page.js.map
+│   │   │   ├── favicon.ico/
+│   │   │   │   ├── route/
+│   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   └── build-manifest.json
+│   │   │   │   ├── route.js
+│   │   │   │   └── route.js.map
+│   │   │   ├── login/
+│   │   │   │   ├── page/
+│   │   │   │   │   ├── app-build-manifest.json
+│   │   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   │   ├── build-manifest.json
+│   │   │   │   │   ├── next-font-manifest.json
+│   │   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   │   └── server-reference-manifest.json
+│   │   │   │   ├── page_client-reference-manifest.js
+│   │   │   │   ├── page.js
+│   │   │   │   └── page.js.map
+│   │   │   ├── page/
+│   │   │   │   ├── app-build-manifest.json
+│   │   │   │   ├── app-paths-manifest.json
+│   │   │   │   ├── build-manifest.json
+│   │   │   │   ├── next-font-manifest.json
+│   │   │   │   ├── react-loadable-manifest.json
+│   │   │   │   └── server-reference-manifest.json
+│   │   │   ├── page_client-reference-manifest.js
+│   │   │   ├── page.js
+│   │   │   └── page.js.map
+│   │   ├── chunks/
+│   │   │   ├── ssr/
+│   │   │   │   ├── _1d362ed9._.js
+│   │   │   │   ├── _1d362ed9._.js.map
+│   │   │   │   ├── _4a2c8864._.js
+│   │   │   │   ├── _4a2c8864._.js.map
+│   │   │   │   ├── _cb3472a6._.js
+│   │   │   │   ├── _cb3472a6._.js.map
+│   │   │   │   ├── [root-of-the-server]__027185dc._.js
+│   │   │   │   ├── [root-of-the-server]__027185dc._.js.map
+│   │   │   │   ├── [root-of-the-server]__2fb24663._.js
+│   │   │   │   ├── [root-of-the-server]__2fb24663._.js.map
+│   │   │   │   ├── [root-of-the-server]__2fec551e._.js
+│   │   │   │   ├── [root-of-the-server]__2fec551e._.js.map
+│   │   │   │   ├── [root-of-the-server]__3f159746._.js
+│   │   │   │   ├── [root-of-the-server]__3f159746._.js.map
+│   │   │   │   ├── [root-of-the-server]__40dd8563._.js
+│   │   │   │   ├── [root-of-the-server]__40dd8563._.js.map
+│   │   │   │   ├── [root-of-the-server]__4822cc26._.js
+│   │   │   │   ├── [root-of-the-server]__4822cc26._.js.map
+│   │   │   │   ├── [root-of-the-server]__65c31883._.js
+│   │   │   │   ├── [root-of-the-server]__65c31883._.js.map
+│   │   │   │   ├── [root-of-the-server]__79dcfe1c._.js
+│   │   │   │   ├── [root-of-the-server]__79dcfe1c._.js.map
+│   │   │   │   ├── [root-of-the-server]__7d6ce682._.js
+│   │   │   │   ├── [root-of-the-server]__7d6ce682._.js.map
+│   │   │   │   ├── [root-of-the-server]__81f88f46._.js
+│   │   │   │   ├── [root-of-the-server]__81f88f46._.js.map
+│   │   │   │   ├── [root-of-the-server]__8c694878._.js
+│   │   │   │   ├── [root-of-the-server]__8c694878._.js.map
+│   │   │   │   ├── [root-of-the-server]__a772dda9._.js
+│   │   │   │   ├── [root-of-the-server]__a772dda9._.js.map
+│   │   │   │   ├── [root-of-the-server]__a7f4d40c._.js
+│   │   │   │   ├── [root-of-the-server]__a7f4d40c._.js.map
+│   │   │   │   ├── [root-of-the-server]__aa67bd61._.js
+│   │   │   │   ├── [root-of-the-server]__aa67bd61._.js.map
+│   │   │   │   ├── [root-of-the-server]__c098696a._.js
+│   │   │   │   ├── [root-of-the-server]__c098696a._.js.map
+│   │   │   │   ├── [root-of-the-server]__c3c77326._.js
+│   │   │   │   ├── [root-of-the-server]__c3c77326._.js.map
+│   │   │   │   ├── [root-of-the-server]__c5bd88e9._.js
+│   │   │   │   ├── [root-of-the-server]__c5bd88e9._.js.map
+│   │   │   │   ├── [root-of-the-server]__c7e7d7fe._.js
+│   │   │   │   ├── [root-of-the-server]__c7e7d7fe._.js.map
+│   │   │   │   ├── [root-of-the-server]__d8593af1._.js
+│   │   │   │   ├── [root-of-the-server]__d8593af1._.js.map
+│   │   │   │   ├── [root-of-the-server]__ddc4e3e8._.js
+│   │   │   │   ├── [root-of-the-server]__ddc4e3e8._.js.map
+│   │   │   │   ├── [root-of-the-server]__df7d6053._.js
+│   │   │   │   ├── [root-of-the-server]__df7d6053._.js.map
+│   │   │   │   ├── [root-of-the-server]__eaa31018._.js
+│   │   │   │   ├── [root-of-the-server]__eaa31018._.js.map
+│   │   │   │   ├── [root-of-the-server]__ec6cc8a7._.js
+│   │   │   │   ├── [root-of-the-server]__ec6cc8a7._.js.map
+│   │   │   │   ├── [root-of-the-server]__f13ce617._.js
+│   │   │   │   ├── [root-of-the-server]__f13ce617._.js.map
+│   │   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_4b71871f._.js
+│   │   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_4b71871f._.js.map
+│   │   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_59fa4ecd._.js
+│   │   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_59fa4ecd._.js.map
+│   │   │   │   ├── [turbopack]_runtime.js
+│   │   │   │   ├── [turbopack]_runtime.js.map
+│   │   │   │   ├── 1c600_date-fns_adf06e72._.js
+│   │   │   │   ├── 1c600_date-fns_adf06e72._.js.map
+│   │   │   │   ├── 1c600_date-fns_bffbe5bd._.js
+│   │   │   │   ├── 1c600_date-fns_bffbe5bd._.js.map
+│   │   │   │   ├── 2797f_@tanstack_query-core_build_modern_2060b1d0._.js
+│   │   │   │   ├── 2797f_@tanstack_query-core_build_modern_2060b1d0._.js.map
+│   │   │   │   ├── 2797f_@tanstack_query-core_build_modern_94dae9e6._.js
+│   │   │   │   ├── 2797f_@tanstack_query-core_build_modern_94dae9e6._.js.map
+│   │   │   │   ├── 3a686_framer-motion_dist_es_4275ed15._.js
+│   │   │   │   ├── 3a686_framer-motion_dist_es_4275ed15._.js.map
+│   │   │   │   ├── 43146_@dnd-kit_core_dist_core_esm_cedfe346.js
+│   │   │   │   ├── 43146_@dnd-kit_core_dist_core_esm_cedfe346.js.map
+│   │   │   │   ├── 431d1_mime-db_1b11da46._.js
+│   │   │   │   ├── 431d1_mime-db_1b11da46._.js.map
+│   │   │   │   ├── 431d1_mime-db_df17cce7._.js
+│   │   │   │   ├── 431d1_mime-db_df17cce7._.js.map
+│   │   │   │   ├── 4787e_next_7faade9f._.js
+│   │   │   │   ├── 4787e_next_7faade9f._.js.map
+│   │   │   │   ├── 4787e_next_dist_026bd436._.js
+│   │   │   │   ├── 4787e_next_dist_026bd436._.js.map
+│   │   │   │   ├── 4787e_next_dist_1dc4c576._.js
+│   │   │   │   ├── 4787e_next_dist_1dc4c576._.js.map
+│   │   │   │   ├── 4787e_next_dist_20321f85._.js
+│   │   │   │   ├── 4787e_next_dist_20321f85._.js.map
+│   │   │   │   ├── 4787e_next_dist_20da7255._.js
+│   │   │   │   ├── 4787e_next_dist_20da7255._.js.map
+│   │   │   │   ├── 4787e_next_dist_34e6be2f._.js
+│   │   │   │   ├── 4787e_next_dist_34e6be2f._.js.map
+│   │   │   │   ├── 4787e_next_dist_364f289b._.js
+│   │   │   │   ├── 4787e_next_dist_364f289b._.js.map
+│   │   │   │   ├── 4787e_next_dist_3af3056a._.js
+│   │   │   │   ├── 4787e_next_dist_3af3056a._.js.map
+│   │   │   │   ├── 4787e_next_dist_5d7a45aa._.js
+│   │   │   │   ├── 4787e_next_dist_5d7a45aa._.js.map
+│   │   │   │   ├── 4787e_next_dist_6b07c613._.js
+│   │   │   │   ├── 4787e_next_dist_6b07c613._.js.map
+│   │   │   │   ├── 4787e_next_dist_6b7b1ecc._.js
+│   │   │   │   ├── 4787e_next_dist_6b7b1ecc._.js.map
+│   │   │   │   ├── 4787e_next_dist_7681d119._.js
+│   │   │   │   ├── 4787e_next_dist_7681d119._.js.map
+│   │   │   │   ├── 4787e_next_dist_8e1ca1da._.js
+│   │   │   │   ├── 4787e_next_dist_8e1ca1da._.js.map
+│   │   │   │   ├── 4787e_next_dist_a8d0d2da._.js
+│   │   │   │   ├── 4787e_next_dist_a8d0d2da._.js.map
+│   │   │   │   ├── 4787e_next_dist_ac2f2cee._.js
+│   │   │   │   ├── 4787e_next_dist_ac2f2cee._.js.map
+│   │   │   │   ├── 4787e_next_dist_acc82e6b._.js
+│   │   │   │   ├── 4787e_next_dist_acc82e6b._.js.map
+│   │   │   │   ├── 4787e_next_dist_afbde551._.js
+│   │   │   │   ├── 4787e_next_dist_afbde551._.js.map
+│   │   │   │   ├── 4787e_next_dist_c1bdcda4._.js
+│   │   │   │   ├── 4787e_next_dist_c1bdcda4._.js.map
+│   │   │   │   ├── 4787e_next_dist_client_0f41a7e2._.js
+│   │   │   │   ├── 4787e_next_dist_client_0f41a7e2._.js.map
+│   │   │   │   ├── 4787e_next_dist_client_components_9a9abe44._.js
+│   │   │   │   ├── 4787e_next_dist_client_components_9a9abe44._.js.map
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_forbidden_47012bdd.js
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_forbidden_47012bdd.js.map
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_497a6ac9.js
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_497a6ac9.js.map
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_unauthorized_09b7ba3f.js
+│   │   │   │   ├── 4787e_next_dist_client_components_builtin_unauthorized_09b7ba3f.js.map
+│   │   │   │   ├── 4787e_next_dist_compiled_b7c8f9d6._.js
+│   │   │   │   ├── 4787e_next_dist_compiled_b7c8f9d6._.js.map
+│   │   │   │   ├── 4787e_next_dist_compiled_next-devtools_index_4479b3df.js
+│   │   │   │   ├── 4787e_next_dist_compiled_next-devtools_index_4479b3df.js.map
+│   │   │   │   ├── 4787e_next_dist_compiled_react-dom_c5c7217e._.js
+│   │   │   │   ├── 4787e_next_dist_compiled_react-dom_c5c7217e._.js.map
+│   │   │   │   ├── 4787e_next_dist_d6805abd._.js
+│   │   │   │   ├── 4787e_next_dist_d6805abd._.js.map
+│   │   │   │   ├── 4787e_next_dist_db5fed45._.js
+│   │   │   │   ├── 4787e_next_dist_db5fed45._.js.map
+│   │   │   │   ├── 4787e_next_dist_esm_f73e568e._.js
+│   │   │   │   ├── 4787e_next_dist_esm_f73e568e._.js.map
+│   │   │   │   ├── 4787e_next_dist_server_route-modules_app-page_d0aaecc3._.js
+│   │   │   │   ├── 4787e_next_dist_server_route-modules_app-page_d0aaecc3._.js.map
+│   │   │   │   ├── 5501a_crypto-js_0ddb19aa._.js
+│   │   │   │   ├── 5501a_crypto-js_0ddb19aa._.js.map
+│   │   │   │   ├── 5501a_crypto-js_d25aaea2._.js
+│   │   │   │   ├── 5501a_crypto-js_d25aaea2._.js.map
+│   │   │   │   ├── 6fba2_moment_964de3f5._.js
+│   │   │   │   ├── 6fba2_moment_964de3f5._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_3f167ee6._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_3f167ee6._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_67e3cebf._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_67e3cebf._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_a110dd71._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_a110dd71._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_f9d5bb87._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_f9d5bb87._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_1ae92dd1._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_1ae92dd1._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_2c5d22b2._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_2c5d22b2._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_4c3b2635._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_4c3b2635._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_4ea155d9._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_4ea155d9._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_a4175d5f._.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_a4175d5f._.js.map
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_arrow-right_b3ee5bc4.js
+│   │   │   │   ├── 89783_lucide-react_dist_esm_icons_arrow-right_b3ee5bc4.js.map
+│   │   │   │   ├── 8fd22_libphonenumber-js_38f531c9._.js
+│   │   │   │   ├── 8fd22_libphonenumber-js_38f531c9._.js.map
+│   │   │   │   ├── 8fd22_libphonenumber-js_720c1a59._.js
+│   │   │   │   ├── 8fd22_libphonenumber-js_720c1a59._.js.map
+│   │   │   │   ├── 970c5_swiper_55c7361b._.js
+│   │   │   │   ├── 970c5_swiper_55c7361b._.js.map
+│   │   │   │   ├── a13a7_world-countries_a4054df2._.js
+│   │   │   │   ├── a13a7_world-countries_a4054df2._.js.map
+│   │   │   │   ├── c7beb_tailwind-merge_dist_bundle-mjs_mjs_0273c3f5._.js
+│   │   │   │   ├── c7beb_tailwind-merge_dist_bundle-mjs_mjs_0273c3f5._.js.map
+│   │   │   │   ├── cf92c_recharts_es6_cartesian_c80cbee2._.js
+│   │   │   │   ├── cf92c_recharts_es6_cartesian_c80cbee2._.js.map
+│   │   │   │   ├── cf92c_recharts_es6_component_99f5f625._.js
+│   │   │   │   ├── cf92c_recharts_es6_component_99f5f625._.js.map
+│   │   │   │   ├── cf92c_recharts_es6_fbea1db0._.js
+│   │   │   │   ├── cf92c_recharts_es6_fbea1db0._.js.map
+│   │   │   │   ├── cf92c_recharts_es6_state_405a5b57._.js
+│   │   │   │   ├── cf92c_recharts_es6_state_405a5b57._.js.map
+│   │   │   │   ├── cf92c_recharts_es6_util_ad9e24a7._.js
+│   │   │   │   ├── cf92c_recharts_es6_util_ad9e24a7._.js.map
+│   │   │   │   ├── d6363_country-flag-icons_f21f8094._.js
+│   │   │   │   ├── d6363_country-flag-icons_f21f8094._.js.map
+│   │   │   │   ├── ecb83_@remixicon_react_index_mjs_618625f7._.js
+│   │   │   │   ├── ecb83_@remixicon_react_index_mjs_618625f7._.js.map
+│   │   │   │   ├── ef83b_axios_lib_5a22b238._.js
+│   │   │   │   ├── ef83b_axios_lib_5a22b238._.js.map
+│   │   │   │   ├── ef83b_axios_lib_5a3c1df6._.js
+│   │   │   │   ├── ef83b_axios_lib_5a3c1df6._.js.map
+│   │   │   │   ├── f893d_motion-dom_dist_es_54983149._.js
+│   │   │   │   ├── f893d_motion-dom_dist_es_54983149._.js.map
+│   │   │   │   ├── node_modules__pnpm_672eff57._.js
+│   │   │   │   ├── node_modules__pnpm_672eff57._.js.map
+│   │   │   │   ├── node_modules__pnpm_6a1cd4c0._.js
+│   │   │   │   ├── node_modules__pnpm_6a1cd4c0._.js.map
+│   │   │   │   ├── node_modules__pnpm_6ee647b1._.js
+│   │   │   │   ├── node_modules__pnpm_6ee647b1._.js.map
+│   │   │   │   ├── node_modules__pnpm_72a55a70._.js
+│   │   │   │   ├── node_modules__pnpm_72a55a70._.js.map
+│   │   │   │   ├── node_modules__pnpm_74065f22._.js
+│   │   │   │   ├── node_modules__pnpm_74065f22._.js.map
+│   │   │   │   ├── node_modules__pnpm_86256470._.js
+│   │   │   │   ├── node_modules__pnpm_86256470._.js.map
+│   │   │   │   ├── node_modules__pnpm_c3a68ae2._.js
+│   │   │   │   ├── node_modules__pnpm_c3a68ae2._.js.map
+│   │   │   │   ├── node_modules__pnpm_d54345b6._.js
+│   │   │   │   ├── node_modules__pnpm_d54345b6._.js.map
+│   │   │   │   ├── node_modules__pnpm_e26074ee._.js
+│   │   │   │   ├── node_modules__pnpm_e26074ee._.js.map
+│   │   │   │   ├── src_193b575a._.js
+│   │   │   │   ├── src_193b575a._.js.map
+│   │   │   │   ├── src_1cbff146._.js
+│   │   │   │   ├── src_1cbff146._.js.map
+│   │   │   │   ├── src_22643cda._.js
+│   │   │   │   ├── src_22643cda._.js.map
+│   │   │   │   ├── src_30c847d0._.js
+│   │   │   │   ├── src_30c847d0._.js.map
+│   │   │   │   ├── src_3c772966._.js
+│   │   │   │   ├── src_3c772966._.js.map
+│   │   │   │   ├── src_5d4a398c._.js
+│   │   │   │   ├── src_5d4a398c._.js.map
+│   │   │   │   ├── src_635364cf._.js
+│   │   │   │   ├── src_635364cf._.js.map
+│   │   │   │   ├── src_7c545a60._.js
+│   │   │   │   ├── src_7c545a60._.js.map
+│   │   │   │   ├── src_857444ad._.js
+│   │   │   │   ├── src_857444ad._.js.map
+│   │   │   │   ├── src_866f736f._.js
+│   │   │   │   ├── src_866f736f._.js.map
+│   │   │   │   ├── src_949f67b8._.js
+│   │   │   │   ├── src_949f67b8._.js.map
+│   │   │   │   ├── src_99214205._.js
+│   │   │   │   ├── src_99214205._.js.map
+│   │   │   │   ├── src_app_a4430781._.js
+│   │   │   │   ├── src_app_a4430781._.js.map
+│   │   │   │   ├── src_app_dashboard_layout_tsx_b0e6736b._.js
+│   │   │   │   ├── src_app_dashboard_layout_tsx_b0e6736b._.js.map
+│   │   │   │   ├── src_b240e600._.js
+│   │   │   │   ├── src_b240e600._.js.map
+│   │   │   │   ├── src_c1e184f0._.js
+│   │   │   │   ├── src_c1e184f0._.js.map
+│   │   │   │   ├── src_c4575515._.js
+│   │   │   │   ├── src_c4575515._.js.map
+│   │   │   │   ├── src_cb4fb45c._.js
+│   │   │   │   ├── src_cb4fb45c._.js.map
+│   │   │   │   ├── src_components_4a1131ef._.js
+│   │   │   │   ├── src_components_4a1131ef._.js.map
+│   │   │   │   ├── src_components_6b560284._.js
+│   │   │   │   ├── src_components_6b560284._.js.map
+│   │   │   │   ├── src_components_9ffed840._.js
+│   │   │   │   ├── src_components_9ffed840._.js.map
+│   │   │   │   ├── src_components_e99f18e9._.js
+│   │   │   │   ├── src_components_e99f18e9._.js.map
+│   │   │   │   ├── src_components_pages_22a56f0b._.js
+│   │   │   │   ├── src_components_pages_22a56f0b._.js.map
+│   │   │   │   ├── src_components_pages_43ebb7d3._.js
+│   │   │   │   ├── src_components_pages_43ebb7d3._.js.map
+│   │   │   │   ├── src_components_pages_a37c37f5._.js
+│   │   │   │   ├── src_components_pages_a37c37f5._.js.map
+│   │   │   │   ├── src_components_pages_accounting_9b25726c._.js
+│   │   │   │   ├── src_components_pages_accounting_9b25726c._.js.map
+│   │   │   │   ├── src_components_pages_candidates_8a37d34e._.js
+│   │   │   │   ├── src_components_pages_candidates_8a37d34e._.js.map
+│   │   │   │   ├── src_components_pages_ced3255c._.js
+│   │   │   │   ├── src_components_pages_ced3255c._.js.map
+│   │   │   │   ├── src_components_pages_dashboard_b303bd1d._.js
+│   │   │   │   ├── src_components_pages_dashboard_b303bd1d._.js.map
+│   │   │   │   ├── src_components_pages_employees_67724b7e._.js
+│   │   │   │   ├── src_components_pages_employees_67724b7e._.js.map
+│   │   │   │   ├── src_components_pages_employees_85b65d5c._.js
+│   │   │   │   ├── src_components_pages_employees_85b65d5c._.js.map
+│   │   │   │   ├── src_components_pages_finance_7c185279._.js
+│   │   │   │   ├── src_components_pages_finance_7c185279._.js.map
+│   │   │   │   ├── src_components_pages_marketplace_announcements_753361c0._.js
+│   │   │   │   ├── src_components_pages_marketplace_announcements_753361c0._.js.map
+│   │   │   │   ├── src_components_pages_organisation_26f14bdc._.js
+│   │   │   │   ├── src_components_pages_organisation_26f14bdc._.js.map
+│   │   │   │   ├── src_components_pages_organisation_9e5d84d8._.js
+│   │   │   │   ├── src_components_pages_organisation_9e5d84d8._.js.map
+│   │   │   │   ├── src_components_pages_organisation_ccde872a._.js
+│   │   │   │   ├── src_components_pages_organisation_ccde872a._.js.map
+│   │   │   │   ├── src_components_pages_plans_2fbf4935._.js
+│   │   │   │   ├── src_components_pages_plans_2fbf4935._.js.map
+│   │   │   │   ├── src_components_pages_plans_33232702._.js
+│   │   │   │   ├── src_components_pages_plans_33232702._.js.map
+│   │   │   │   ├── src_components_pages_properties_1fbc91ff._.js
+│   │   │   │   ├── src_components_pages_properties_1fbc91ff._.js.map
+│   │   │   │   ├── src_components_pages_properties_5a458a2b._.js
+│   │   │   │   ├── src_components_pages_properties_5a458a2b._.js.map
+│   │   │   │   ├── src_components_pages_properties_b3fd504a._.js
+│   │   │   │   ├── src_components_pages_properties_b3fd504a._.js.map
+│   │   │   │   ├── src_components_pages_properties_d20027fd._.js
+│   │   │   │   ├── src_components_pages_properties_d20027fd._.js.map
+│   │   │   │   ├── src_components_pages_prospects_df3d475e._.js
+│   │   │   │   ├── src_components_pages_prospects_df3d475e._.js.map
+│   │   │   │   ├── src_components_pages_unpaid-invoices_fb172aa0._.js
+│   │   │   │   ├── src_components_pages_unpaid-invoices_fb172aa0._.js.map
+│   │   │   │   ├── src_components_pages_visits_c86e25b2._.js
+│   │   │   │   ├── src_components_pages_visits_c86e25b2._.js.map
+│   │   │   │   ├── src_components_permissions_17c31794._.js
+│   │   │   │   ├── src_components_permissions_17c31794._.js.map
+│   │   │   │   ├── src_components_permissions_4df9e822._.js
+│   │   │   │   ├── src_components_permissions_4df9e822._.js.map
+│   │   │   │   ├── src_components_permissions_6bbe8f8c._.js
+│   │   │   │   ├── src_components_permissions_6bbe8f8c._.js.map
+│   │   │   │   ├── src_components_permissions_e3030f3d._.js
+│   │   │   │   ├── src_components_permissions_e3030f3d._.js.map
+│   │   │   │   ├── src_components_ui_6fe200e3._.js
+│   │   │   │   ├── src_components_ui_6fe200e3._.js.map
+│   │   │   │   ├── src_components_ui_d01c1081._.js
+│   │   │   │   ├── src_components_ui_d01c1081._.js.map
+│   │   │   │   ├── src_components_ui_de8dab05._.js
+│   │   │   │   ├── src_components_ui_de8dab05._.js.map
+│   │   │   │   ├── src_components_ui_forms_02e82545._.js
+│   │   │   │   ├── src_components_ui_forms_02e82545._.js.map
+│   │   │   │   ├── src_components_ui_forms_583532fc._.js
+│   │   │   │   ├── src_components_ui_forms_583532fc._.js.map
+│   │   │   │   ├── src_components_ui_render_3aec5299._.js
+│   │   │   │   ├── src_components_ui_render_3aec5299._.js.map
+│   │   │   │   ├── src_components_ui_render_f75dde18._.js
+│   │   │   │   ├── src_components_ui_render_f75dde18._.js.map
+│   │   │   │   ├── src_components_ui_table_manager_0161b767._.js
+│   │   │   │   ├── src_components_ui_table_manager_0161b767._.js.map
+│   │   │   │   ├── src_components_ui_table_manager_856b195c._.js
+│   │   │   │   ├── src_components_ui_table_manager_856b195c._.js.map
+│   │   │   │   ├── src_components_upload_d7a03011._.js
+│   │   │   │   ├── src_components_upload_d7a03011._.js.map
+│   │   │   │   ├── src_d089cb7f._.js
+│   │   │   │   ├── src_d089cb7f._.js.map
+│   │   │   │   ├── src_d396af17._.js
+│   │   │   │   ├── src_d396af17._.js.map
+│   │   │   │   ├── src_d9b271ef._.js
+│   │   │   │   ├── src_d9b271ef._.js.map
+│   │   │   │   ├── src_df177748._.js
+│   │   │   │   ├── src_df177748._.js.map
+│   │   │   │   ├── src_e47f2d4c._.js
+│   │   │   │   ├── src_e47f2d4c._.js.map
+│   │   │   │   ├── src_f5b87929._.js
+│   │   │   │   ├── src_f5b87929._.js.map
+│   │   │   │   ├── src_f77e1667._.js
+│   │   │   │   ├── src_f77e1667._.js.map
+│   │   │   │   ├── src_fef04cc6._.js
+│   │   │   │   ├── src_fef04cc6._.js.map
+│   │   │   │   ├── src_modal_system_2713f4a2._.js
+│   │   │   │   ├── src_modal_system_2713f4a2._.js.map
+│   │   │   │   ├── src_modal_system_2e1ac4e1._.js
+│   │   │   │   ├── src_modal_system_2e1ac4e1._.js.map
+│   │   │   │   ├── src_modal_system_components_ea505b58._.js
+│   │   │   │   ├── src_modal_system_components_ea505b58._.js.map
+│   │   │   │   ├── src_modal_system_entities_18140102._.js
+│   │   │   │   ├── src_modal_system_entities_18140102._.js.map
+│   │   │   │   ├── src_modal_system_entities_4e5746fe._.js
+│   │   │   │   ├── src_modal_system_entities_4e5746fe._.js.map
+│   │   │   │   ├── src_modal_system_entities_9534663c._.js
+│   │   │   │   ├── src_modal_system_entities_9534663c._.js.map
+│   │   │   │   ├── src_modal_system_entities_candidate_7c7006fb._.js
+│   │   │   │   ├── src_modal_system_entities_candidate_7c7006fb._.js.map
+│   │   │   │   ├── src_modal_system_entities_efc99c0d._.js
+│   │   │   │   ├── src_modal_system_entities_efc99c0d._.js.map
+│   │   │   │   ├── src_modal_system_entities_finance_640a6971._.js
+│   │   │   │   ├── src_modal_system_entities_finance_640a6971._.js.map
+│   │   │   │   ├── src_modal_system_entities_process-category_38c2744b._.js
+│   │   │   │   ├── src_modal_system_entities_process-category_38c2744b._.js.map
+│   │   │   │   ├── src_modal_system_entities_process-category_76991d18._.js
+│   │   │   │   ├── src_modal_system_entities_process-category_76991d18._.js.map
+│   │   │   │   ├── src_modal_system_entities_process-category_8fc485b2._.js
+│   │   │   │   ├── src_modal_system_entities_process-category_8fc485b2._.js.map
+│   │   │   │   ├── src_sidebar_system_1af4fa16._.js
+│   │   │   │   ├── src_sidebar_system_1af4fa16._.js.map
+│   │   │   │   ├── src_sidebar_system_9893fd9b._.js
+│   │   │   │   └── src_sidebar_system_9893fd9b._.js.map
+│   │   │   ├── [root-of-the-server]__80bb4c51._.js
+│   │   │   ├── [root-of-the-server]__80bb4c51._.js.map
+│   │   │   ├── [turbopack]_runtime.js
+│   │   │   ├── [turbopack]_runtime.js.map
+│   │   │   ├── 4787e_next_9ae4f0f4._.js
+│   │   │   └── 4787e_next_9ae4f0f4._.js.map
+│   │   ├── app-paths-manifest.json
+│   │   ├── interception-route-rewrite-manifest.js
+│   │   ├── middleware-build-manifest.js
+│   │   ├── middleware-manifest.json
+│   │   ├── next-font-manifest.js
+│   │   ├── next-font-manifest.json
+│   │   ├── pages-manifest.json
+│   │   ├── server-reference-manifest.js
+│   │   └── server-reference-manifest.json
+│   ├── static/
+│   │   ├── chunks/
+│   │   │   ├── _089cbd27._.js
+│   │   │   ├── _089cbd27._.js.map
+│   │   │   ├── _38ae01ad._.js
+│   │   │   ├── _38ae01ad._.js.map
+│   │   │   ├── _4342ba39._.js
+│   │   │   ├── _4342ba39._.js.map
+│   │   │   ├── _593d3e39._.js
+│   │   │   ├── _593d3e39._.js.map
+│   │   │   ├── _5ae64b37._.js
+│   │   │   ├── _5ae64b37._.js.map
+│   │   │   ├── _e69f0d32._.js
+│   │   │   ├── [next]_internal_font_google_geist_e531dabc_module_css_e59ae46c._.single.css
+│   │   │   ├── [next]_internal_font_google_geist_e531dabc_module_css_e59ae46c._.single.css.map
+│   │   │   ├── [next]_internal_font_google_geist_mono_68a01160_module_css_e59ae46c._.single.css
+│   │   │   ├── [next]_internal_font_google_geist_mono_68a01160_module_css_e59ae46c._.single.css.map
+│   │   │   ├── [next]_internal_font_google_montserrat_73aa5b8e_module_css_e59ae46c._.single.css
+│   │   │   ├── [next]_internal_font_google_montserrat_73aa5b8e_module_css_e59ae46c._.single.css.map
+│   │   │   ├── [next]_internal_font_google_plus_jakarta_sans_b22768b2_module_css_e59ae46c._.single.css
+│   │   │   ├── [next]_internal_font_google_plus_jakarta_sans_b22768b2_module_css_e59ae46c._.single.css.map
+│   │   │   ├── [root-of-the-server]__aa16a4b0._.css
+│   │   │   ├── [root-of-the-server]__aa16a4b0._.css.map
+│   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js
+│   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js.map
+│   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_b3e045a3._.js
+│   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_bf4925a4._.js
+│   │   │   ├── [turbopack]_browser_dev_hmr-client_hmr-client_ts_bf4925a4._.js.map
+│   │   │   ├── 1c600_date-fns_388055ab._.js
+│   │   │   ├── 1c600_date-fns_388055ab._.js.map
+│   │   │   ├── 1c600_date-fns_b8832fa6._.js
+│   │   │   ├── 1c600_date-fns_b8832fa6._.js.map
+│   │   │   ├── 2797f_@tanstack_query-core_build_modern_2588301d._.js
+│   │   │   ├── 2797f_@tanstack_query-core_build_modern_2588301d._.js.map
+│   │   │   ├── 2797f_@tanstack_query-core_build_modern_4e8eb504._.js
+│   │   │   ├── 2797f_@tanstack_query-core_build_modern_4e8eb504._.js.map
+│   │   │   ├── 3a686_framer-motion_dist_es_977813d5._.js
+│   │   │   ├── 3a686_framer-motion_dist_es_977813d5._.js.map
+│   │   │   ├── 3f50a_pdfjs-dist_build_pdf_mjs_1b300589._.js
+│   │   │   ├── 3f50a_pdfjs-dist_build_pdf_mjs_1b300589._.js.map
+│   │   │   ├── 3f50a_pdfjs-dist_build_pdf_mjs_39cfb085._.js
+│   │   │   ├── 3f50a_pdfjs-dist_build_pdf_mjs_39cfb085._.js.map
+│   │   │   ├── 43146_@dnd-kit_core_dist_core_esm_a3578c96.js
+│   │   │   ├── 43146_@dnd-kit_core_dist_core_esm_a3578c96.js.map
+│   │   │   ├── 4745b_react-pdf_dist_0747cd3c._.js
+│   │   │   ├── 4745b_react-pdf_dist_0747cd3c._.js.map
+│   │   │   ├── 4745b_react-pdf_dist_Page_82360d09._.css
+│   │   │   ├── 4745b_react-pdf_dist_Page_82360d09._.css.map
+│   │   │   ├── 4745b_react-pdf_dist_Page_AnnotationLayer_css_e59ae46c._.single.css
+│   │   │   ├── 4745b_react-pdf_dist_Page_AnnotationLayer_css_e59ae46c._.single.css.map
+│   │   │   ├── 4745b_react-pdf_dist_Page_TextLayer_css_e59ae46c._.single.css
+│   │   │   ├── 4745b_react-pdf_dist_Page_TextLayer_css_e59ae46c._.single.css.map
+│   │   │   ├── 4787e_next_dd5b6a3e._.js
+│   │   │   ├── 4787e_next_dd5b6a3e._.js.map
+│   │   │   ├── 4787e_next_dist_7efa1f19._.js
+│   │   │   ├── 4787e_next_dist_7efa1f19._.js.map
+│   │   │   ├── 4787e_next_dist_build_polyfills_polyfill-nomodule.js
+│   │   │   ├── 4787e_next_dist_c67751b4._.js
+│   │   │   ├── 4787e_next_dist_c67751b4._.js.map
+│   │   │   ├── 4787e_next_dist_client_36029ad0._.js
+│   │   │   ├── 4787e_next_dist_client_36029ad0._.js.map
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_0132c74c.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_6466ca0c.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_93e6c9e3.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_9450f177.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_e3b856bf.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_ecac219c.js
+│   │   │   ├── 4787e_next_dist_client_components_builtin_global-error_f3efd92d.js
+│   │   │   ├── 4787e_next_dist_compiled_25146208._.js
+│   │   │   ├── 4787e_next_dist_compiled_25146208._.js.map
+│   │   │   ├── 4787e_next_dist_compiled_next-devtools_index_fe030bb1.js
+│   │   │   ├── 4787e_next_dist_compiled_next-devtools_index_fe030bb1.js.map
+│   │   │   ├── 4787e_next_dist_compiled_react-dom_8ba0017e._.js
+│   │   │   ├── 4787e_next_dist_compiled_react-dom_8ba0017e._.js.map
+│   │   │   ├── 5501a_crypto-js_65a603ca._.js
+│   │   │   ├── 5501a_crypto-js_65a603ca._.js.map
+│   │   │   ├── 61dca_@swc_helpers_cjs_28edb73c._.js
+│   │   │   ├── 61dca_@swc_helpers_cjs_28edb73c._.js.map
+│   │   │   ├── 6fba2_moment_f0ec6b33._.js
+│   │   │   ├── 6fba2_moment_f0ec6b33._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_4dd1ea41._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_4dd1ea41._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_5700e175._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_5700e175._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_5dcd6b11._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_5dcd6b11._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_bd42df1a._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_bd42df1a._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_1c544a49._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_1c544a49._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_6bb61be5._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_6bb61be5._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_85ae75bc._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_85ae75bc._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_8b62da57._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_8b62da57._.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_arrow-right_d79f9521.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_arrow-right_d79f9521.js.map
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_b89ac428._.js
+│   │   │   ├── 89783_lucide-react_dist_esm_icons_b89ac428._.js.map
+│   │   │   ├── 8fd22_libphonenumber-js_242a0646._.js
+│   │   │   ├── 8fd22_libphonenumber-js_242a0646._.js.map
+│   │   │   ├── 8fd22_libphonenumber-js_9c4a6f73._.js
+│   │   │   ├── 8fd22_libphonenumber-js_9c4a6f73._.js.map
+│   │   │   ├── 970c5_swiper_955b72d3._.js
+│   │   │   ├── 970c5_swiper_955b72d3._.js.map
+│   │   │   ├── 970c5_swiper_modules_navigation_css_e59ae46c._.single.css
+│   │   │   ├── 970c5_swiper_modules_navigation_css_e59ae46c._.single.css.map
+│   │   │   ├── 970c5_swiper_modules_pagination_css_e59ae46c._.single.css
+│   │   │   ├── 970c5_swiper_modules_pagination_css_e59ae46c._.single.css.map
+│   │   │   ├── 970c5_swiper_swiper_css_e59ae46c._.single.css
+│   │   │   ├── 970c5_swiper_swiper_css_e59ae46c._.single.css.map
+│   │   │   ├── a13a7_world-countries_59685d27._.js
+│   │   │   ├── a13a7_world-countries_59685d27._.js.map
+│   │   │   ├── c7beb_tailwind-merge_dist_bundle-mjs_mjs_83d8ece6._.js
+│   │   │   ├── c7beb_tailwind-merge_dist_bundle-mjs_mjs_83d8ece6._.js.map
+│   │   │   ├── cf92c_recharts_es6_cartesian_8d2ec2a2._.js
+│   │   │   ├── cf92c_recharts_es6_cartesian_8d2ec2a2._.js.map
+│   │   │   ├── cf92c_recharts_es6_component_8753e425._.js
+│   │   │   ├── cf92c_recharts_es6_component_8753e425._.js.map
+│   │   │   ├── cf92c_recharts_es6_e96b1a6e._.js
+│   │   │   ├── cf92c_recharts_es6_e96b1a6e._.js.map
+│   │   │   ├── cf92c_recharts_es6_state_bf95bc6b._.js
+│   │   │   ├── cf92c_recharts_es6_state_bf95bc6b._.js.map
+│   │   │   ├── cf92c_recharts_es6_util_4947f91d._.js
+│   │   │   ├── cf92c_recharts_es6_util_4947f91d._.js.map
+│   │   │   ├── d6363_country-flag-icons_4542933b._.js
+│   │   │   ├── d6363_country-flag-icons_4542933b._.js.map
+│   │   │   ├── ecb83_@remixicon_react_index_mjs_675bf962._.js
+│   │   │   ├── ecb83_@remixicon_react_index_mjs_675bf962._.js.map
+│   │   │   ├── ef83b_axios_lib_0de9a220._.js
+│   │   │   ├── ef83b_axios_lib_0de9a220._.js.map
+│   │   │   ├── f893d_motion-dom_dist_es_4d7e59f4._.js
+│   │   │   ├── f893d_motion-dom_dist_es_4d7e59f4._.js.map
+│   │   │   ├── node_modules__pnpm_3d32168e._.js
+│   │   │   ├── node_modules__pnpm_3d32168e._.js.map
+│   │   │   ├── node_modules__pnpm_52d9643a._.js
+│   │   │   ├── node_modules__pnpm_52d9643a._.js.map
+│   │   │   ├── node_modules__pnpm_5a1a7cc5._.js
+│   │   │   ├── node_modules__pnpm_5a1a7cc5._.js.map
+│   │   │   ├── node_modules__pnpm_6cf38972._.js
+│   │   │   ├── node_modules__pnpm_6cf38972._.js.map
+│   │   │   ├── node_modules__pnpm_9443bde0._.js
+│   │   │   ├── node_modules__pnpm_9443bde0._.js.map
+│   │   │   ├── node_modules__pnpm_eecc4483._.js
+│   │   │   ├── node_modules__pnpm_eecc4483._.js.map
+│   │   │   ├── src_0534e5e7._.js
+│   │   │   ├── src_0534e5e7._.js.map
+│   │   │   ├── src_132dea28._.js
+│   │   │   ├── src_132dea28._.js.map
+│   │   │   ├── src_197df07e._.js
+│   │   │   ├── src_197df07e._.js.map
+│   │   │   ├── src_3219b99b._.js
+│   │   │   ├── src_3219b99b._.js.map
+│   │   │   ├── src_35b6f22c._.js
+│   │   │   ├── src_35b6f22c._.js.map
+│   │   │   ├── src_38724436._.js
+│   │   │   ├── src_38724436._.js.map
+│   │   │   ├── src_41fc733a._.js
+│   │   │   ├── src_41fc733a._.js.map
+│   │   │   ├── src_4d0f6d30._.js
+│   │   │   ├── src_4d0f6d30._.js.map
+│   │   │   ├── src_697a3f10._.js
+│   │   │   ├── src_697a3f10._.js.map
+│   │   │   ├── src_7608c98e._.js
+│   │   │   ├── src_7608c98e._.js.map
+│   │   │   ├── src_79312d29._.js
+│   │   │   ├── src_79312d29._.js.map
+│   │   │   ├── src_795d28bf._.js
+│   │   │   ├── src_795d28bf._.js.map
+│   │   │   ├── src_7af9b127._.js
+│   │   │   ├── src_7af9b127._.js.map
+│   │   │   ├── src_80060a55._.js
+│   │   │   ├── src_80060a55._.js.map
+│   │   │   ├── src_8cfe25d8._.js
+│   │   │   ├── src_8cfe25d8._.js.map
+│   │   │   ├── src_a1a57e28._.js
+│   │   │   ├── src_a1a57e28._.js.map
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_61f13f28._.js
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_7d738338._.js
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_9e17846e._.js
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_9e57544f._.js
+│   │   │   ├── src_app_dashboard_employees_lists_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_finances_accounting_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_finances_collect-payment_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_finances_transactions_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_0132c74c._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_6466ca0c._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_9450f177._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_e3b856bf._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_ecac219c._.js
+│   │   │   ├── src_app_dashboard_layout_tsx_f3efd92d._.js
+│   │   │   ├── src_app_dashboard_marketplace_announcements_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_marketplace_visits_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_organisation_documents_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_organisation_pools_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_organisation_processes_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_plans_page_tsx_61f13f28._.js
+│   │   │   ├── src_app_dashboard_plans_page_tsx_8ded1a58._.js
+│   │   │   ├── src_app_dashboard_properties_create_page_tsx_7d738338._.js
+│   │   │   ├── src_app_dashboard_properties_create_page_tsx_9e57544f._.js
+│   │   │   ├── src_app_dashboard_properties_estates_details_page_tsx_7d738338._.js
+│   │   │   ├── src_app_dashboard_properties_estates_page_tsx_7d738338._.js
+│   │   │   ├── src_app_dashboard_properties_estates_page_tsx_9e57544f._.js
+│   │   │   ├── src_app_dashboard_properties_estates_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_dashboard_properties_tenants_page_tsx_7d738338._.js
+│   │   │   ├── src_app_dashboard_properties_tenants_page_tsx_9f3396c5._.js
+│   │   │   ├── src_app_favicon_ico_mjs_4ae240c2._.js
+│   │   │   ├── src_app_globals_css_e59ae46c._.single.css
+│   │   │   ├── src_app_globals_css_e59ae46c._.single.css.map
+│   │   │   ├── src_app_layout_tsx_1b6b0d83._.js
+│   │   │   ├── src_app_login_page_tsx_0132c74c._.js
+│   │   │   ├── src_app_login_page_tsx_6466ca0c._.js
+│   │   │   ├── src_app_login_page_tsx_93e6c9e3._.js
+│   │   │   ├── src_app_login_page_tsx_9450f177._.js
+│   │   │   ├── src_app_login_page_tsx_e3b856bf._.js
+│   │   │   ├── src_app_login_page_tsx_ecac219c._.js
+│   │   │   ├── src_app_login_page_tsx_f3efd92d._.js
+│   │   │   ├── src_c1ee233c._.js
+│   │   │   ├── src_c1ee233c._.js.map
+│   │   │   ├── src_components_41df27d7._.js
+│   │   │   ├── src_components_41df27d7._.js.map
+│   │   │   ├── src_components_6349c928._.js
+│   │   │   ├── src_components_6349c928._.js.map
+│   │   │   ├── src_components_cbbedd8b._.js
+│   │   │   ├── src_components_cbbedd8b._.js.map
+│   │   │   ├── src_components_f905054c._.js
+│   │   │   ├── src_components_f905054c._.js.map
+│   │   │   ├── src_components_pages_01368fe7._.js
+│   │   │   ├── src_components_pages_01368fe7._.js.map
+│   │   │   ├── src_components_pages_0e65335c._.js
+│   │   │   ├── src_components_pages_0e65335c._.js.map
+│   │   │   ├── src_components_pages_0ecd5e6a._.js
+│   │   │   ├── src_components_pages_0ecd5e6a._.js.map
+│   │   │   ├── src_components_pages_accounting_fbfb989c._.js
+│   │   │   ├── src_components_pages_accounting_fbfb989c._.js.map
+│   │   │   ├── src_components_pages_bookings_b45898d6._.js
+│   │   │   ├── src_components_pages_bookings_b45898d6._.js.map
+│   │   │   ├── src_components_pages_candidates_fede6c8f._.js
+│   │   │   ├── src_components_pages_candidates_fede6c8f._.js.map
+│   │   │   ├── src_components_pages_d74a017a._.js
+│   │   │   ├── src_components_pages_d74a017a._.js.map
+│   │   │   ├── src_components_pages_dashboard_c068e498._.js
+│   │   │   ├── src_components_pages_dashboard_c068e498._.js.map
+│   │   │   ├── src_components_pages_employees_900f082d._.js
+│   │   │   ├── src_components_pages_employees_900f082d._.js.map
+│   │   │   ├── src_components_pages_employees_ca22bff0._.js
+│   │   │   ├── src_components_pages_employees_ca22bff0._.js.map
+│   │   │   ├── src_components_pages_finance_5c8b6ccd._.js
+│   │   │   ├── src_components_pages_finance_5c8b6ccd._.js.map
+│   │   │   ├── src_components_pages_marketplace_announcements_b8cd062c._.js
+│   │   │   ├── src_components_pages_marketplace_announcements_b8cd062c._.js.map
+│   │   │   ├── src_components_pages_organisation_d9d10b0b._.js
+│   │   │   ├── src_components_pages_organisation_d9d10b0b._.js.map
+│   │   │   ├── src_components_pages_organisation_e0419200._.js
+│   │   │   ├── src_components_pages_organisation_e0419200._.js.map
+│   │   │   ├── src_components_pages_organisation_fdf8c8d9._.js
+│   │   │   ├── src_components_pages_organisation_fdf8c8d9._.js.map
+│   │   │   ├── src_components_pages_plans_0540b6d1._.js
+│   │   │   ├── src_components_pages_plans_0540b6d1._.js.map
+│   │   │   ├── src_components_pages_plans_f559f781._.js
+│   │   │   ├── src_components_pages_plans_f559f781._.js.map
+│   │   │   ├── src_components_pages_properties_21fa606e._.js
+│   │   │   ├── src_components_pages_properties_21fa606e._.js.map
+│   │   │   ├── src_components_pages_properties_c6d91701._.js
+│   │   │   ├── src_components_pages_properties_c6d91701._.js.map
+│   │   │   ├── src_components_pages_properties_ca540ba5._.js
+│   │   │   ├── src_components_pages_properties_ca540ba5._.js.map
+│   │   │   ├── src_components_pages_properties_dfc89d49._.js
+│   │   │   ├── src_components_pages_properties_dfc89d49._.js.map
+│   │   │   ├── src_components_pages_prospects_3525a8ad._.js
+│   │   │   ├── src_components_pages_prospects_3525a8ad._.js.map
+│   │   │   ├── src_components_pages_unpaid-invoices_0ea1a82e._.js
+│   │   │   ├── src_components_pages_unpaid-invoices_0ea1a82e._.js.map
+│   │   │   ├── src_components_pages_visits_30956a9d._.js
+│   │   │   ├── src_components_pages_visits_30956a9d._.js.map
+│   │   │   ├── src_components_permissions_4c2ccbc7._.js
+│   │   │   ├── src_components_permissions_4c2ccbc7._.js.map
+│   │   │   ├── src_components_permissions_952c7f84._.js
+│   │   │   ├── src_components_permissions_952c7f84._.js.map
+│   │   │   ├── src_components_permissions_c0682858._.js
+│   │   │   ├── src_components_permissions_c0682858._.js.map
+│   │   │   ├── src_components_permissions_e69a38bd._.js
+│   │   │   ├── src_components_permissions_e69a38bd._.js.map
+│   │   │   ├── src_components_ui_0949fcb8._.js
+│   │   │   ├── src_components_ui_0949fcb8._.js.map
+│   │   │   ├── src_components_ui_0c3211c5._.js
+│   │   │   ├── src_components_ui_0c3211c5._.js.map
+│   │   │   ├── src_components_ui_3d1e8e5b._.js
+│   │   │   ├── src_components_ui_3d1e8e5b._.js.map
+│   │   │   ├── src_components_ui_4a2e4264._.js
+│   │   │   ├── src_components_ui_4a2e4264._.js.map
+│   │   │   ├── src_components_ui_67defc22._.js
+│   │   │   ├── src_components_ui_67defc22._.js.map
+│   │   │   ├── src_components_ui_930be8fc._.js
+│   │   │   ├── src_components_ui_930be8fc._.js.map
+│   │   │   ├── src_components_ui_a4766898._.js
+│   │   │   ├── src_components_ui_a4766898._.js.map
+│   │   │   ├── src_components_ui_b0107425._.js
+│   │   │   ├── src_components_ui_b0107425._.js.map
+│   │   │   ├── src_components_ui_c6766c9d._.js
+│   │   │   ├── src_components_ui_c6766c9d._.js.map
+│   │   │   ├── src_components_ui_e52d1056._.js
+│   │   │   ├── src_components_ui_e52d1056._.js.map
+│   │   │   ├── src_components_ui_forms_3dcac4c0._.js
+│   │   │   ├── src_components_ui_forms_3dcac4c0._.js.map
+│   │   │   ├── src_components_ui_forms_7c8ee683._.js
+│   │   │   ├── src_components_ui_forms_7c8ee683._.js.map
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_4500ca46._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_55bb5ac7._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_74c44d39._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_ad52824b._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_bf2cd776._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_dfeec216._.js
+│   │   │   ├── src_components_ui_infos_ModalPhotos_tsx_f957974e._.js
+│   │   │   ├── src_components_ui_render_7a346650._.js
+│   │   │   ├── src_components_ui_render_7a346650._.js.map
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_4500ca46._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_55bb5ac7._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_6b931dae._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_6b931dae._.js.map
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_74c44d39._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_ad52824b._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_bf2cd776._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_dfeec216._.js
+│   │   │   ├── src_components_ui_render_DocumentViewer_tsx_f957974e._.js
+│   │   │   ├── src_components_ui_render_fb502acc._.js
+│   │   │   ├── src_components_ui_render_fb502acc._.js.map
+│   │   │   ├── src_components_ui_table_manager_23729b61._.js
+│   │   │   ├── src_components_ui_table_manager_23729b61._.js.map
+│   │   │   ├── src_components_ui_table_manager_5e9010fd._.js
+│   │   │   ├── src_components_ui_table_manager_5e9010fd._.js.map
+│   │   │   ├── src_components_upload_60e54f89._.js
+│   │   │   ├── src_components_upload_60e54f89._.js.map
+│   │   │   ├── src_d98d32f4._.js
+│   │   │   ├── src_d98d32f4._.js.map
+│   │   │   ├── src_dd6f53dd._.js
+│   │   │   ├── src_dd6f53dd._.js.map
+│   │   │   ├── src_ebe43964._.js
+│   │   │   ├── src_ebe43964._.js.map
+│   │   │   ├── src_ef4a34b9._.js
+│   │   │   ├── src_ef4a34b9._.js.map
+│   │   │   ├── src_f5fec6ac._.js
+│   │   │   ├── src_f5fec6ac._.js.map
+│   │   │   ├── src_f6df828e._.js
+│   │   │   ├── src_f6df828e._.js.map
+│   │   │   ├── src_fe874e74._.js
+│   │   │   ├── src_fe874e74._.js.map
+│   │   │   ├── src_modal_system_b187844a._.js
+│   │   │   ├── src_modal_system_b187844a._.js.map
+│   │   │   ├── src_modal_system_components_d592340a._.js
+│   │   │   ├── src_modal_system_components_d592340a._.js.map
+│   │   │   ├── src_modal_system_entities_1d437a86._.js
+│   │   │   ├── src_modal_system_entities_1d437a86._.js.map
+│   │   │   ├── src_modal_system_entities_candidate_9f150474._.js
+│   │   │   ├── src_modal_system_entities_candidate_9f150474._.js.map
+│   │   │   ├── src_modal_system_entities_ecef2499._.js
+│   │   │   ├── src_modal_system_entities_ecef2499._.js.map
+│   │   │   ├── src_modal_system_entities_f47effa9._.js
+│   │   │   ├── src_modal_system_entities_f47effa9._.js.map
+│   │   │   ├── src_modal_system_entities_finance_7dfe61ab._.js
+│   │   │   ├── src_modal_system_entities_finance_7dfe61ab._.js.map
+│   │   │   ├── src_modal_system_entities_org-document_029912ba._.js
+│   │   │   ├── src_modal_system_entities_org-document_029912ba._.js.map
+│   │   │   ├── src_modal_system_entities_org-document_e6015b0a._.js
+│   │   │   ├── src_modal_system_entities_org-document_e6015b0a._.js.map
+│   │   │   ├── src_modal_system_entities_process-category_7053cc40._.js
+│   │   │   ├── src_modal_system_entities_process-category_7053cc40._.js.map
+│   │   │   ├── src_modal_system_entities_process-category_72583091._.js
+│   │   │   ├── src_modal_system_entities_process-category_72583091._.js.map
+│   │   │   ├── src_modal_system_entities_process-category_c4f1ba9a._.js
+│   │   │   ├── src_modal_system_entities_process-category_c4f1ba9a._.js.map
+│   │   │   ├── src_modal_system_f8a6e716._.js
+│   │   │   ├── src_modal_system_f8a6e716._.js.map
+│   │   │   ├── src_sidebar_system_7a20567f._.js
+│   │   │   ├── src_sidebar_system_7a20567f._.js.map
+│   │   │   ├── src_sidebar_system_e153a21f._.js
+│   │   │   └── src_sidebar_system_e153a21f._.js.map
+│   │   ├── development/
+│   │   │   ├── _buildManifest.js
+│   │   │   ├── _clientMiddlewareManifest.json
+│   │   │   └── _ssgManifest.js
+│   │   └── media/
+│   │       ├── 0de51869f9786b76-s.5c86b45a.woff2
+│   │       ├── 34db53dd1096dd6e-s.342d9f3d.woff2
+│   │       ├── 379e710e6f0625c3-s.p.20b09c80.woff2
+│   │       ├── 59a436be7273d4bb-s.800df92b.woff2
+│   │       ├── 6dbf4f5dccd63dc9-s.82ac136b.woff2
+│   │       ├── 86616f1df93974fc-s.901ca93c.woff2
+│   │       ├── 8ee3a1ba4ed5baee-s.p.be19f591.woff2
+│   │       ├── 942c7eecbf9bc714-s.cb6bbcb1.woff2
+│   │       ├── 973faccb4f6aedb5-s.b7d310ad.woff2
+│   │       ├── b0a57561b6cb5495-s.p.1a6fa3e1.woff2
+│   │       ├── cce31dae03453930-s.p.33f50665.woff2
+│   │       ├── d26cc22533d232c7-s.81df3a5b.woff2
+│   │       ├── e5e2a9f48cda0a81-s.e32db976.woff2
+│   │       ├── e9bad63c09dafed8-s.aeb7790c.woff2
+│   │       ├── f74cd6ea37f32e19-s.6df29486.woff2
+│   │       └── favicon.45db1c09.ico
+│   ├── types/
+│   ├── app-build-manifest.json
+│   ├── build-manifest.json
+│   ├── fallback-build-manifest.json
+│   ├── fallback-build-manifest.json.tmp.3ip92nx20fl
+│   ├── package.json
+│   ├── postcss.js
+│   ├── postcss.js.map
+│   ├── prerender-manifest.json
+│   ├── routes-manifest.json
+│   └── trace
+├── .tauri/
+│   ├── myapp.key
+│   ├── myapp.key.pub
+│   └── tauri.txt
+├── locales/
+│   ├── en.json
+│   └── fr.json
+├── public/
+│   ├── assets/
+│   │   ├── finance/
+│   │   │   ├── moov-money-logo.png
+│   │   │   ├── mtn-money-logo.png
+│   │   │   ├── orange-money-logo.png
+│   │   │   └── wave-logo.png
+│   │   ├── font-awesome/
+│   │   │   ├── _index.css
+│   │   │   ├── fa-brands-400.ttf
+│   │   │   ├── fa-brands-400.woff2
+│   │   │   ├── fa-duotone-900.ttf
+│   │   │   ├── fa-duotone-900.woff2
+│   │   │   ├── fa-light-300.ttf
+│   │   │   ├── fa-light-300.woff2
+│   │   │   ├── fa-regular-400.ttf
+│   │   │   ├── fa-regular-400.woff2
+│   │   │   ├── fa-solid-900.ttf
+│   │   │   ├── fa-solid-900.woff2
+│   │   │   ├── fa-thin-100.ttf
+│   │   │   ├── fa-thin-100.woff2
+│   │   │   ├── fa-v4compatibility.ttf
+│   │   │   ├── fa-v4compatibility.woff2
+│   │   │   └── index.css
+│   │   ├── icons/
+│   │   │   ├── facilities/
+│   │   │   │   ├── blanchisserie.svg
+│   │   │   │   ├── circuit-touristique.svg
+│   │   │   │   ├── conciergerie.svg
+│   │   │   │   ├── coursier.svg
+│   │   │   │   ├── navette.svg
+│   │   │   │   ├── restaurant.svg
+│   │   │   │   ├── room-service.svg
+│   │   │   │   ├── service-nettoyage.svg
+│   │   │   │   └── vue-sur-eau.svg
+│   │   │   ├── referral/
+│   │   │   │   ├── copy.svg
+│   │   │   │   └── refer.svg
+│   │   │   ├── toast-close.svg
+│   │   │   ├── toast-error.svg
+│   │   │   ├── toast-success.svg
+│   │   │   └── toast-warning.svg
+│   │   └── uicons/
+│   │       ├── all/
+│   │       │   ├── all.css
+│   │       │   ├── all.rounded.css
+│   │       │   ├── all.rounded.css.map
+│   │       │   ├── all.straight.css
+│   │       │   └── all.straight.css.map
+│   │       ├── bold/
+│   │       │   ├── all.css
+│   │       │   ├── all.css.map
+│   │       │   ├── rounded.css
+│   │       │   ├── rounded.css.map
+│   │       │   ├── straight.css
+│   │       │   └── straight.css.map
+│   │       ├── bold-rounded/
+│   │       │   ├── all.css
+│   │       │   ├── uicons-bold-rounded.eot
+│   │       │   ├── uicons-bold-rounded.woff
+│   │       │   └── uicons-bold-rounded.woff2
+│   │       ├── brands/
+│   │       │   ├── all.css
+│   │       │   └── all.css.map
+│   │       ├── regular/
+│   │       │   ├── all.css
+│   │       │   ├── all.css.map
+│   │       │   ├── rounded.css
+│   │       │   ├── rounded.css.map
+│   │       │   ├── straight.css
+│   │       │   └── straight.css.map
+│   │       ├── regular-rounded/
+│   │       │   ├── all.css
+│   │       │   ├── uicons-regular-rounded.eot
+│   │       │   ├── uicons-regular-rounded.html
+│   │       │   ├── uicons-regular-rounded.woff
+│   │       │   └── uicons-regular-rounded.woff2
+│   │       ├── regular-straight/
+│   │       │   ├── all.css
+│   │       │   ├── uicons-regular-straight.eot
+│   │       │   ├── uicons-regular-straight.woff
+│   │       │   └── uicons-regular-straight.woff2
+│   │       ├── solid/
+│   │       │   ├── all.css
+│   │       │   ├── all.css.map
+│   │       │   ├── rounded.css
+│   │       │   ├── rounded.css.map
+│   │       │   ├── straight.css
+│   │       │   └── straight.css.map
+│   │       ├── solid-rounded/
+│   │       │   ├── all.css
+│   │       │   ├── uicons-solid-rounded.eot
+│   │       │   ├── uicons-solid-rounded.html
+│   │       │   ├── uicons-solid-rounded.woff
+│   │       │   └── uicons-solid-rounded.woff2
+│   │       ├── uicons-bold-rounded-CGKSAYQ5.woff2
+│   │       ├── uicons-bold-rounded-CJXWQMMG.eot
+│   │       ├── uicons-bold-rounded-O7JX4SAW.woff
+│   │       ├── uicons-bold-straight-BZ3JDLFC.woff2
+│   │       ├── uicons-bold-straight-IHIWRN4D.woff
+│   │       ├── uicons-bold-straight-VFSYWI6I.eot
+│   │       ├── uicons-brands-MQU4AHEF.woff2
+│   │       ├── uicons-brands-T5E3MAIR.woff
+│   │       ├── uicons-brands-VIKTI4T2.eot
+│   │       ├── uicons-regular-rounded-GCYF47FY.woff2
+│   │       ├── uicons-regular-rounded-HBITOZ62.woff
+│   │       ├── uicons-regular-rounded-QXG46O7V.eot
+│   │       ├── uicons-regular-straight-3DEHAOE2.eot
+│   │       ├── uicons-regular-straight-JIQ24FYG.woff2
+│   │       ├── uicons-regular-straight-WUTRTRER.woff
+│   │       ├── uicons-solid-rounded-3CHVJWAY.eot
+│   │       ├── uicons-solid-rounded-GWKJW5HG.woff2
+│   │       ├── uicons-solid-rounded-J25HK7VI.woff
+│   │       ├── uicons-solid-straight-47DPGFQO.woff2
+│   │       ├── uicons-solid-straight-PAVUPHY7.woff
+│   │       └── uicons-solid-straight-YGWXBG23.eot
+│   ├── brandings/
+│   │   ├── default/
+│   │   │   ├── ~diata/
+│   │   │   │   ├── logo-black.png
+│   │   │   │   ├── logo-square-black.png
+│   │   │   │   ├── logo-square-white.png
+│   │   │   │   ├── logo-square.png
+│   │   │   │   ├── logo-white.png
+│   │   │   │   └── logo.png
+│   │   │   ├── icon-bw.png
+│   │   │   ├── icon-wg.png
+│   │   │   ├── icon.png
+│   │   │   ├── logo-black.png
+│   │   │   ├── logo-square-black.png
+│   │   │   ├── logo-square-white.png
+│   │   │   ├── logo-square.png
+│   │   │   ├── logo-white.png
+│   │   │   └── logo.png
+│   │   └── vitib/
+│   │       ├── logo-black.png
+│   │       ├── logo-square-black.png
+│   │       ├── logo-square-white.png
+│   │       ├── logo-square.png
+│   │       ├── logo-white.png
+│   │       └── logo.png
+│   ├── icons/
+│   │   ├── actions/
+│   │   │   ├── add-circle.svg
+│   │   │   ├── chevron-down-alt.svg
+│   │   │   ├── dots-vertical.svg
+│   │   │   ├── edit.svg
+│   │   │   ├── entreprise-active.svg
+│   │   │   ├── entreprise.svg
+│   │   │   ├── grip-dots-vertical.svg
+│   │   │   ├── particulier-active.svg
+│   │   │   ├── particulier.svg
+│   │   │   ├── search.svg
+│   │   │   └── xmark.svg
+│   │   ├── announcement/
+│   │   │   ├── recap/
+│   │   │   │   ├── bedroom.svg
+│   │   │   │   ├── room.svg
+│   │   │   │   └── shower.svg
+│   │   │   ├── relation/
+│   │   │   │   ├── arrow-down.svg
+│   │   │   │   ├── calendar.svg
+│   │   │   │   ├── handshake.svg
+│   │   │   │   ├── mail.svg
+│   │   │   │   ├── phone.svg
+│   │   │   │   ├── pro-badge.png
+│   │   │   │   ├── ranking.svg
+│   │   │   │   ├── video.svg
+│   │   │   │   ├── visit.svg
+│   │   │   │   ├── whatsapp.svg
+│   │   │   │   └── yes.svg
+│   │   │   ├── sejour/
+│   │   │   │   ├── no-travelers.svg
+│   │   │   │   └── travelers.svg
+│   │   │   ├── arrow-right.svg
+│   │   │   ├── badge.svg
+│   │   │   ├── calendar.svg
+│   │   │   ├── cart.svg
+│   │   │   ├── close.svg
+│   │   │   ├── comment-new.svg
+│   │   │   ├── exclamation-success.svg
+│   │   │   ├── exclamation.svg
+│   │   │   ├── eye.svg
+│   │   │   ├── info.svg
+│   │   │   ├── like.svg
+│   │   │   ├── lock.svg
+│   │   │   ├── no-calendar.svg
+│   │   │   ├── photos.svg
+│   │   │   ├── play.png
+│   │   │   ├── share-hovered.svg
+│   │   │   ├── share.svg
+│   │   │   ├── signalement.svg
+│   │   │   └── thumb-up.svg
+│   │   ├── announcer-pack/
+│   │   │   ├── paiements/
+│   │   │   │   ├── mastercard.svg
+│   │   │   │   ├── momo.svg
+│   │   │   │   ├── moov_money.svg
+│   │   │   │   ├── orange_money.svg
+│   │   │   │   ├── visa.svg
+│   │   │   │   └── wave.svg
+│   │   │   ├── partners/
+│   │   │   │   ├── anah.png
+│   │   │   │   ├── anah.svg
+│   │   │   │   ├── bhci.svg
+│   │   │   │   ├── bloomfield.png
+│   │   │   │   ├── bloomfield.svg
+│   │   │   │   ├── cdaim.png
+│   │   │   │   ├── vitb.png
+│   │   │   │   └── vitb.svg
+│   │   │   ├── automatisation.svg
+│   │   │   ├── cart-shopping.svg
+│   │   │   ├── gestion.svg
+│   │   │   ├── loyer.svg
+│   │   │   ├── paiement.svg
+│   │   │   ├── person_card.svg
+│   │   │   ├── shopping_black.svg
+│   │   │   ├── shopping_white.svg
+│   │   │   ├── shopping.svg
+│   │   │   ├── tirelire.svg
+│   │   │   └── vector.svg
+│   │   ├── candidates/
+│   │   │   ├── check.svg
+│   │   │   ├── hourglass.svg
+│   │   │   ├── users.svg
+│   │   │   └── xmark.svg
+│   │   ├── cat/
+│   │   │   ├── types/
+│   │   │   │   ├── apartments.svg
+│   │   │   │   ├── buildings.svg
+│   │   │   │   ├── hotel.svg
+│   │   │   │   ├── offices.svg
+│   │   │   │   ├── rooms.svg
+│   │   │   │   ├── shared_courtyard.svg
+│   │   │   │   ├── shops.svg
+│   │   │   │   ├── studios.svg
+│   │   │   │   ├── undeveloped_land.svg
+│   │   │   │   ├── villas.svg
+│   │   │   │   ├── warehouses.svg
+│   │   │   │   └── workspaces.svg
+│   │   │   └── house.svg
+│   │   ├── dashboard/
+│   │   │   ├── agenda/
+│   │   │   │   ├── chevron_down.svg
+│   │   │   │   └── chevron_left.svg
+│   │   │   ├── announcement/
+│   │   │   │   ├── furnished.svg
+│   │   │   │   └── sparkles.svg
+│   │   │   ├── announcer/
+│   │   │   │   ├── announce/
+│   │   │   │   │   ├── edit_menu/
+│   │   │   │   │   │   ├── delete.svg
+│   │   │   │   │   │   └── edit.svg
+│   │   │   │   │   ├── delete.svg
+│   │   │   │   │   ├── duplicate.svg
+│   │   │   │   │   ├── edit.svg
+│   │   │   │   │   ├── ellipsis.svg
+│   │   │   │   │   └── polygon.svg
+│   │   │   │   ├── candidate/
+│   │   │   │   │   ├── ban.svg
+│   │   │   │   │   ├── check.svg
+│   │   │   │   │   ├── download.svg
+│   │   │   │   │   ├── waiting.svg
+│   │   │   │   │   └── xmark.svg
+│   │   │   │   ├── home/
+│   │   │   │   │   ├── agenda_icon.svg
+│   │   │   │   │   ├── announce.svg
+│   │   │   │   │   ├── arrow_right.svg
+│   │   │   │   │   ├── arrow-up-s-fill.svg
+│   │   │   │   │   ├── bubbles.svg
+│   │   │   │   │   ├── refused_reservation.svg
+│   │   │   │   │   ├── reservation_check.svg
+│   │   │   │   │   ├── total_money.svg
+│   │   │   │   │   └── tyli_plus_icon.svg
+│   │   │   │   ├── others/
+│   │   │   │   │   └── return.svg
+│   │   │   │   ├── reservation/
+│   │   │   │   │   ├── accept.svg
+│   │   │   │   │   ├── calendar.svg
+│   │   │   │   │   ├── info.svg
+│   │   │   │   │   ├── refuse.svg
+│   │   │   │   │   ├── travelers.svg
+│   │   │   │   │   ├── warning_error.svg
+│   │   │   │   │   └── warning.svg
+│   │   │   │   └── visits/
+│   │   │   │       ├── check.svg
+│   │   │   │       └── waiting.svg
+│   │   │   ├── employees/
+│   │   │   │   ├── check.svg
+│   │   │   │   ├── user-helmet-safety.svg
+│   │   │   │   └── xmark.svg
+│   │   │   ├── estates/
+│   │   │   │   ├── create/
+│   │   │   │   │   └── xmark.svg
+│   │   │   │   └── empty.svg
+│   │   │   ├── prospects/
+│   │   │   │   ├── folder-anah.svg
+│   │   │   │   └── folder.svg
+│   │   │   ├── arrow-up.svg
+│   │   │   ├── bien.svg
+│   │   │   ├── commission.svg
+│   │   │   ├── dropdown.svg
+│   │   │   ├── location-pin.svg
+│   │   │   ├── location.svg
+│   │   │   ├── refresh.svg
+│   │   │   └── user-owner.svg
+│   │   ├── dialogs/
+│   │   │   ├── candidate-invoice.png
+│   │   │   ├── check-success.svg
+│   │   │   ├── danger-candidate.png
+│   │   │   ├── info.svg
+│   │   │   ├── invoice.png
+│   │   │   ├── lock-primary.svg
+│   │   │   ├── lock-warning.svg
+│   │   │   ├── question.svg
+│   │   │   ├── trash-danger.svg
+│   │   │   ├── trash-delete.svg
+│   │   │   ├── trash-success.svg
+│   │   │   ├── user-primary.svg
+│   │   │   ├── user-success.svg
+│   │   │   └── warning-triangle.svg
+│   │   ├── finance/
+│   │   │   ├── bank.svg
+│   │   │   ├── banque-step.svg
+│   │   │   ├── card-preview.png
+│   │   │   ├── cash-step.svg
+│   │   │   ├── cash.svg
+│   │   │   ├── diata-pay-error.svg
+│   │   │   ├── diata-pay-step.svg
+│   │   │   ├── diata-pay.svg
+│   │   │   ├── facture-saved-empty.svg
+│   │   │   ├── moov_simple.svg
+│   │   │   ├── moov.png
+│   │   │   ├── mtn_simple.svg
+│   │   │   ├── mtn.png
+│   │   │   ├── om_simple.svg
+│   │   │   ├── om.png
+│   │   │   ├── pro.svg
+│   │   │   ├── wallet-total.svg
+│   │   │   ├── wave_simple.svg
+│   │   │   └── wave.png
+│   │   ├── forms/
+│   │   │   ├── socials/
+│   │   │   │   ├── facebook.svg
+│   │   │   │   ├── google.svg
+│   │   │   │   ├── mail.svg
+│   │   │   │   └── phone.png
+│   │   │   ├── arrow-circle-left.svg
+│   │   │   ├── check.svg
+│   │   │   ├── checkbox-blank.svg
+│   │   │   ├── checkbox.svg
+│   │   │   ├── eye-slash.svg
+│   │   │   ├── eye.svg
+│   │   │   ├── location-arrow.svg
+│   │   │   ├── lock.svg
+│   │   │   ├── map-pin.svg
+│   │   │   ├── tylpin-pointer.svg
+│   │   │   └── user.svg
+│   │   ├── inputs/
+│   │   │   ├── add-circle.svg
+│   │   │   ├── chevron_down.svg
+│   │   │   └── minus-circle.svg
+│   │   ├── listing/
+│   │   │   ├── announce_select/
+│   │   │   │   ├── new/
+│   │   │   │   │   ├── bullhorn-selected.svg
+│   │   │   │   │   └── bullhorn.svg
+│   │   │   │   └── check.svg
+│   │   │   ├── document_property/
+│   │   │   │   ├── agent_selected.svg
+│   │   │   │   ├── agent.svg
+│   │   │   │   ├── broker_selected.svg
+│   │   │   │   ├── broker.svg
+│   │   │   │   ├── owner_selected.svg
+│   │   │   │   └── owner.svg
+│   │   │   ├── establishment/
+│   │   │   │   ├── add_photo.svg
+│   │   │   │   ├── arrow_left_quantity.svg
+│   │   │   │   ├── arrow_right_quantity.svg
+│   │   │   │   ├── bed_duo_selected.svg
+│   │   │   │   ├── bed_duo_unselected.svg
+│   │   │   │   ├── bed_trio_selected.svg
+│   │   │   │   ├── bed_trio_unselected.svg
+│   │   │   │   ├── double_bed_selected.svg
+│   │   │   │   ├── double_bed_unselected.svg
+│   │   │   │   ├── king_size_selected.svg
+│   │   │   │   ├── king_size_unselected.svg
+│   │   │   │   ├── pets.svg
+│   │   │   │   ├── single_bed_selected.svg
+│   │   │   │   ├── single_bed_unselected.svg
+│   │   │   │   ├── stacked_bed_selected.svg
+│   │   │   │   └── stacked_bed_unselected.svg
+│   │   │   ├── new_duplicate/
+│   │   │   │   ├── duplicate_gray.svg
+│   │   │   │   ├── duplicate_selected.svg
+│   │   │   │   ├── new_gray.svg
+│   │   │   │   └── new_selected.svg
+│   │   │   ├── overview/
+│   │   │   │   ├── arrow_right.svg
+│   │   │   │   ├── duplicate_unit.svg
+│   │   │   │   ├── new_unit.svg
+│   │   │   │   └── return_to_list.svg
+│   │   │   ├── photos/
+│   │   │   │   ├── close.svg
+│   │   │   │   ├── eye_white.svg
+│   │   │   │   ├── eye.svg
+│   │   │   │   ├── more.svg
+│   │   │   │   ├── photo.svg
+│   │   │   │   └── trash.svg
+│   │   │   ├── top_stepper/
+│   │   │   │   └── save_and_leave.svg
+│   │   │   ├── transaction_type/
+│   │   │   │   ├── bedroom.svg
+│   │   │   │   ├── check.svg
+│   │   │   │   └── sparkles.svg
+│   │   │   ├── unique_multiple/
+│   │   │   │   ├── establishment_gray.svg
+│   │   │   │   ├── establishment_selected.svg
+│   │   │   │   ├── multiple_gray.svg
+│   │   │   │   ├── multiple_selected.svg
+│   │   │   │   ├── unique_gray.svg
+│   │   │   │   └── unique_selected.svg
+│   │   │   └── unit_configuration/
+│   │   │       ├── add_circle.svg
+│   │   │       ├── delete.svg
+│   │   │       └── edit.svg
+│   │   ├── logos/
+│   │   │   ├── google-logo.svg
+│   │   │   ├── tylimmo-header.svg
+│   │   │   ├── tylipro-header.svg
+│   │   │   └── tylipro.svg
+│   │   ├── map/
+│   │   │   └── tylpin-pointer.svg
+│   │   ├── marketplace/
+│   │   │   ├── bedroom.svg
+│   │   │   ├── certificate.svg
+│   │   │   ├── eye-grey.svg
+│   │   │   ├── eye-white.svg
+│   │   │   ├── room.svg
+│   │   │   └── shower.svg
+│   │   ├── medias/
+│   │   │   ├── doc.svg
+│   │   │   ├── gif.svg
+│   │   │   ├── image.svg
+│   │   │   ├── jpg.svg
+│   │   │   ├── mp3.svg
+│   │   │   ├── mp4.svg
+│   │   │   ├── pdf.svg
+│   │   │   ├── png.svg
+│   │   │   ├── ppt.svg
+│   │   │   ├── rar.svg
+│   │   │   ├── txt.svg
+│   │   │   ├── video.svg
+│   │   │   ├── webp.svg
+│   │   │   └── zip.svg
+│   │   ├── modal/
+│   │   │   ├── loader.png
+│   │   │   ├── loader.svg
+│   │   │   └── xmark.svg
+│   │   ├── others/
+│   │   │   ├── offer/
+│   │   │   │   ├── check.svg
+│   │   │   │   └── xmark.svg
+│   │   │   ├── recap/
+│   │   │   │   ├── bed.svg
+│   │   │   │   ├── bedroom.svg
+│   │   │   │   ├── building.svg
+│   │   │   │   ├── door.svg
+│   │   │   │   ├── furnished.svg
+│   │   │   │   ├── room.svg
+│   │   │   │   ├── shower.svg
+│   │   │   │   └── square.svg
+│   │   │   ├── arrow_right_white.svg
+│   │   │   ├── arrow-bg-right.svg
+│   │   │   ├── arrow-right.svg
+│   │   │   ├── at.svg
+│   │   │   ├── calendar.svg
+│   │   │   ├── chevron_right_new.svg
+│   │   │   ├── chevron-down.svg
+│   │   │   ├── chevron-left-filled.svg
+│   │   │   ├── chevron-left.svg
+│   │   │   ├── chevron-right-2.svg
+│   │   │   ├── chevron-right-filled.svg
+│   │   │   ├── chevron-right.svg
+│   │   │   ├── icon_arrow_left.svg
+│   │   │   ├── icon_arrow_right.svg
+│   │   │   ├── pencil.svg
+│   │   │   ├── picture.png
+│   │   │   ├── return.svg
+│   │   │   ├── surligne.svg
+│   │   │   ├── surligneGreen.svg
+│   │   │   ├── surligneGreen2.svg
+│   │   │   └── user_solid.svg
+│   │   ├── packages/
+│   │   │   ├── business.svg
+│   │   │   ├── cart.svg
+│   │   │   ├── cross.svg
+│   │   │   ├── exclamation-orange.svg
+│   │   │   ├── exclamation.svg
+│   │   │   ├── expert.svg
+│   │   │   ├── professionnel.svg
+│   │   │   ├── standard.svg
+│   │   │   ├── user.svg
+│   │   │   └── valid.svg
+│   │   ├── permissions/
+│   │   │   ├── chevron-down.svg
+│   │   │   ├── people-roof.svg
+│   │   │   ├── plus.svg
+│   │   │   ├── queue-alt.svg
+│   │   │   ├── shield-exclamation.svg
+│   │   │   ├── shield-halved.svg
+│   │   │   └── sitemap.svg
+│   │   ├── preview/
+│   │   │   ├── viewer/
+│   │   │   │   ├── close.svg
+│   │   │   │   ├── laptop_active.svg
+│   │   │   │   ├── laptop.svg
+│   │   │   │   ├── mobile_active.svg
+│   │   │   │   └── mobile.svg
+│   │   │   ├── bullhorn.svg
+│   │   │   ├── calendar.svg
+│   │   │   ├── certified.svg
+│   │   │   ├── chevron_down.svg
+│   │   │   ├── favorite_icon.svg
+│   │   │   ├── handshake.svg
+│   │   │   ├── like.svg
+│   │   │   ├── photo.svg
+│   │   │   ├── picture.svg
+│   │   │   ├── room_grey.svg
+│   │   │   ├── room.svg
+│   │   │   ├── see_more.svg
+│   │   │   ├── share_icon.svg
+│   │   │   ├── shopping.svg
+│   │   │   ├── star.svg
+│   │   │   ├── test_icon.svg
+│   │   │   ├── thumb_up.svg
+│   │   │   ├── travelers.svg
+│   │   │   ├── tylimmo_logo.svg
+│   │   │   ├── video.svg
+│   │   │   └── visit.svg
+│   │   ├── profiles/
+│   │   │   ├── avatar-default.svg
+│   │   │   └── business.svg
+│   │   ├── rentals/
+│   │   │   ├── bathtub.svg
+│   │   │   ├── bedroom.svg
+│   │   │   ├── kitchen.svg
+│   │   │   └── toilet.svg
+│   │   ├── scoring/
+│   │   │   └── indicator-down.svg
+│   │   ├── share/
+│   │   │   ├── close.svg
+│   │   │   ├── copy-link.svg
+│   │   │   ├── facebook.svg
+│   │   │   ├── messages.svg
+│   │   │   ├── messenger.svg
+│   │   │   ├── twitter.svg
+│   │   │   └── whatsapp.svg
+│   │   ├── sidebar/
+│   │   │   ├── announcements_activated.svg
+│   │   │   ├── announcements.svg
+│   │   │   ├── beneficiaires_activated.svg
+│   │   │   ├── beneficiaires.svg
+│   │   │   ├── briefcase-solid.svg
+│   │   │   ├── building.svg
+│   │   │   ├── cashback_activated.svg
+│   │   │   ├── cashback.svg
+│   │   │   ├── certification_activated.svg
+│   │   │   ├── certification.svg
+│   │   │   ├── clipboard_activated.svg
+│   │   │   ├── clipboard.svg
+│   │   │   ├── coins.svg
+│   │   │   ├── comptabilite_activated.svg
+│   │   │   ├── comptabilite.svg
+│   │   │   ├── directions_activated.svg
+│   │   │   ├── directions.svg
+│   │   │   ├── employees_activated.svg
+│   │   │   ├── employees.svg
+│   │   │   ├── estate_activated.svg
+│   │   │   ├── estate.svg
+│   │   │   ├── export.svg
+│   │   │   ├── file-check.svg
+│   │   │   ├── file.svg
+│   │   │   ├── gavel.svg
+│   │   │   ├── grid.svg
+│   │   │   ├── house-user_activated.svg
+│   │   │   ├── house-user.svg
+│   │   │   ├── layers.svg
+│   │   │   ├── mark.svg
+│   │   │   ├── marketplace_activated.svg
+│   │   │   ├── marketplace.svg
+│   │   │   ├── message.svg
+│   │   │   ├── packages_activated.svg
+│   │   │   ├── packages.svg
+│   │   │   ├── people-group_activated.svg
+│   │   │   ├── people-group.svg
+│   │   │   ├── recovery_activated.svg
+│   │   │   ├── recovery.svg
+│   │   │   ├── referrals_activated.svg
+│   │   │   ├── referrals.svg
+│   │   │   ├── reservations_activated.svg
+│   │   │   ├── reservations.svg
+│   │   │   ├── shield.svg
+│   │   │   ├── star.svg
+│   │   │   ├── transaction_activated.svg
+│   │   │   ├── transaction.svg
+│   │   │   ├── tresorerie_activated.svg
+│   │   │   ├── tresorerie.svg
+│   │   │   ├── unpaid_activated.svg
+│   │   │   ├── unpaid_list_activated.svg
+│   │   │   ├── unpaid_list.svg
+│   │   │   ├── unpaid.svg
+│   │   │   ├── user-tie_activated.svg
+│   │   │   ├── user-tie.svg
+│   │   │   ├── users.svg
+│   │   │   ├── visit_activated.svg
+│   │   │   ├── visit.svg
+│   │   │   ├── wallet_activated.svg
+│   │   │   └── wallet.svg
+│   │   ├── socials/
+│   │   │   ├── big/
+│   │   │   │   ├── facebook.png
+│   │   │   │   ├── link.png
+│   │   │   │   ├── messages.png
+│   │   │   │   ├── messenger.png
+│   │   │   │   ├── twitter.png
+│   │   │   │   └── whatsapp.png
+│   │   │   ├── input/
+│   │   │   │   ├── facebook.png
+│   │   │   │   ├── google.png
+│   │   │   │   ├── mail.png
+│   │   │   │   └── phone.png
+│   │   │   ├── facebook.svg
+│   │   │   ├── instagram.svg
+│   │   │   ├── linkedin.svg
+│   │   │   ├── tiktok.svg
+│   │   │   └── twitter.svg
+│   │   ├── upload/
+│   │   │   ├── add-circle.svg
+│   │   │   ├── arrow-up.svg
+│   │   │   ├── check-end.svg
+│   │   │   ├── chevron-down.svg
+│   │   │   ├── cloud-upload.svg
+│   │   │   ├── eye.svg
+│   │   │   ├── file.svg
+│   │   │   └── hourglass.svg
+│   │   ├── certified.svg
+│   │   ├── check.svg
+│   │   ├── checked-blue.svg
+│   │   ├── checked-primary.svg
+│   │   ├── checked.svg
+│   │   ├── copy.svg
+│   │   ├── dots-vertical.svg
+│   │   ├── error.svg
+│   │   ├── filter.svg
+│   │   ├── furnished.svg
+│   │   ├── notification.svg
+│   │   ├── plus.svg
+│   │   ├── search.svg
+│   │   ├── user_solid.svg
+│   │   ├── user-helmet-safety.svg
+│   │   ├── user.svg
+│   │   └── warning.svg
+│   ├── images/
+│   │   ├── profiles/
+│   │   │   └── user-avatar.png
+│   │   ├── accueil-dashboard.png
+│   │   ├── accueil.jpg
+│   │   ├── check.svg
+│   │   ├── property-placeholder.png
+│   │   ├── vector-bg.svg
+│   │   └── vector.png
+│   ├── whitelabel/
+│   │   ├── assets/
+│   │   │   ├── logo-icon.anah.svg
+│   │   │   ├── logo-icon.png
+│   │   │   ├── logo.anah.svg
+│   │   │   └── logo.png
+│   │   ├── config.json
+│   │   ├── features.json
+│   │   ├── links.json
+│   │   ├── texts.json
+│   │   ├── theme.anah.json
+│   │   └── theme.json
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── src/
+│   ├── animations/
+│   │   └── button.settings.ts
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── monitoring/
+│   │   ├── dashboard/
+│   │   │   ├── account/
+│   │   │   │   ├── company/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── password/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── profile/
+│   │   │   │       └── page.tsx
+│   │   │   ├── agenda/
+│   │   │   │   └── page.tsx
+│   │   │   ├── candidates/
+│   │   │   │   └── page.tsx
+│   │   │   ├── documents/
+│   │   │   │   └── page.tsx
+│   │   │   ├── employees/
+│   │   │   │   ├── lists/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── roles/
+│   │   │   │       └── page.tsx
+│   │   │   ├── finances/
+│   │   │   │   ├── accounting/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── beneficiaries/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── cashback/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── collect-payment/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── transactions/
+│   │   │   │       └── page.tsx
+│   │   │   ├── home/
+│   │   │   │   └── page.tsx
+│   │   │   ├── marketplace/
+│   │   │   │   ├── announcements/
+│   │   │   │   │   ├── create/
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── bookings/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── certifications/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── visits/
+│   │   │   │       └── page.tsx
+│   │   │   ├── organisation/
+│   │   │   │   ├── documents/
+│   │   │   │   │   ├── statuts/
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── menu/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── pools/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── processes/
+│   │   │   │       └── page.tsx
+│   │   │   ├── plans/
+│   │   │   │   └── page.tsx
+│   │   │   ├── properties/
+│   │   │   │   ├── create/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── estates/
+│   │   │   │   │   ├── details/
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── owners/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── prospects/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── tenants/
+│   │   │   │       └── page.tsx
+│   │   │   ├── prospects/
+│   │   │   │   └── page.tsx
+│   │   │   ├── referrals/
+│   │   │   │   └── page.tsx
+│   │   │   ├── tyliscore/
+│   │   │   │   └── page.tsx
+│   │   │   ├── unpaid-invoices/
+│   │   │   │   ├── collection/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── lists/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── roles/
+│   │   │   │       └── page.tsx
+│   │   │   └── layout.tsx
+│   │   ├── login/
+│   │   │   └── page.tsx
+│   │   ├── mot-de-passe-oublie/
+│   │   │   └── page.tsx
+│   │   ├── ui/
+│   │   │   └── modals/
+│   │   │       └── page.tsx
+│   │   ├── animates.css
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── activities/
+│   │   │   └── activity-spinner.tsx
+│   │   ├── badges/
+│   │   │   └── ItemBadge.tsx
+│   │   ├── buttons/
+│   │   │   ├── ActionalButton.tsx
+│   │   │   ├── CloseButton.tsx
+│   │   │   ├── CopyableButton.tsx
+│   │   │   ├── enums.ts
+│   │   │   └── utils.ts
+│   │   ├── connexion/
+│   │   │   ├── components/
+│   │   │   │   ├── ConnexionDivider.tsx
+│   │   │   │   ├── ConnexionForm.tsx
+│   │   │   │   ├── ConnexionHeader.tsx
+│   │   │   │   ├── OtherConnectBar.tsx
+│   │   │   │   └── SocialConnexionButtons.tsx
+│   │   │   ├── controllers/
+│   │   │   │   └── connexion.controller.ts
+│   │   │   ├── hooks/
+│   │   │   │   └── useConnexion.ts
+│   │   │   ├── layouts/
+│   │   │   │   └── ConnexionPanel.tsx
+│   │   │   ├── types/
+│   │   │   │   └── connexion.types.ts
+│   │   │   ├── index.ts
+│   │   │   ├── LoginRightContent.tsx
+│   │   │   └── LoginRightContentResponsive.tsx
+│   │   ├── dashboard/
+│   │   │   ├── agenda/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── AgendaContainer.tsx
+│   │   │   │   │   ├── AnnouncementSelector.tsx
+│   │   │   │   │   ├── Calendar.tsx
+│   │   │   │   │   ├── CalendarCell.tsx
+│   │   │   │   │   ├── CalendarEventBadge.tsx
+│   │   │   │   │   ├── CalendarEventDetails.tsx
+│   │   │   │   │   ├── CalendarGrid.tsx
+│   │   │   │   │   ├── CalendarHeader.tsx
+│   │   │   │   │   ├── CalendarParameters.tsx
+│   │   │   │   │   └── MenuSelectAnnouncement.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── agenda.controller.ts
+│   │   │   │   ├── data/
+│   │   │   │   │   └── mockData.ts
+│   │   │   │   ├── store/
+│   │   │   │   │   └── agenda.store.ts
+│   │   │   │   └── types/
+│   │   │   │       └── agenda-data.type.ts
+│   │   │   └── hooks/
+│   │   │       └── useDashboardMediaQuery.tsx
+│   │   ├── details/
+│   │   │   └── DetailsHelmet.tsx
+│   │   ├── gates/
+│   │   │   ├── ParamGateQuery.tsx
+│   │   │   ├── RouteParamGateHistory.store.tsx
+│   │   │   ├── types.ts
+│   │   │   ├── useParamsNavigate.hook.tsx
+│   │   │   └── useRouteParamGate.hook.tsx
+│   │   ├── icons/
+│   │   │   ├── custom.tsx
+│   │   │   ├── glyphIcons.tsx
+│   │   │   ├── lucide.tsx
+│   │   │   ├── remix.tsx
+│   │   │   └── types.ts
+│   │   ├── last_action/
+│   │   │   └── useLastAction.tsx
+│   │   ├── layers/
+│   │   │   ├── DynamicLayer.tsx
+│   │   │   ├── Layer.tsx
+│   │   │   ├── Overlayer.tsx
+│   │   │   └── PageLayer.tsx
+│   │   ├── layout/
+│   │   │   └── ViewerProvider.tsx
+│   │   ├── layouts/
+│   │   │   ├── ModalMenu.tsx
+│   │   │   └── RequestLoaderModal.tsx
+│   │   ├── loader/
+│   │   │   ├── LoaderBlock.tsx
+│   │   │   └── ModalLoaderContent.tsx
+│   │   ├── medias/
+│   │   │   ├── picture.tsx
+│   │   │   └── PropertyPhotoGallery.tsx
+│   │   ├── modals/
+│   │   │   ├── examples/
+│   │   │   │   ├── ExampleDefaultModal.tsx
+│   │   │   │   └── ModalTests.tsx
+│   │   │   ├── Modal.tsx
+│   │   │   ├── ModalGate.tsx
+│   │   │   ├── SidebarModal.tsx
+│   │   │   ├── StepperModal.tsx
+│   │   │   ├── StepperModalGate.tsx
+│   │   │   ├── store.tsx
+│   │   │   └── types.ts
+│   │   ├── notifications/
+│   │   │   ├── hooks/
+│   │   │   │   ├── useNotifications.ts
+│   │   │   │   └── useNotificationsWithPagination.ts
+│   │   │   ├── modals/
+│   │   │   │   ├── NotificationSingleReader.tsx
+│   │   │   │   └── NotificationSingleReaderModal.tsx
+│   │   │   ├── panels/
+│   │   │   │   └── NotificationPanel.tsx
+│   │   │   ├── sidebars/
+│   │   │   │   ├── NotificationList.tsx
+│   │   │   │   ├── NotificationListItem.tsx
+│   │   │   │   └── NotificationListSidebarWrapper.tsx
+│   │   │   └── utilities/
+│   │   │       └── getIconType.ts
+│   │   ├── pages/
+│   │   │   ├── account/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── AccountEditableActions.tsx
+│   │   │   │   │   ├── AccountEditableCompany.tsx
+│   │   │   │   │   ├── AccountEditableCompanyActions.tsx
+│   │   │   │   │   ├── AccountEditablePassword.tsx
+│   │   │   │   │   ├── AccountEditableProfile.tsx
+│   │   │   │   │   └── AccountSideContainer.tsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useAccountEditableCompany.tsx
+│   │   │   │   │   ├── useAccountEditablePassword.tsx
+│   │   │   │   │   └── useAccountEditableProfile.tsx
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── AccountCompanyPageLayout.tsx
+│   │   │   │   │   ├── AccountPasswordPageLayout.tsx
+│   │   │   │   │   └── AccountProfilePageLayout.tsx
+│   │   │   │   └── services/
+│   │   │   │       └── account-company.service.ts
+│   │   │   ├── accounting/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── AccountingInvoiceSidebar.tsx
+│   │   │   │   │   │   └── AccountingInvoiceSidebarWrapper.tsx
+│   │   │   │   │   ├── AccountingEmptyState.tsx
+│   │   │   │   │   ├── AccountingInvoicesTable.tsx
+│   │   │   │   │   ├── AccountingStatsCards.tsx
+│   │   │   │   │   └── AccountingTableActions.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── accounting.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useAccountingManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── AccountingPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── accounting.service.ts
+│   │   │   │   └── types/
+│   │   │   │       └── accounting.types.ts
+│   │   │   ├── bookings/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── BookingSidebar.tsx
+│   │   │   │   │   │   └── BookingSidebarWrapper.tsx
+│   │   │   │   │   ├── BookingEmptyState.tsx
+│   │   │   │   │   ├── BookingInfoState.tsx
+│   │   │   │   │   ├── BookingPropertyDisplay.tsx
+│   │   │   │   │   ├── BookingStatsCards.tsx
+│   │   │   │   │   ├── BookingTable.tsx
+│   │   │   │   │   └── BookingTableActions.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── booking.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useBookingCashPaymentDataset.ts
+│   │   │   │   │   ├── useBookingManager.ts
+│   │   │   │   │   └── useBookingRejectReasonDataset.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── BookingPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── booking.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── booking.utils.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── candidates/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── CandidateSidebar.tsx
+│   │   │   │   │   │   └── CandidateSidebarWrapper.tsx
+│   │   │   │   │   ├── CandidateEmptyState.tsx
+│   │   │   │   │   ├── CandidateStatsCards.tsx
+│   │   │   │   │   ├── CandidateTable.tsx
+│   │   │   │   │   └── RentalApplicationTableActions.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── rental-application.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useRentalApplicationManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── CandidatePageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── rental-application.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── rental-application.utils.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── certifications/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── CertificationSidebar.tsx
+│   │   │   │   │   │   └── CertificationSidebarWrapper.tsx
+│   │   │   │   │   ├── CertificationEmptyState.tsx
+│   │   │   │   │   ├── CertificationInfoState.tsx
+│   │   │   │   │   ├── CertificationStatsCards.tsx
+│   │   │   │   │   ├── CertificationTable.tsx
+│   │   │   │   │   ├── CertificationTableActions.tsx
+│   │   │   │   │   └── ValidationCodeCard.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── certification.controller.ts
+│   │   │   │   ├── data/
+│   │   │   │   │   └── certification.data.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useCertificationManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── CertificationPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── certification.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── certification.utils.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── dashboard/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── AuthInfo.tsx
+│   │   │   │   │   ├── ButtonMenuList.tsx
+│   │   │   │   │   ├── CandidatesStatsWidget.tsx
+│   │   │   │   │   ├── CandidatesWidget.tsx
+│   │   │   │   │   ├── DashboardCheckbox.tsx
+│   │   │   │   │   ├── PaymentActionButton.tsx
+│   │   │   │   │   ├── PaymentRow.tsx
+│   │   │   │   │   ├── PropertiesWidget.tsx
+│   │   │   │   │   ├── PropertyCard.tsx
+│   │   │   │   │   ├── RecentPaymentsTable.tsx
+│   │   │   │   │   ├── RecentPaymentsTableKit.tsx
+│   │   │   │   │   ├── RevenueChart.tsx
+│   │   │   │   │   ├── SidebarCollapsibleItem.tsx
+│   │   │   │   │   ├── SidebarItemFlyout.tsx
+│   │   │   │   │   └── StatCard.tsx
+│   │   │   │   ├── config/
+│   │   │   │   │   ├── sidebar-menu.config.ts
+│   │   │   │   │   └── sidebar-menu.utils.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useOrganisationMenuItems.ts
+│   │   │   │   │   └── useSidebarMenu.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── Breadcrumb.tsx
+│   │   │   │   │   ├── DefaultHeader.tsx
+│   │   │   │   │   ├── header-registry.ts
+│   │   │   │   │   ├── HeaderRenderer.tsx
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   ├── SidebarLayoutWrapper.tsx
+│   │   │   │   │   ├── SidebarMenu.tsx
+│   │   │   │   │   └── TopHeader.tsx
+│   │   │   │   ├── settings/
+│   │   │   │   │   ├── recent-payments.columns.tsx
+│   │   │   │   │   └── recent-payments.schema.tsx
+│   │   │   │   ├── DashboardContent.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── employees/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── modals/
+│   │   │   │   │   │   ├── CreateEmployeeModal.tsx
+│   │   │   │   │   │   ├── CreateEmployeeRoleModal.tsx
+│   │   │   │   │   │   └── UpdateEmployeeRoleModal.tsx
+│   │   │   │   │   ├── sections/
+│   │   │   │   │   │   ├── CreateEmployeeDataSection.tsx
+│   │   │   │   │   │   └── CreateEmployeeRoleSection.tsx
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── EmployeeRoleSidebar.tsx
+│   │   │   │   │   │   ├── EmployeeRoleSidebarWrapper.tsx
+│   │   │   │   │   │   ├── EmployeeSidebar.tsx
+│   │   │   │   │   │   └── EmployeeSidebarWrapper.tsx
+│   │   │   │   │   ├── EmployeeEmptyState.tsx
+│   │   │   │   │   ├── EmployeeRoleEmptyState.tsx
+│   │   │   │   │   ├── EmployeeRoleTable.tsx
+│   │   │   │   │   ├── EmployeeRoleTableActions.tsx
+│   │   │   │   │   ├── EmployeeTable.tsx
+│   │   │   │   │   ├── EmployeeTableActions.tsx
+│   │   │   │   │   └── RolePermissionsPreview.tsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── employeeRolesCreateDataset.ts
+│   │   │   │   │   ├── useEmployeeManager.ts
+│   │   │   │   │   └── useEmployeeRoleManager.tsx
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── EmployeePageListLayout.tsx
+│   │   │   │   │   └── EmployeePageRoleLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   ├── employee-role.service.ts
+│   │   │   │   │   └── employee.service.ts
+│   │   │   │   └── store/
+│   │   │   │       └── create-permissions-roles.store.tsx
+│   │   │   ├── estates/
+│   │   │   │   └── controllers/
+│   │   │   │       └── estate.controller.ts
+│   │   │   ├── finance/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── cashback/
+│   │   │   │   │   │   ├── CashbackDetailsSection.tsx
+│   │   │   │   │   │   ├── CashbackInfoState.tsx
+│   │   │   │   │   │   └── CashbackSteps.tsx
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── sections/
+│   │   │   │   │   │   │   ├── BeneficiaryBalanceSection.tsx
+│   │   │   │   │   │   │   ├── BeneficiaryInfoSection.tsx
+│   │   │   │   │   │   │   └── BeneficiaryPaymentMethodsSection.tsx
+│   │   │   │   │   │   ├── BeneficiarySidebar.tsx
+│   │   │   │   │   │   ├── BeneficiarySidebarWrapper.tsx
+│   │   │   │   │   │   ├── CashbackRequestSidebar.tsx
+│   │   │   │   │   │   ├── CashbackRequestSidebarWrapper.tsx
+│   │   │   │   │   │   ├── FinanceSidebar.tsx
+│   │   │   │   │   │   └── FinanceSidebarWrapper.tsx
+│   │   │   │   │   ├── BeneficiaryBalance.tsx
+│   │   │   │   │   ├── BeneficiaryStatsCards.tsx
+│   │   │   │   │   ├── BeneficiaryTable.tsx
+│   │   │   │   │   ├── BeneficiaryTableActions.tsx
+│   │   │   │   │   ├── BeneficiaryWithdrawMethods.tsx
+│   │   │   │   │   ├── CashbackRequestTable.tsx
+│   │   │   │   │   ├── CashbackRequestTableActions.tsx
+│   │   │   │   │   ├── CashbackStatsCards.tsx
+│   │   │   │   │   ├── FinanceCashbackEmptyState.tsx
+│   │   │   │   │   ├── FinanceEmptyState.tsx
+│   │   │   │   │   ├── FinanceStatsCards.tsx
+│   │   │   │   │   ├── FinanceTable.tsx
+│   │   │   │   │   ├── FinanceTableActions.tsx
+│   │   │   │   │   └── TransactionStatsCards.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── finance.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useFinanceManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── AccountingPageListLayout.tsx
+│   │   │   │   │   ├── BeneficiaryPageListLayout.tsx
+│   │   │   │   │   ├── CashbackPageListLayout.tsx
+│   │   │   │   │   ├── FinancePageListLayout.tsx
+│   │   │   │   │   └── TransactionPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   ├── finance.service.ts
+│   │   │   │   │   └── rental-invoice.service.ts
+│   │   │   │   ├── types/
+│   │   │   │   │   └── finance.types.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── login/
+│   │   │   │   └── index.ts
+│   │   │   ├── marketplace/
+│   │   │   │   └── announcements/
+│   │   │   │       ├── components/
+│   │   │   │       │   ├── sidebars/
+│   │   │   │       │   │   ├── AnnouncementMarketplaceSidebar.tsx
+│   │   │   │       │   │   ├── AnnouncementMarketplaceSidebarWrapper.tsx
+│   │   │   │       │   │   ├── EstablishmentMarketplaceSidebar.tsx
+│   │   │   │       │   │   └── EstablishmentMarketplaceSidebarWrapper.tsx
+│   │   │   │       │   ├── AnnouncementMarketplaceEmptyState.tsx
+│   │   │   │       │   ├── AnnouncementMarketplaceStatsCards.tsx
+│   │   │   │       │   ├── AnnouncementMarketplaceTable.tsx
+│   │   │   │       │   └── AnnouncementMarketplaceTableActions.tsx
+│   │   │   │       ├── controllers/
+│   │   │   │       │   └── announcementMarketplace.controller.ts
+│   │   │   │       ├── create-wizard/
+│   │   │   │       │   ├── announcement-preview/
+│   │   │   │       │   │   ├── components/
+│   │   │   │       │   │   │   ├── sections/
+│   │   │   │       │   │   │   │   ├── OneMoney.tsx
+│   │   │   │       │   │   │   │   ├── PreviewAnnouncerCard.tsx
+│   │   │   │       │   │   │   │   ├── PreviewBottomBuy.tsx
+│   │   │   │       │   │   │   │   ├── PreviewCandidateCard.tsx
+│   │   │   │       │   │   │   │   ├── PreviewDecision.tsx
+│   │   │   │       │   │   │   │   ├── PreviewDescription.tsx
+│   │   │   │       │   │   │   │   ├── PreviewFacilities.tsx
+│   │   │   │       │   │   │   │   ├── PreviewHeader.tsx
+│   │   │   │       │   │   │   │   ├── PreviewImageGallery.tsx
+│   │   │   │       │   │   │   │   ├── PreviewModalities.tsx
+│   │   │   │       │   │   │   │   ├── PreviewPricingCard.tsx
+│   │   │   │       │   │   │   │   ├── PreviewTabs.tsx
+│   │   │   │       │   │   │   │   └── PreviewTitle.tsx
+│   │   │   │       │   │   │   ├── top_part/
+│   │   │   │       │   │   │   │   └── ButtonsViewPart.tsx
+│   │   │   │       │   │   │   ├── FacilitiesAll.tsx
+│   │   │   │       │   │   │   ├── FacilitiesPreviewPart.tsx
+│   │   │   │       │   │   │   ├── FacilitiesShow.tsx
+│   │   │   │       │   │   │   ├── GMapPartPreview.tsx
+│   │   │   │       │   │   │   ├── PreviewAnnouncement.tsx
+│   │   │   │       │   │   │   ├── PreviewMobilePageContain.tsx
+│   │   │   │       │   │   │   └── PreviewPcPageContain.tsx
+│   │   │   │       │   │   ├── enums/
+│   │   │   │       │   │   │   └── view.enum.ts
+│   │   │   │       │   │   ├── hooks/
+│   │   │   │       │   │   │   └── useGoogleMapsReady.ts
+│   │   │   │       │   │   ├── store/
+│   │   │   │       │   │   │   └── preview.store.ts
+│   │   │   │       │   │   └── types/
+│   │   │   │       │   │       ├── announcement.preview.type.ts
+│   │   │   │       │   │       └── google-maps.d.ts
+│   │   │   │       │   ├── components/
+│   │   │   │       │   │   ├── documents/
+│   │   │   │       │   │   │   ├── DocumentTypeSelector.tsx
+│   │   │   │       │   │   │   ├── DocumentUploadList.tsx
+│   │   │   │       │   │   │   └── DocumentValidationFeedback.tsx
+│   │   │   │       │   │   ├── AddPhotosButton.tsx
+│   │   │   │       │   │   ├── AnnouncementCharacteristicsStep.tsx
+│   │   │   │       │   │   ├── AnnouncementDetailsStep.tsx
+│   │   │   │       │   │   ├── AnnouncementDocumentsStep.tsx
+│   │   │   │       │   │   ├── AnnouncementFeaturesStep.tsx
+│   │   │   │       │   │   ├── AnnouncementLocationStep.tsx
+│   │   │   │       │   │   ├── AnnouncementPhotosGrid.tsx
+│   │   │   │       │   │   ├── AnnouncementPhotosStep.tsx
+│   │   │   │       │   │   ├── AnnouncementPricingAndCharacteristicsStep.tsx
+│   │   │   │       │   │   ├── AnnouncementPricingStep.tsx
+│   │   │   │       │   │   ├── AnnouncementRecapStep.tsx
+│   │   │   │       │   │   ├── AnnouncementRulesStep.tsx
+│   │   │   │       │   │   ├── AnnouncementTransactionTypeStep.tsx
+│   │   │   │       │   │   ├── AnnouncementWizardStepIndicator.tsx
+│   │   │   │       │   │   ├── OrganizePhotosModal.tsx
+│   │   │   │       │   │   └── PhotoGridItem.tsx
+│   │   │   │       │   ├── config/
+│   │   │   │       │   │   ├── documents-validation.config.ts
+│   │   │   │       │   │   ├── payload-rules-by-transaction-type.config.ts
+│   │   │   │       │   │   └── rules-by-transaction-type.config.ts
+│   │   │   │       │   ├── data/
+│   │   │   │       │   │   └── announcement-rules.data.ts
+│   │   │   │       │   ├── hooks/
+│   │   │   │       │   │   ├── useAnnouncementDocuments.ts
+│   │   │   │       │   │   ├── useAnnouncementLocation.ts
+│   │   │   │       │   │   └── useAnnouncementRules.ts
+│   │   │   │       │   ├── utils/
+│   │   │   │       │   │   ├── announcement-payload.utils.ts
+│   │   │   │       │   │   ├── payload-converter.utils.ts
+│   │   │   │       │   │   └── rental-to-announcement-prefill.utils.ts
+│   │   │   │       │   └── CreateAnnouncementWizard.tsx
+│   │   │   │       ├── data/
+│   │   │   │       │   └── announcementMarketplace.data.ts
+│   │   │   │       ├── hooks/
+│   │   │   │       │   └── useAnnouncementMarketplaceManager.ts
+│   │   │   │       ├── layouts/
+│   │   │   │       │   └── AnnouncementMarketplacePageListLayout.tsx
+│   │   │   │       ├── services/
+│   │   │   │       │   ├── announcement-prefill.service.ts
+│   │   │   │       │   └── announcementMarketplace.service.ts
+│   │   │   │       ├── types/
+│   │   │   │       │   └── announcement-creation.types.ts
+│   │   │   │       └── utils/
+│   │   │   │           └── announcementMarketplace.utils.ts
+│   │   │   ├── organisation/
+│   │   │   │   ├── documents/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   │   ├── OrgDocumentSidebar.tsx
+│   │   │   │   │   │   │   ├── OrgDocumentSidebarActivity.tsx
+│   │   │   │   │   │   │   ├── OrgDocumentSidebarDocuments.tsx
+│   │   │   │   │   │   │   ├── OrgDocumentSidebarHeader.tsx
+│   │   │   │   │   │   │   └── OrgDocumentSidebarWrapper.tsx
+│   │   │   │   │   │   ├── OrgDocumentCard.tsx
+│   │   │   │   │   │   ├── OrgDocumentCardContextMenu.tsx
+│   │   │   │   │   │   ├── OrgDocumentCategoryCardGrid.tsx
+│   │   │   │   │   │   ├── OrgDocumentCategoryCardItem.tsx
+│   │   │   │   │   │   ├── OrgDocumentCategoryTable.tsx
+│   │   │   │   │   │   ├── OrgDocumentColumn.tsx
+│   │   │   │   │   │   ├── OrgDocumentDetails.tsx
+│   │   │   │   │   │   ├── OrgDocumentDetailsTabs.tsx
+│   │   │   │   │   │   ├── OrgDocumentDraggableCard.tsx
+│   │   │   │   │   │   ├── OrgDocumentEmptyState.tsx
+│   │   │   │   │   │   ├── OrgDocumentKanban.tsx
+│   │   │   │   │   │   └── OrgDocumentStatusTable.tsx
+│   │   │   │   │   ├── hooks/
+│   │   │   │   │   │   └── useOrgDocuments.ts
+│   │   │   │   │   ├── layouts/
+│   │   │   │   │   │   ├── OrgDocumentListLayout.tsx
+│   │   │   │   │   │   ├── OrgDocumentPageLayout.tsx
+│   │   │   │   │   │   └── OrgDocumentStatusLayout.tsx
+│   │   │   │   │   ├── services/
+│   │   │   │   │   │   ├── orgDocument.service.ts
+│   │   │   │   │   │   └── processStatus.service.ts
+│   │   │   │   │   ├── types/
+│   │   │   │   │   │   ├── orgDocument.types.ts
+│   │   │   │   │   │   └── processStatus.types.ts
+│   │   │   │   │   ├── utils/
+│   │   │   │   │   │   └── kanbanColumns.utils.ts
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── pools/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   ├── PoolChildrenTable.tsx
+│   │   │   │   │   │   ├── PoolEmptyState.tsx
+│   │   │   │   │   │   ├── PoolTable.tsx
+│   │   │   │   │   │   └── PoolTableActions.tsx
+│   │   │   │   │   ├── hooks/
+│   │   │   │   │   │   └── usePools.ts
+│   │   │   │   │   ├── layouts/
+│   │   │   │   │   │   ├── PoolChildrenPageLayout.tsx
+│   │   │   │   │   │   └── PoolPageListLayout.tsx
+│   │   │   │   │   ├── services/
+│   │   │   │   │   │   └── pool.service.ts
+│   │   │   │   │   ├── types/
+│   │   │   │   │   │   └── pool.types.ts
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── processes/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   ├── ProcessCardGrid.tsx
+│   │   │   │   │   │   ├── ProcessCardItem.tsx
+│   │   │   │   │   │   ├── ProcessEmptyState.tsx
+│   │   │   │   │   │   ├── ProcessTable.tsx
+│   │   │   │   │   │   └── ProcessTableActions.tsx
+│   │   │   │   │   ├── layouts/
+│   │   │   │   │   │   └── ProcessPageListLayout.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── plans/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── modals/
+│   │   │   │   │   │   ├── PackageOffersModal.tsx
+│   │   │   │   │   │   └── PackageOffersWrapperModal.tsx
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── PlanDetailsSidebar.tsx
+│   │   │   │   │   │   ├── PlanDetailsSidebarWrapper.tsx
+│   │   │   │   │   │   ├── SubscriptionSidebar.tsx
+│   │   │   │   │   │   └── SubscriptionSidebarWrapper.tsx
+│   │   │   │   │   ├── ActivePackageCard.tsx
+│   │   │   │   │   ├── ActivePackagesCarousel.tsx
+│   │   │   │   │   ├── BuyOffersV2.tsx
+│   │   │   │   │   ├── LeftSideAnnoncersOffersV2.tsx
+│   │   │   │   │   ├── MiniRecapGeneralPrice.tsx
+│   │   │   │   │   ├── OfferCardAnnouncerV2.tsx
+│   │   │   │   │   ├── OffersAnnouncementListV2.tsx
+│   │   │   │   │   ├── OffersPack.tsx
+│   │   │   │   │   ├── OfferTitleInfo.tsx
+│   │   │   │   │   ├── PeriodButtonV2.tsx
+│   │   │   │   │   ├── PlanEmptyState.tsx
+│   │   │   │   │   ├── SubscriptionsTable.tsx
+│   │   │   │   │   ├── SubscriptionTableActions.tsx
+│   │   │   │   │   ├── TooltipShow.tsx
+│   │   │   │   │   └── types.ts
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── plans.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── usePlansManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── PlansBlockedLayout.tsx
+│   │   │   │   │   ├── PlansPageLayout.tsx
+│   │   │   │   │   └── PlansPageWrapper.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── plans.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── plans.utils.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── properties/
+│   │   │   │   ├── estates/
+│   │   │   │   │   ├── analytics/
+│   │   │   │   │   │   └── getEstatesAnalytic.ts
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   ├── modals/
+│   │   │   │   │   │   │   ├── AddEstateRentalModal.tsx
+│   │   │   │   │   │   │   ├── EditEstateRentalModal.tsx
+│   │   │   │   │   │   │   └── UpdateEstateWizardModal.tsx
+│   │   │   │   │   │   ├── sections/
+│   │   │   │   │   │   │   ├── CreateEmployeeDataSection.tsx
+│   │   │   │   │   │   │   ├── CreateEmployeeRoleSection.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsHelmet.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsOverview.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsRentalDetails.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsRentals.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsRentalsTableKit.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsTabs.tsx
+│   │   │   │   │   │   │   ├── EstateDetailsTenants.tsx
+│   │   │   │   │   │   │   ├── EstateIncomesChart.tsx
+│   │   │   │   │   │   │   └── EstateRentalDetailsHelmet.tsx
+│   │   │   │   │   │   ├── steps/
+│   │   │   │   │   │   │   └── AssetSelectedButton.tsx
+│   │   │   │   │   │   ├── EstateDetails.tsx
+│   │   │   │   │   │   ├── EstateEmptyState.tsx
+│   │   │   │   │   │   ├── EstateOptionsMenu.tsx
+│   │   │   │   │   │   ├── EstateRentalsTable.tsx
+│   │   │   │   │   │   ├── EstateRentalTableActions.tsx
+│   │   │   │   │   │   ├── EstateTable.tsx
+│   │   │   │   │   │   ├── EstateTableActions.tsx
+│   │   │   │   │   │   ├── EstateTenantsTable.tsx
+│   │   │   │   │   │   ├── RentalCard.tsx
+│   │   │   │   │   │   └── RentalTableActions.tsx
+│   │   │   │   │   ├── configs/
+│   │   │   │   │   │   └── modals-keys.ts
+│   │   │   │   │   ├── create-steps/
+│   │   │   │   │   │   ├── animations/
+│   │   │   │   │   │   │   └── stepAnimations.ts
+│   │   │   │   │   │   ├── components/
+│   │   │   │   │   │   │   ├── RecapInfoCard.tsx
+│   │   │   │   │   │   │   ├── RecapSection.tsx
+│   │   │   │   │   │   │   ├── RentalCharacteristics.tsx
+│   │   │   │   │   │   │   ├── RentalEquipments.tsx
+│   │   │   │   │   │   │   ├── RentalGeneralInfo.tsx
+│   │   │   │   │   │   │   ├── RentalPricing.tsx
+│   │   │   │   │   │   │   └── StepHeader.tsx
+│   │   │   │   │   │   ├── CreateEstateWizard.tsx
+│   │   │   │   │   │   ├── EstateDescriptionStep.tsx
+│   │   │   │   │   │   ├── EstateFeaturesStep.tsx
+│   │   │   │   │   │   ├── EstateLocationStep.tsx
+│   │   │   │   │   │   ├── EstateRecapStep.tsx
+│   │   │   │   │   │   ├── EstateRentalsAddStep.tsx
+│   │   │   │   │   │   ├── EstateRentalsEditStep.tsx
+│   │   │   │   │   │   ├── EstateTypeStep.tsx
+│   │   │   │   │   │   ├── ExampleUsage.tsx
+│   │   │   │   │   │   └── task.md
+│   │   │   │   │   ├── hooks/
+│   │   │   │   │   │   ├── useEstateLocation.ts
+│   │   │   │   │   │   ├── useEstateManager.ts
+│   │   │   │   │   │   ├── useEstateRentalDataset.ts
+│   │   │   │   │   │   ├── useEstateRentsManager.ts
+│   │   │   │   │   │   ├── useEstateTenantsManager.ts
+│   │   │   │   │   │   ├── useProviderDataManager.ts
+│   │   │   │   │   │   └── useRentalManager.ts
+│   │   │   │   │   ├── layouts/
+│   │   │   │   │   │   ├── EstatePageListLayout.tsx
+│   │   │   │   │   │   └── PublishHeaderEstate.tsx
+│   │   │   │   │   ├── location/
+│   │   │   │   │   │   ├── components/
+│   │   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   │   └── SearchAutocomplete.tsx
+│   │   │   │   │   │   └── index.ts
+│   │   │   │   │   ├── modals/
+│   │   │   │   │   │   ├── components/
+│   │   │   │   │   │   │   ├── EstateRecapContent.tsx
+│   │   │   │   │   │   │   └── ReadOnlyAssetButton.tsx
+│   │   │   │   │   │   └── EstateRecapModal.tsx
+│   │   │   │   │   ├── services/
+│   │   │   │   │   │   ├── estate-rentals.service.ts
+│   │   │   │   │   │   └── estate.service.ts
+│   │   │   │   │   ├── store/
+│   │   │   │   │   │   ├── useCurrentEstateDetails.store.tsx
+│   │   │   │   │   │   ├── useCurrentEstateRentalDetails.store.tsx
+│   │   │   │   │   │   ├── useEstateCreationWizard.store.ts
+│   │   │   │   │   │   ├── useEstateRentalDataset.tsx
+│   │   │   │   │   │   └── useEstateUpdateDataset.ts
+│   │   │   │   │   ├── types/
+│   │   │   │   │   │   ├── analytic.types.ts
+│   │   │   │   │   │   ├── estate-creation.types.ts
+│   │   │   │   │   │   ├── estate.types.ts
+│   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   └── rental.types.ts
+│   │   │   │   │   ├── update-steps/
+│   │   │   │   │   │   ├── UpdateEstateDescriptionStep.tsx
+│   │   │   │   │   │   ├── UpdateEstateFeaturesStep.tsx
+│   │   │   │   │   │   ├── UpdateEstateLocationStep.tsx
+│   │   │   │   │   │   ├── UpdateEstateRentalsEditStep.tsx
+│   │   │   │   │   │   └── UpdateEstateTypeStep.tsx
+│   │   │   │   │   └── utils/
+│   │   │   │   │       ├── employes.utils.ts
+│   │   │   │   │       ├── estate-creation.utils.ts
+│   │   │   │   │       ├── estate-payload.utils.ts
+│   │   │   │   │       ├── index.ts
+│   │   │   │   │       ├── rental-image.utils.ts
+│   │   │   │   │       └── validate-rental-formdata.ts
+│   │   │   │   ├── owners/
+│   │   │   │   │   ├── components/
+│   │   │   │   │   │   ├── OwnerEmptyState.tsx
+│   │   │   │   │   │   ├── OwnerSidedar.tsx
+│   │   │   │   │   │   ├── OwnerTable.tsx
+│   │   │   │   │   │   └── OwnerTableActions.tsx
+│   │   │   │   │   ├── hooks/
+│   │   │   │   │   │   └── useAgencyOwners.tsx
+│   │   │   │   │   ├── layouts/
+│   │   │   │   │   │   └── OwnersPageListLayout.tsx
+│   │   │   │   │   ├── modals/
+│   │   │   │   │   │   └── OwnerCreateModal.tsx
+│   │   │   │   │   ├── queries/
+│   │   │   │   │   │   └── owner.query.ts
+│   │   │   │   │   ├── services/
+│   │   │   │   │   │   └── ownerService.ts
+│   │   │   │   │   └── types/
+│   │   │   │   │       ├── analytics.ts
+│   │   │   │   │       ├── owner.type.ts
+│   │   │   │   │       └── request.type.ts
+│   │   │   │   └── tenants/
+│   │   │   │       ├── components/
+│   │   │   │       │   ├── lease-workflows/
+│   │   │   │       │   │   ├── PromptTenantExists.tsx
+│   │   │   │       │   │   ├── SelectEstate.workflow.tsx
+│   │   │   │       │   │   ├── SelectRental.workflow.tsx
+│   │   │   │       │   │   └── SelectTenant.workflow.tsx
+│   │   │   │       │   ├── tenants-workflows/
+│   │   │   │       │   │   ├── EnterpriseIdentityDocuments.workflow.tsx
+│   │   │   │       │   │   ├── EnterpriseInfos.workflow.tsx
+│   │   │   │       │   │   ├── ParticularIdentityDocuments.workflow.tsx
+│   │   │   │       │   │   ├── ParticularInfos.workflow.tsx
+│   │   │   │       │   │   ├── PromptTenantType.tsx
+│   │   │   │       │   │   ├── SelectCreateOptions.workflow.tsx
+│   │   │   │       │   │   ├── TenantDocuments.tsx
+│   │   │   │       │   │   ├── TenantInfosData.tsx
+│   │   │   │       │   │   ├── TenantOtpValidation.tsx
+│   │   │   │       │   │   └── ValidateOtp.workflow.tsx
+│   │   │   │       │   ├── LeaseWorkflowTitle.tsx
+│   │   │   │       │   ├── TenantDetails.tsx
+│   │   │   │       │   ├── TenantEmptyState.tsx
+│   │   │   │       │   ├── TenantRentalLeaseEditor.tsx
+│   │   │   │       │   ├── TenantsHistoryTransactionTable.tsx
+│   │   │   │       │   ├── TenantSidebar.tsx
+│   │   │   │       │   ├── TenantTable.tsx
+│   │   │   │       │   └── TenantTableActions.tsx
+│   │   │   │       ├── configs/
+│   │   │   │       │   └── keys.ts
+│   │   │   │       ├── hooks/
+│   │   │   │       │   └── useTenantsManager.ts
+│   │   │   │       ├── layouts/
+│   │   │   │       │   └── TenantsPageListLayout.tsx
+│   │   │   │       ├── modals/
+│   │   │   │       │   ├── CreateLeaseModal.tsx
+│   │   │   │       │   ├── CreateTenantModal.tsx
+│   │   │   │       │   ├── DetailsTenantModal.tsx
+│   │   │   │       │   └── DetailsTenantRentalLeaseModal.tsx
+│   │   │   │       ├── queries/
+│   │   │   │       │   └── owner.query.ts
+│   │   │   │       ├── services/
+│   │   │   │       │   └── tenants.service.ts
+│   │   │   │       ├── store/
+│   │   │   │       │   ├── useCreateLeaseStore.tsx
+│   │   │   │       │   ├── useCurrentRentalLease.tsx
+│   │   │   │       │   ├── useLeaseWorkflowMetadata.tsx
+│   │   │   │       │   └── useRentalLeaseDatasetStore.tsx
+│   │   │   │       └── types/
+│   │   │   │           ├── analytics.ts
+│   │   │   │           ├── request.type.ts
+│   │   │   │           ├── service.type.ts
+│   │   │   │           └── tenant.type.ts
+│   │   │   ├── prospects/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sections/
+│   │   │   │   │   │   ├── ProspectActivitiesSection.tsx
+│   │   │   │   │   │   ├── ProspectContactsSection.tsx
+│   │   │   │   │   │   ├── ProspectDocumentsSection.tsx
+│   │   │   │   │   │   └── ProspectEmployeesSection.tsx
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── ProspectSidebar.tsx
+│   │   │   │   │   │   └── ProspectSidebarWrapper.tsx
+│   │   │   │   │   ├── tableActions/
+│   │   │   │   │   │   └── ProspectContactTableActions.tsx
+│   │   │   │   │   ├── ProspectContactsTable.tsx
+│   │   │   │   │   ├── ProspectDocumentRow.tsx
+│   │   │   │   │   ├── ProspectDocumentsDisplayList.tsx
+│   │   │   │   │   ├── ProspectEmployeesDisplayList.tsx
+│   │   │   │   │   ├── ProspectEmptyState.tsx
+│   │   │   │   │   ├── ProspectTable.tsx
+│   │   │   │   │   ├── ProspectTableActions.tsx
+│   │   │   │   │   └── SectionHeader.tsx
+│   │   │   │   ├── controllers/
+│   │   │   │   │   └── prospect.controller.ts
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useProspectManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── ProspectPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── prospect.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── prospect.utils.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── referrals/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── ReferralSidebar.tsx
+│   │   │   │   │   │   └── ReferralSidebarWrapper.tsx
+│   │   │   │   │   ├── ReferralCodeCard.tsx
+│   │   │   │   │   ├── ReferralEmptyState.tsx
+│   │   │   │   │   ├── ReferralStatsCard.tsx
+│   │   │   │   │   ├── ReferralTable.tsx
+│   │   │   │   │   └── ReferralTableActions.tsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useReferralManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   └── ReferralPageLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   └── referral.service.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   └── referral.utils.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── unpaid-invoices/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── sidebars/
+│   │   │   │   │   │   ├── CollectionSidebar.tsx
+│   │   │   │   │   │   ├── CollectionSidebarWrapper.tsx
+│   │   │   │   │   │   ├── UnpaidInvoiceSidebar.tsx
+│   │   │   │   │   │   └── UnpaidInvoiceSidebarWrapper.tsx
+│   │   │   │   │   ├── CollectionTable.tsx
+│   │   │   │   │   ├── CollectionTableActions.tsx
+│   │   │   │   │   ├── UnpaidInvoicesEmptyState.tsx
+│   │   │   │   │   ├── UnpaidInvoicesTable.tsx
+│   │   │   │   │   └── UnpaidInvoicesTableActions.tsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useCollectionManager.ts
+│   │   │   │   │   └── useUnpaidInvoicesManager.ts
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── UnpaidInvoiceCollectionPageLayout.tsx
+│   │   │   │   │   └── UnpaidInvoicesPageListLayout.tsx
+│   │   │   │   ├── services/
+│   │   │   │   │   ├── collection.service.ts
+│   │   │   │   │   └── unpaid-invoices.service.ts
+│   │   │   │   ├── store/
+│   │   │   │   │   └── create-permissions-roles.store.tsx
+│   │   │   │   └── utils/
+│   │   │   │       ├── mock-collections.data.ts
+│   │   │   │       ├── mock-unpaid-invoices.data.ts
+│   │   │   │       └── unpaid.utils.ts
+│   │   │   └── visits/
+│   │   │       ├── components/
+│   │   │       │   ├── sidebars/
+│   │   │       │   │   ├── VisitSidebar.tsx
+│   │   │       │   │   └── VisitSidebarWrapper.tsx
+│   │   │       │   ├── VisitEmptyState.tsx
+│   │   │       │   ├── VisitInfoState.tsx
+│   │   │       │   ├── VisitStatsCards.tsx
+│   │   │       │   ├── VisitTable.tsx
+│   │   │       │   └── VisitTableActions.tsx
+│   │   │       ├── controllers/
+│   │   │       │   └── visit.controller.ts
+│   │   │       ├── hooks/
+│   │   │       │   └── useVisitManager.ts
+│   │   │       ├── layouts/
+│   │   │       │   └── VisitPageListLayout.tsx
+│   │   │       ├── services/
+│   │   │       │   └── visit.service.ts
+│   │   │       ├── utils/
+│   │   │       │   └── visit.utils.ts
+│   │   │       └── index.ts
+│   │   ├── password-reset/
+│   │   │   ├── components/
+│   │   │   │   ├── LoginAskStep.tsx
+│   │   │   │   ├── NewPasswordStep.tsx
+│   │   │   │   ├── OtpVerificationStep.tsx
+│   │   │   │   ├── PasswordResetHeader.tsx
+│   │   │   │   └── SuccessStep.tsx
+│   │   │   ├── controllers/
+│   │   │   │   └── password-reset.controller.ts
+│   │   │   ├── hooks/
+│   │   │   │   └── usePasswordReset.ts
+│   │   │   ├── layouts/
+│   │   │   │   └── PasswordResetPanel.tsx
+│   │   │   ├── store/
+│   │   │   │   └── password-reset.store.ts
+│   │   │   ├── types/
+│   │   │   │   └── password-reset.types.ts
+│   │   │   └── index.ts
+│   │   ├── permissions/
+│   │   │   ├── components/
+│   │   │   │   ├── validation/
+│   │   │   │   │   ├── PermissionValidationManager.tsx
+│   │   │   │   │   └── ValidationStepCard.tsx
+│   │   │   │   ├── PermissionItem.tsx
+│   │   │   │   ├── PermissionItemSimple.tsx
+│   │   │   │   ├── PermissionSection.tsx
+│   │   │   │   ├── PermissionSectionSimple.tsx
+│   │   │   │   ├── ValidationSteps.tsx
+│   │   │   │   └── ValidationTag.tsx
+│   │   │   ├── context/
+│   │   │   │   └── PermissionInstanceContext.tsx
+│   │   │   ├── controllers/
+│   │   │   │   └── permission.controller.ts
+│   │   │   ├── examples/
+│   │   │   │   └── PermissionExamples.tsx
+│   │   │   ├── hooks/
+│   │   │   │   ├── useInferProfiles.ts
+│   │   │   │   ├── usePermission.ts
+│   │   │   │   └── usePermissionValidation.ts
+│   │   │   ├── layouts/
+│   │   │   │   ├── PermissionEditor.tsx
+│   │   │   │   ├── PermissionManager.tsx
+│   │   │   │   └── PermissionViewer.tsx
+│   │   │   ├── services/
+│   │   │   │   └── tableManager.service.ts
+│   │   │   ├── store/
+│   │   │   │   ├── usePermission.store.ts
+│   │   │   │   └── usePermissionInstance.store.ts
+│   │   │   └── index.ts
+│   │   ├── scroring/
+│   │   │   ├── ScoringProgressBar.tsx
+│   │   │   └── UserScoringCard.tsx
+│   │   ├── skeletons/
+│   │   │   └── StatCard.skeleton.tsx
+│   │   ├── supporting-documents/
+│   │   │   └── UserSupportingDocument.tsx
+│   │   ├── tabs/
+│   │   │   └── CustomTabs.tsx
+│   │   ├── theme-colors/
+│   │   │   └── contexts/
+│   │   │       └── ThemeColorsContext.ts
+│   │   ├── ui/
+│   │   │   ├── badges/
+│   │   │   │   └── CustomBadge.tsx
+│   │   │   ├── card-announcement/
+│   │   │   │   ├── AnnouncementCard.tsx
+│   │   │   │   ├── BottomCard.tsx
+│   │   │   │   └── HeaderCard.tsx
+│   │   │   ├── color-pickers/
+│   │   │   │   ├── button-color-picker.tsx
+│   │   │   │   └── circle-color-picker.tsx
+│   │   │   ├── conditional/
+│   │   │   │   └── ConditionalRenderer.tsx
+│   │   │   ├── dev/
+│   │   │   │   └── ResponsiveDebugger.tsx
+│   │   │   ├── drawer/
+│   │   │   │   ├── Drawer.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── establishment/
+│   │   │   │   └── data/
+│   │   │   │       └── beds-configuration.data.ts
+│   │   │   ├── forms/
+│   │   │   │   ├── CalendarPicker.tsx
+│   │   │   │   ├── examples.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── InputAutocomplete.tsx
+│   │   │   │   ├── InputBankApart.tsx
+│   │   │   │   ├── InputBanque.tsx
+│   │   │   │   ├── InputBirthDate.tsx
+│   │   │   │   ├── InputCandidateType.tsx
+│   │   │   │   ├── InputCheckbox.tsx
+│   │   │   │   ├── InputCheckboxList.tsx
+│   │   │   │   ├── InputCountry.tsx
+│   │   │   │   ├── InputDate.tsx
+│   │   │   │   ├── InputDurationRestriction.tsx
+│   │   │   │   ├── InputEmail.tsx
+│   │   │   │   ├── InputEmailOrPhone.tsx
+│   │   │   │   ├── InputEmployee.tsx
+│   │   │   │   ├── InputEstate.tsx
+│   │   │   │   ├── InputFile.tsx
+│   │   │   │   ├── InputGooglePlacesAutocomplete.tsx
+│   │   │   │   ├── InputLocative.tsx
+│   │   │   │   ├── InputMatricule.tsx
+│   │   │   │   ├── InputMultipleEmployee.tsx
+│   │   │   │   ├── InputNumber.tsx
+│   │   │   │   ├── InputOtpFieldset.tsx
+│   │   │   │   ├── InputOwner.tsx
+│   │   │   │   ├── InputOwnerApart.tsx
+│   │   │   │   ├── InputPassword.tsx
+│   │   │   │   ├── InputPhone.tsx
+│   │   │   │   ├── InputProfile.tsx
+│   │   │   │   ├── InputPropertySeekers.tsx
+│   │   │   │   ├── InputReadonly.tsx
+│   │   │   │   ├── InputReadOnlyEditable.tsx
+│   │   │   │   ├── InputSelectOption.tsx
+│   │   │   │   ├── InputSwitch.tsx
+│   │   │   │   ├── InputSwitchDirect.tsx
+│   │   │   │   ├── InputTenantType.tsx
+│   │   │   │   ├── InputText.tsx
+│   │   │   │   ├── InputTextarea.tsx
+│   │   │   │   ├── InputTextInline.tsx
+│   │   │   │   ├── InputTimeRestriction.tsx
+│   │   │   │   ├── MultiSelect.tsx
+│   │   │   │   ├── PriceInput.doc.ts
+│   │   │   │   ├── PriceInput.tsx
+│   │   │   │   ├── PricePeriodInput.tsx
+│   │   │   │   ├── RegistrationFormExample.tsx
+│   │   │   │   ├── Select.tsx
+│   │   │   │   ├── SocialButton.tsx
+│   │   │   │   ├── SocialEmailSwitch.tsx
+│   │   │   │   ├── SocialFacebook.tsx
+│   │   │   │   └── SocialGoogle.tsx
+│   │   │   ├── infos/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   ├── ModalPhotosControls.tsx
+│   │   │   │   │   ├── ModalPhotosIndicators.tsx
+│   │   │   │   │   ├── ModalPhotosNavigation.tsx
+│   │   │   │   │   ├── ModalPhotosOnboarding.tsx
+│   │   │   │   │   ├── ModalPhotosOnboardingMobile.tsx
+│   │   │   │   │   └── ModalPhotosThumbnails.tsx
+│   │   │   │   ├── ImageCarousel.tsx
+│   │   │   │   └── ModalPhotos.tsx
+│   │   │   ├── input/
+│   │   │   │   └── CollapseError.tsx
+│   │   │   ├── maps/
+│   │   │   │   ├── examples/
+│   │   │   │   │   ├── ClickToPlaceMarker.tsx
+│   │   │   │   │   ├── EstateLocationReadonly.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── GoogleMapInteractive.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── medias/
+│   │   │   │   ├── OverviewMediaFile.tsx
+│   │   │   │   ├── type.ts
+│   │   │   │   ├── UploadMediaFile.tsx
+│   │   │   │   └── util.ts
+│   │   │   ├── menu/
+│   │   │   │   ├── ShareUrlLink.tsx
+│   │   │   │   └── ShareUrlLinkV2.tsx
+│   │   │   ├── overlays/
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useFloatingModal.ts
+│   │   │   │   ├── utils/
+│   │   │   │   │   ├── dom.ts
+│   │   │   │   │   └── positioning.ts
+│   │   │   │   ├── FloatingButton.tsx
+│   │   │   │   ├── FloatingGroup.tsx
+│   │   │   │   ├── FloatingMenu.tsx
+│   │   │   │   ├── FloatingModal.tsx
+│   │   │   │   └── PortalRoot.tsx
+│   │   │   ├── preview/
+│   │   │   │   └── BankCardPreview.tsx
+│   │   │   ├── recap/
+│   │   │   │   ├── recap.types.ts
+│   │   │   │   └── RecapPrice.tsx
+│   │   │   ├── render/
+│   │   │   │   ├── AnnouncementMediasSwiper.tsx
+│   │   │   │   ├── AnnouncementType.tsx
+│   │   │   │   ├── Certified.tsx
+│   │   │   │   ├── CustomButton.tsx
+│   │   │   │   ├── CustomIcon.tsx
+│   │   │   │   ├── CustomImage.tsx
+│   │   │   │   ├── CustomLink.tsx
+│   │   │   │   ├── DateLabel.tsx
+│   │   │   │   ├── DocumentViewer.tsx
+│   │   │   │   ├── DynamicSvg.tsx
+│   │   │   │   ├── Furnished.tsx
+│   │   │   │   ├── InitialShow.tsx
+│   │   │   │   ├── LinkCustom.tsx
+│   │   │   │   ├── MoneyShow.tsx
+│   │   │   │   ├── OwnerAvatar.tsx
+│   │   │   │   ├── RenderTransactionType.tsx
+│   │   │   │   ├── RoomShow.tsx
+│   │   │   │   ├── SelectionAnnouncement.tsx
+│   │   │   │   ├── Separator.tsx
+│   │   │   │   ├── SidebarHeaderShow.tsx
+│   │   │   │   ├── SpolightAnnouncement.tsx
+│   │   │   │   └── StarShow.tsx
+│   │   │   ├── sections/
+│   │   │   │   ├── cards/
+│   │   │   │   │   └── EstateChosenCard.tsx
+│   │   │   │   ├── fieldset/
+│   │   │   │   │   └── FieldsetBlock.tsx
+│   │   │   │   ├── flats/
+│   │   │   │   │   ├── DataRow.tsx
+│   │   │   │   │   ├── InfoRow.tsx
+│   │   │   │   │   └── NameableRow.tsx
+│   │   │   │   └── users/
+│   │   │   │       └── UserInfosCard.tsx
+│   │   │   ├── shadcn-io/
+│   │   │   │   └── color-picker/
+│   │   │   │       └── index.tsx
+│   │   │   ├── table/
+│   │   │   │   └── DateTimeCell.tsx
+│   │   │   ├── table_manager/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── CellWithPreview.tsx
+│   │   │   │   │   ├── DateTimeCell.tsx
+│   │   │   │   │   ├── GhostAnchor.tsx
+│   │   │   │   │   ├── InlineHighlight.tsx
+│   │   │   │   │   ├── LeaseStatusBadge.tsx
+│   │   │   │   │   ├── PaginationControls.tsx
+│   │   │   │   │   ├── RentalLeaseStatusBadge.tsx
+│   │   │   │   │   ├── RowsSkeleton.tsx
+│   │   │   │   │   ├── SortableHeader.tsx
+│   │   │   │   │   ├── StatusBadge.tsx
+│   │   │   │   │   ├── TableActionButton.tsx
+│   │   │   │   │   ├── TableCheckbox.tsx
+│   │   │   │   │   ├── TableContextMenu.tsx
+│   │   │   │   │   ├── TableKitTabs.tsx
+│   │   │   │   │   └── UserCell.tsx
+│   │   │   │   ├── cookies/
+│   │   │   │   │   └── cookie.service.ts
+│   │   │   │   ├── examples/
+│   │   │   │   │   ├── employees.table.tsx
+│   │   │   │   │   └── table-normalization.example.tsx
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useColumnVisibility.ts
+│   │   │   │   │   ├── useTableSettings.ts
+│   │   │   │   │   └── useTabPersistence.ts
+│   │   │   │   ├── types/
+│   │   │   │   │   ├── table-normalization.cheatsheet.ts
+│   │   │   │   │   └── table.schema.ts
+│   │   │   │   ├── ColumnManager.tsx
+│   │   │   │   ├── TableKit.tsx
+│   │   │   │   ├── TableKit.tsx.backup
+│   │   │   │   ├── TableKitActionsCell.tsx
+│   │   │   │   └── TableSettings.tsx
+│   │   │   ├── tooltip/
+│   │   │   │   └── TooltipMessage.tsx
+│   │   │   ├── AnnouncementDisplay.tsx
+│   │   │   ├── AnnouncementSiteDisplay.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── BankAccountDisplay.tsx
+│   │   │   ├── button.tsx
+│   │   │   ├── CashbackStatusBadge.tsx
+│   │   │   ├── CertifierDisplay.tsx
+│   │   │   ├── EstablishmentDisplay.tsx
+│   │   │   ├── EstateRentalDisplay.tsx
+│   │   │   ├── input-otp.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── LoaderInMenu.tsx
+│   │   │   ├── LodgingDisplay.tsx
+│   │   │   ├── PaymentMethodDisplay.tsx
+│   │   │   ├── PhoneDisplay.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── PriceDisplay.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── QRCodeWithLogo.tsx
+│   │   │   ├── RentalStatusBadge.tsx
+│   │   │   ├── ScrollPanel.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── Separator.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── tooltip.tsx
+│   │   │   ├── TransactionAmountDisplay.tsx
+│   │   │   ├── UserDisplay.tsx
+│   │   │   └── VideoPreview.tsx
+│   │   ├── upload/
+│   │   │   ├── components/
+│   │   │   │   ├── OneFileLine.tsx
+│   │   │   │   └── UploadModal.tsx
+│   │   │   ├── constant/
+│   │   │   │   └── endpoint.ts
+│   │   │   ├── enum/
+│   │   │   │   ├── upload-destination.enum.ts
+│   │   │   │   ├── upload-image.enum.ts
+│   │   │   │   ├── upload-media-type.enum.ts
+│   │   │   │   └── upload.enum.ts
+│   │   │   ├── hooks/
+│   │   │   │   └── useDraggableBubble.ts
+│   │   │   ├── layout/
+│   │   │   │   └── UploadProgressIndicator.tsx
+│   │   │   ├── services/
+│   │   │   │   └── uploadService.ts
+│   │   │   ├── store/
+│   │   │   │   └── upload.store.ts
+│   │   │   ├── type/
+│   │   │   │   ├── return-file.type.ts
+│   │   │   │   └── upload-media.type.ts
+│   │   │   ├── utils/
+│   │   │   │   └── http-selector.util.ts
+│   │   │   └── index.ts
+│   │   ├── waiting_paiement/
+│   │   │   ├── components/
+│   │   │   │   └── WaitingSignal.tsx
+│   │   │   ├── controllers/
+│   │   │   │   └── paiement.controller.ts
+│   │   │   ├── enums/
+│   │   │   │   ├── paiement-status.enum.ts
+│   │   │   │   └── paiement-type.enum.ts
+│   │   │   ├── hooks/
+│   │   │   │   └── usePaiementAction.tsx
+│   │   │   ├── layout/
+│   │   │   │   └── WaitingModal.tsx
+│   │   │   ├── store/
+│   │   │   │   └── paiement.store.ts
+│   │   │   └── types/
+│   │   │       ├── payload.ts
+│   │   │       ├── return-payment-status.ts
+│   │   │       └── return-response.ts
+│   │   ├── whitelabel/
+│   │   │   ├── index.ts
+│   │   │   ├── WhitelabelLogo.tsx
+│   │   │   ├── WhitelabelProvider.tsx
+│   │   │   └── WhitelabelText.tsx
+│   │   ├── FormatMoneyValue.tsx
+│   │   ├── SeeMoreButton.tsx
+│   │   └── TitleSection.tsx
+│   ├── config/
+│   │   └── whitelabel/
+│   │       ├── index.ts
+│   │       ├── whitelabel.defaults.ts
+│   │       └── whitelabel.loader.ts
+│   ├── constants/
+│   │   ├── analytics.constant.ts
+│   │   ├── dashboard.constant.ts
+│   │   ├── endpoints.constant.ts
+│   │   ├── environnements.constant.ts
+│   │   ├── icons-presets.constant.ts
+│   │   ├── icons.constant.ts
+│   │   ├── images.constant.ts
+│   │   ├── pathname.constant.ts
+│   │   ├── pathname.ts
+│   │   ├── querykey.ts
+│   │   ├── regex.ts
+│   │   ├── regexp.constant.ts
+│   │   └── scoring.constant.ts
+│   ├── controllers/
+│   │   ├── cashback-request.controller.ts
+│   │   ├── employee.controller.ts
+│   │   ├── message.ts
+│   │   └── withdraw-method.controller.ts
+│   ├── data/
+│   │   ├── dashboard.data.ts
+│   │   └── notifications.data.ts
+│   ├── dialog_system/
+│   │   ├── components/
+│   │   │   ├── Dialog.tsx
+│   │   │   ├── DialogContent.tsx
+│   │   │   ├── DialogIcon.tsx
+│   │   │   └── DialogProvider.tsx
+│   │   ├── examples/
+│   │   │   └── DialogExamples.tsx
+│   │   ├── hooks/
+│   │   │   └── useDialog.ts
+│   │   ├── services/
+│   │   │   └── dialog.service.ts
+│   │   ├── store/
+│   │   │   └── useDialog.store.ts
+│   │   ├── types/
+│   │   │   └── dialog.types.ts
+│   │   ├── .structure
+│   │   └── index.ts
+│   ├── enums/
+│   │   ├── analytics.ts
+│   │   ├── button-aspect.enum.ts
+│   │   ├── civility.enum.ts
+│   │   ├── fees.ts
+│   │   ├── gender.enum.ts
+│   │   ├── icons.enum.ts
+│   │   ├── last_action.enum.ts
+│   │   ├── lease.enum.ts
+│   │   ├── legal-form.ts
+│   │   ├── measure.ts
+│   │   ├── otp-verification.enum.ts
+│   │   ├── periodicity.ts
+│   │   ├── position.enum.ts
+│   │   ├── size.enum.ts
+│   │   ├── user.enum.ts
+│   │   └── users-type.ts
+│   ├── features/
+│   │   ├── estate-select/
+│   │   │   ├── components/
+│   │   │   │   └── EstateSelect.tsx
+│   │   │   ├── controller/
+│   │   │   │   └── estateSelect.controller.ts
+│   │   │   ├── hooks/
+│   │   │   │   └── useEstateList.ts
+│   │   │   ├── store/
+│   │   │   │   └── useEstateSelect.store.ts
+│   │   │   └── index.ts
+│   │   └── owner-select/
+│   │       ├── components/
+│   │       │   ├── OwnerSelect.tsx
+│   │       │   ├── OwnerSelectButton.tsx
+│   │       │   ├── OwnerSelectDropdown.tsx
+│   │       │   └── OwnerSelectItem.tsx
+│   │       ├── controller/
+│   │       │   └── ownerSelect.controller.ts
+│   │       ├── hooks/
+│   │       │   └── useOwnerList.ts
+│   │       ├── store/
+│   │       │   └── useOwnerSelect.store.ts
+│   │       └── index.ts
+│   ├── guards/
+│   │   ├── AuthGuard.tsx
+│   │   └── ForfaitGuard.tsx
+│   ├── hooks/
+│   │   ├── DataAppProvider.tsx
+│   │   ├── handleCheckOusideClick.tsx
+│   │   ├── QRCodeWithLogo.tsx
+│   │   ├── useAuthAction.tsx
+│   │   ├── useCashbackRequestManager.ts
+│   │   ├── useCheckOutsideClick.tsx
+│   │   ├── useCreateEmployee.ts
+│   │   ├── useCustomRouter.tsx
+│   │   ├── useDashboard.ts
+│   │   ├── useDataProviderManager.ts
+│   │   ├── useDebounce.ts
+│   │   ├── useExtractColor.ts
+│   │   ├── useFormField.ts
+│   │   ├── useHasUpload.ts
+│   │   ├── useLocaleLink.ts
+│   │   ├── useMediaQuery.ts
+│   │   ├── useScrollTo.tsx
+│   │   ├── useSessionValidator.ts
+│   │   ├── useSidebarVisibility.ts
+│   │   ├── useValidator.ts
+│   │   └── useWhitelabel.ts
+│   ├── interfaces/
+│   │   └── axiosErrorCustom.ts
+│   ├── lib/
+│   │   └── utils.ts
+│   ├── modal_system/
+│   │   ├── components/
+│   │   │   ├── index.ts
+│   │   │   ├── Modal.tsx
+│   │   │   ├── ModalContent.tsx
+│   │   │   ├── ModalFooter.tsx
+│   │   │   ├── ModalHeader.tsx
+│   │   │   ├── ModalProvider.tsx
+│   │   │   └── ModalStepper.tsx
+│   │   ├── context/
+│   │   │   └── ModalInstanceContext.tsx
+│   │   ├── entities/
+│   │   │   ├── accounting/
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── AccountingStep1Estate.tsx
+│   │   │   │   │   ├── AccountingStep2TypeAndLocative.tsx
+│   │   │   │   │   └── AccountingStep3InvoiceDetails.tsx
+│   │   │   │   └── AccountingInvoiceCreateModal.tsx
+│   │   │   ├── announcement/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── AnnouncementEstateStep.tsx
+│   │   │   │   │   ├── AnnouncementLocativeStep.tsx
+│   │   │   │   │   └── AnnouncementModeStep.tsx
+│   │   │   │   └── AnnouncementCreateModal.tsx
+│   │   │   ├── booking/
+│   │   │   │   ├── AcceptBookingModal.tsx
+│   │   │   │   ├── ConfirmCashPaymentModal.tsx
+│   │   │   │   └── RefuseBookingModal.tsx
+│   │   │   ├── candidate/
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── CandidateStep1Estate.tsx
+│   │   │   │   │   ├── CandidateStep2Locative.tsx
+│   │   │   │   │   ├── CandidateStep3CandidateType.tsx
+│   │   │   │   │   ├── CandidateStep4CandidateInfo.tsx
+│   │   │   │   │   ├── CandidateStep4CandidateInfoCompany.tsx
+│   │   │   │   │   ├── CandidateStep5CompanyPosition.tsx
+│   │   │   │   │   ├── CandidateStep5DocumentsJustificatifs.tsx
+│   │   │   │   │   ├── CandidateStep6CompanyOwner.tsx
+│   │   │   │   │   └── CandidateStep7Summary.tsx
+│   │   │   │   └── CandidateCreateModal.tsx
+│   │   │   ├── finance/
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── CashbackStep1SelectOwner.tsx
+│   │   │   │   │   ├── CashbackStep2WithdrawMethod.tsx
+│   │   │   │   │   ├── CashbackStep3Amount.tsx
+│   │   │   │   │   ├── FinanceStep1SelectInvoice.tsx
+│   │   │   │   │   ├── FinanceStep2AmountConfirm.tsx
+│   │   │   │   │   ├── MethodEditStep2Manage.tsx
+│   │   │   │   │   ├── WithdrawStep1SelectType.tsx
+│   │   │   │   │   ├── WithdrawStep2MobileMoney.tsx
+│   │   │   │   │   ├── WithdrawStep2SelectBank.tsx
+│   │   │   │   │   └── WithdrawStep3BankDetails.tsx
+│   │   │   │   ├── CancelCashbackRequestModal.tsx
+│   │   │   │   ├── FinanceCashbackCreateModal.tsx
+│   │   │   │   ├── FinanceCollectPaymentModal.tsx
+│   │   │   │   ├── FinanceMethodEditModal.tsx
+│   │   │   │   ├── FinanceOwnerSelectModal.tsx
+│   │   │   │   └── FinanceWithdrawMethodCreateModal.tsx
+│   │   │   ├── org-document/
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── OrgDocumentStepDetails.tsx
+│   │   │   │   │   ├── OrgDocumentStepFiles.tsx
+│   │   │   │   │   ├── OrgDocumentStepSummary.tsx
+│   │   │   │   │   └── OrgDocumentStepType.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── OrgDocumentCreateModal.tsx
+│   │   │   │   └── RejectDocumentModal.tsx
+│   │   │   ├── pool/
+│   │   │   │   ├── index.ts
+│   │   │   │   └── PoolCreateModal.tsx
+│   │   │   ├── process-category/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── StepCard.tsx
+│   │   │   │   │   ├── StepEmployeeSelect.tsx
+│   │   │   │   │   ├── StepStatusSelect.tsx
+│   │   │   │   │   └── ValidatorOrderList.tsx
+│   │   │   │   ├── steps/
+│   │   │   │   │   ├── ProcessCategoryStepConfig.tsx
+│   │   │   │   │   ├── ProcessCategoryStepDeliverables.tsx
+│   │   │   │   │   ├── ProcessCategoryStepInfo.tsx
+│   │   │   │   │   ├── ProcessCategoryStepSummary.tsx
+│   │   │   │   │   └── ProcessCategoryStepValidation.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── ProcessCategoryCreateModal.tsx
+│   │   │   │   ├── ProcessStatusManageModal.tsx
+│   │   │   │   └── ValidationStepCreateModal.tsx
+│   │   │   ├── visit/
+│   │   │   │   ├── CancelVisitModal.tsx
+│   │   │   │   ├── RefuseVisitModal.tsx
+│   │   │   │   └── StartVisitModal.tsx
+│   │   │   ├── AcceptRentalModal.tsx
+│   │   │   ├── CancellationRentalModal.tsx
+│   │   │   ├── CloseProspectModal.tsx
+│   │   │   ├── EmployeeCreateModal.tsx
+│   │   │   ├── EmployeeModal.tsx
+│   │   │   ├── EmployeeViewModal.tsx
+│   │   │   ├── index.ts
+│   │   │   ├── PermissionValidationModal.tsx
+│   │   │   ├── ProspectContactCreateModal.tsx
+│   │   │   ├── ProspectCreateModal.tsx
+│   │   │   ├── ProspectDocumentAddModal.tsx
+│   │   │   ├── ProspectEmployeeAddModal.tsx
+│   │   │   ├── RejectRentalModal.tsx
+│   │   │   └── RentalInvoiceCreateModal.tsx
+│   │   ├── examples/
+│   │   │   ├── ExampleModal.tsx
+│   │   │   ├── index.ts
+│   │   │   ├── ModalExamples.tsx
+│   │   │   ├── ModalExamplesComplete.tsx
+│   │   │   └── ModalStackingAdvanced.tsx
+│   │   ├── hooks/
+│   │   │   ├── useModal.ts
+│   │   │   ├── useModalData.test.tsx
+│   │   │   ├── useModalData.ts
+│   │   │   ├── useModalEvent.ts
+│   │   │   ├── useModalForm.ts
+│   │   │   └── useModalURL.ts
+│   │   ├── services/
+│   │   │   ├── modal.service.ts
+│   │   │   ├── modalEvents.ts
+│   │   │   └── modalRenderer.tsx
+│   │   ├── store/
+│   │   │   └── useModal.store.ts
+│   │   ├── types/
+│   │   │   └── modal.types.ts
+│   │   ├── .structure
+│   │   └── index.ts
+│   ├── services/
+│   │   ├── api/
+│   │   │   ├── api.request.service.ts
+│   │   │   ├── dialog-progress.future.ts
+│   │   │   ├── index.ts
+│   │   │   └── request-cancellation.service.ts
+│   │   ├── cashback-request/
+│   │   │   └── cashback-request.service.ts
+│   │   ├── common/
+│   │   │   ├── settings/
+│   │   │   │   └── reference-data.service.ts
+│   │   │   └── users/
+│   │   │       └── users.service.ts
+│   │   ├── http/
+│   │   │   ├── middlewares/
+│   │   │   │   ├── anah-cors-redirect.middleware.ts
+│   │   │   │   ├── auth.middleware.ts
+│   │   │   │   ├── default.middleware.ts
+│   │   │   │   ├── log.middleware.ts
+│   │   │   │   └── user-data.middleware.ts
+│   │   │   ├── axios.client.ts
+│   │   │   └── index.ts
+│   │   ├── location/
+│   │   │   └── reverse-geocoding.service.ts
+│   │   ├── map/
+│   │   │   └── map-loader.service.ts
+│   │   ├── owner/
+│   │   │   └── owner.service.ts
+│   │   ├── recap/
+│   │   │   └── showRecapPrice.service.tsx
+│   │   ├── tanstack/
+│   │   │   ├── constants/
+│   │   │   │   └── query.client.ts
+│   │   │   ├── layouts/
+│   │   │   │   └── QueryProvider.tsx
+│   │   │   └── settings/
+│   │   │       └── refetch.tanstack.setting.ts
+│   │   ├── withdraw-method/
+│   │   │   └── withdraw-method.service.ts
+│   │   ├── auth.service.ts
+│   │   ├── cache.service.ts
+│   │   ├── cookie.service.ts
+│   │   ├── dashboard.service.ts
+│   │   ├── data-matcher.service.ts
+│   │   ├── dataProvider.service.ts
+│   │   ├── loaderRequest.ts
+│   │   ├── notification.service.ts
+│   │   ├── storage.service.ts
+│   │   └── whitelabel.service.ts
+│   ├── settings/
+│   │   ├── framer/
+│   │   │   ├── drawer.settings.ts
+│   │   │   ├── hamburger.settings.ts
+│   │   │   ├── index.ts
+│   │   │   ├── page.settings.ts
+│   │   │   └── sidebar.settings.ts
+│   │   └── transitions.framer.ts
+│   ├── share_system/
+│   │   ├── components/
+│   │   │   ├── Share.tsx
+│   │   │   ├── ShareContent.tsx
+│   │   │   └── ShareProvider.tsx
+│   │   ├── examples/
+│   │   │   └── ShareExample.tsx
+│   │   ├── hooks/
+│   │   │   └── useShare.ts
+│   │   ├── services/
+│   │   │   └── share.service.ts
+│   │   ├── store/
+│   │   │   └── useShare.store.ts
+│   │   ├── types/
+│   │   │   └── share.types.ts
+│   │   └── index.ts
+│   ├── sidebar_system/
+│   │   ├── components/
+│   │   │   ├── DrawerSidebar.tsx
+│   │   │   ├── index.ts
+│   │   │   ├── ResponsiveSidebar.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── SidebarContent.tsx
+│   │   │   ├── SidebarFooter.tsx
+│   │   │   ├── SidebarFooterResponsive.tsx
+│   │   │   ├── SidebarHeader.tsx
+│   │   │   ├── SidebarHeaderCompact.tsx
+│   │   │   ├── SidebarProvider.tsx
+│   │   │   ├── SidebarSection.tsx
+│   │   │   └── SidebarTabs.tsx
+│   │   ├── config/
+│   │   │   └── responsive.config.ts
+│   │   ├── entities/
+│   │   │   ├── index.ts
+│   │   │   └── OwnerSidebarWrapper.tsx
+│   │   ├── examples/
+│   │   │   ├── DrawerOverlayProtectionExample.tsx
+│   │   │   ├── ResponsiveSidebarExamples.tsx
+│   │   │   ├── SidebarExamples.tsx
+│   │   │   ├── SidebarExamplesComplete.tsx
+│   │   │   └── SidebarRegistryExamples.tsx
+│   │   ├── hooks/
+│   │   │   ├── useIsOverlayActive.ts
+│   │   │   ├── useResponsiveSidebar.ts
+│   │   │   ├── useSidebar.ts
+│   │   │   ├── useSidebarErrorHandler.ts
+│   │   │   └── useSidebarURL.ts
+│   │   ├── services/
+│   │   │   └── sidebarRenderer.tsx
+│   │   ├── store/
+│   │   │   └── useSidebar.store.ts
+│   │   ├── types/
+│   │   │   └── sidebar.types.ts
+│   │   ├── ARCHITECTURE.ts
+│   │   └── index.ts
+│   ├── stores/
+│   │   ├── last.action.store.ts
+│   │   ├── requestActionStore.ts
+│   │   ├── useAnnouncementCreationWizard.store.ts
+│   │   ├── useAuthUser.store.ts
+│   │   ├── useBackward.ts
+│   │   ├── useBreadcrumb.store.ts
+│   │   ├── useCreateEmployee.store.ts
+│   │   ├── useDataProvider.store.ts
+│   │   ├── useEstateCreationWizard.store.ts
+│   │   ├── useTableManager.store.ts
+│   │   ├── viewer.store.ts
+│   │   └── workflow.store.ts
+│   ├── toast_system/
+│   │   ├── components/
+│   │   │   ├── Toast.tsx
+│   │   │   ├── ToastContent.tsx
+│   │   │   ├── ToastIcon.tsx
+│   │   │   └── ToastProvider.tsx
+│   │   ├── examples/
+│   │   │   └── ToastExamples.tsx
+│   │   ├── hooks/
+│   │   │   └── useToast.ts
+│   │   ├── services/
+│   │   │   └── toast.service.ts
+│   │   ├── store/
+│   │   │   └── useToast.store.ts
+│   │   ├── types/
+│   │   │   └── toast.types.ts
+│   │   ├── index.ts
+│   │   └── README.md
+│   ├── types/
+│   │   ├── auth/
+│   │   │   ├── AuthUser.type.ts
+│   │   │   ├── base.user.ts
+│   │   │   ├── editable-user.ts
+│   │   │   ├── permission.enum.ts
+│   │   │   └── profile.enum.ts
+│   │   ├── packages/
+│   │   │   ├── annonceursOffersEnum.ts
+│   │   │   ├── package.type.ts
+│   │   │   └── paiement.type.ts
+│   │   ├── props/
+│   │   │   ├── inscription/
+│   │   │   │   └── step2EnumType.ts
+│   │   │   ├── loader.display.type.ts
+│   │   │   └── OffersValueType.ts
+│   │   ├── announcement.ts
+│   │   ├── announcementMarketplace.types.ts
+│   │   ├── audites.ts
+│   │   ├── booking.types.ts
+│   │   ├── broker.ts
+│   │   ├── business.ts
+│   │   ├── cashback-request.types.ts
+│   │   ├── certification.types.ts
+│   │   ├── company.ts
+│   │   ├── contacts.ts
+│   │   ├── country.ts
+│   │   ├── dam.ts
+│   │   ├── dashboard.ts
+│   │   ├── document.type.ts
+│   │   ├── employee.ts
+│   │   ├── equipement.type.ts
+│   │   ├── establishment.ts
+│   │   ├── establishment.type.ts
+│   │   ├── estates.mappers.ts
+│   │   ├── estates.ts
+│   │   ├── faciliities.ts
+│   │   ├── facility.ts
+│   │   ├── geo-location.ts
+│   │   ├── google-maps.ts
+│   │   ├── identificate.ts
+│   │   ├── invoices.helpers.ts
+│   │   ├── invoices.ts
+│   │   ├── kyc.ts
+│   │   ├── last.action.type.ts
+│   │   ├── layer.ts
+│   │   ├── lifecycle.ts
+│   │   ├── lodging.ts
+│   │   ├── logger.ts
+│   │   ├── management-agreement.ts
+│   │   ├── measures.ts
+│   │   ├── media.types.ts
+│   │   ├── middleman.ts
+│   │   ├── notification.ts
+│   │   ├── notifications.ts
+│   │   ├── otp.ts
+│   │   ├── owner.ts
+│   │   ├── passwordValidType.ts
+│   │   ├── periodicity.ts
+│   │   ├── periods.ts
+│   │   ├── permissions.ts
+│   │   ├── plans.types.ts
+│   │   ├── preview-package-recap.type.ts
+│   │   ├── profile.ts
+│   │   ├── property-seekers.ts
+│   │   ├── prospect.types.ts
+│   │   ├── reference.ts
+│   │   ├── referral.types.ts
+│   │   ├── rental-application.types.ts
+│   │   ├── responses.ts
+│   │   ├── room.type.ts
+│   │   ├── services.ts
+│   │   ├── sidebar-icon.type.ts
+│   │   ├── sponsorship.ts
+│   │   ├── status-variant.ts
+│   │   ├── theme-colors.ts
+│   │   ├── unpaid-invoice.ts
+│   │   ├── user-related.ts
+│   │   ├── users.ts
+│   │   ├── ValidationListResponse.ts
+│   │   ├── values.ts
+│   │   ├── visit.types.ts
+│   │   ├── whitelabel-paths.types.ts
+│   │   ├── whitelabel.types.ts
+│   │   └── withdraw-method.ts
+│   ├── utilities/
+│   │   ├── announcements.ts
+│   │   ├── array.ts
+│   │   ├── getCivilityLabel.tsx
+│   │   ├── getFlexiblePosition.tsx
+│   │   ├── getGenderLabel.tsx
+│   │   ├── getLegalFormLabel.ts
+│   │   ├── getOverlaySizeClassNames.ts
+│   │   ├── icons.ts
+│   │   ├── importantCn.ts
+│   │   ├── keepInViewport.ts
+│   │   ├── message.tsx
+│   │   ├── periods.ts
+│   │   ├── stringable.ts
+│   │   └── strings.ts
+│   └── utils/
+│       ├── location/
+│       │   ├── geocoding.util.ts
+│       │   └── index.ts
+│       ├── announcement.utils.ts
+│       ├── checkers.ts
+│       ├── color-extraction.utils.ts
+│       ├── country.utils.ts
+│       ├── cryptographie.ts
+│       ├── date.utils.ts
+│       ├── datetime.ts
+│       ├── email.ts
+│       ├── employes.utils.ts
+│       ├── expiration-date.utils.ts
+│       ├── fees.tsx
+│       ├── file-preview.ts
+│       ├── format.utils.ts
+│       ├── formatManager.ts
+│       ├── getUrlFunction.ts
+│       ├── index.ts
+│       ├── initials.utils.ts
+│       ├── kyc.utils.ts
+│       ├── logger.ts
+│       ├── object.ts
+│       ├── periodicity.ts
+│       ├── phone-number.ts
+│       ├── phone.utils.ts
+│       ├── regex.utils.ts
+│       ├── responsive.utils.ts
+│       ├── routingObject.ts
+│       ├── status-variant.ts
+│       ├── text-size.ts
+│       ├── text.ts
+│       ├── users.ts
+│       ├── validator.ts
+│       └── withdraw-method.utils.ts
+├── src-tauri/
+│   ├── capabilities/
+│   │   └── default.json
+│   ├── icons/
+│   │   ├── 128x128.png
+│   │   ├── 128x128@2x.png
+│   │   ├── 32x32.png
+│   │   ├── icon.icns
+│   │   ├── icon.ico
+│   │   ├── icon.png
+│   │   ├── Square107x107Logo.png
+│   │   ├── Square142x142Logo.png
+│   │   ├── Square150x150Logo.png
+│   │   ├── Square284x284Logo.png
+│   │   ├── Square30x30Logo.png
+│   │   ├── Square310x310Logo.png
+│   │   ├── Square44x44Logo.png
+│   │   ├── Square71x71Logo.png
+│   │   ├── Square89x89Logo.png
+│   │   └── StoreLogo.png
+│   ├── src/
+│   │   ├── lib.rs
+│   │   └── main.rs
+│   ├── .gitignore
+│   ├── build.rs
+│   ├── Cargo.lock
+│   ├── Cargo.toml
+│   └── tauri.conf.json
+├── target/
+│   └── rust-analyzer/
+│       └── flycheck0/
+│           ├── stderr
+│           └── stdout
+├── .env
+├── .env.preprod
+├── .env.preprod.enc
+├── .env.prod
+├── .env.prod.enc
+├── .env.qa
+├── .env.qa.enc
+├── .eslintrc
+├── .gitignore
+├── .gitlab-ci.yml
+├── .npmrc
+├── .prettierrc
+├── build_android.ps1
+├── CLAUDE.md
+├── components.json
+├── deploy.preprod.bash
+├── deploy.prod.bash
+├── deploy.qa.bash
+├── docker-compose.yml
+├── Dockerfile
+├── DOCUMENTS_SECTION_MEMO.md
+├── next-env.d.ts
+├── next.config.ts
+├── ORGANISATION_SECTION_MEMO.md
+├── package.json
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── README.md
+└── tsconfig.json

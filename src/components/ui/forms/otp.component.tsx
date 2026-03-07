@@ -3,12 +3,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import Input from "./Input";
+import Logo from "@/components/Logo";
+import Buttons from "../buttons/buttons";
 
 interface OtpComponentProps {
   number?: number;
   length?: number;
   onChange?: (value: string, isValid: boolean) => void;
   onComplete?: (value: string) => void;
+  onBack?: () => void;
 }
 
 export default function OtpComponent({
@@ -16,6 +19,7 @@ export default function OtpComponent({
   length,
   onChange,
   onComplete,
+  onBack,
 }: OtpComponentProps) {
   const otpLength = Math.max(1, Math.floor(length ?? number ?? 4));
   const [digits, setDigits] = useState<string[]>(() =>
@@ -84,42 +88,47 @@ export default function OtpComponent({
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="space-y-3"
     >
-      <div className="flex items-center gap-2 sm:gap-3">
-        {Array.from({ length: otpLength }).map((_, index) => (
-          <motion.div
-            key={`otp-field-${index}`}
-            initial={{ opacity: 0, scale: 0.96, y: 4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: -2 }}
-            transition={{ duration: 0.22, delay: index * 0.03, ease: "easeOut" }}
-            whileFocus={{ scale: 1.02 }}
-            className="w-12 sm:w-14"
-          >
-            <Input
-              type="text"
-              name="otp-digit"
-              value={digits[index]}
-              onChange={(event) => updateDigits(index, event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Backspace" && !digits[index] && index > 0) {
-                  focusField(index - 1);
-                  return;
-                }
-                if (event.key === "ArrowLeft" && index > 0) {
-                  event.preventDefault();
-                  focusField(index - 1);
-                  return;
-                }
-                if (event.key === "ArrowRight" && index < otpLength - 1) {
-                  event.preventDefault();
-                  focusField(index + 1);
-                }
-              }}
-              required={true}
-              className="h-12 w-full p-0 text-center text-xl tracking-widest"
-            />
-          </motion.div>
-        ))}
+      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
+        <main className="flex flex-col row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl">
+          <div className="flex flex-col gap-8 items-center content">
+            <div className="flex flex-col items-center w-full">
+              <Logo />
+            </div>
+
+            <div className="flex gap-3">
+              {digits.map((digit, index) => (
+                <Input
+                  key={index}
+                  name="otp-digit"
+                  type="text"
+                  value={digit}
+                  onChange={(e) => updateDigits(index, e.target.value)}
+                  className="w-16 h-12 text-center text-lg text-black rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 focus:ring-1 focus:outline-none transition-colors"
+                />
+              ))}
+            </div>
+            {/* button de retour */}
+            <div className="flex gap-4 w-full">
+              <button
+                type="button"
+                className="w-full mt-4 py-4 px-2 bg-gray-200 text-black rounded-md"
+                onClick={onBack}
+              >
+                Retour
+              </button>
+
+              <Buttons
+                disabled={!isOTPStepValid}
+                onClick={() => onComplete?.(otpValue)}
+                className="w-full mt-4 py-4 px-2"
+              >
+                Vérifier
+              </Buttons>
+
+
+            </div>
+          </div>
+        </main>
       </div>
 
       <AnimatePresence mode="wait">
