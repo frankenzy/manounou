@@ -9,15 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
-import { CldUploadButton } from 'next-cloudinary';
 
-interface AnnouncementCreateFormProps {
+interface PostCreateFormProps {
    // State
    inputValue: string;
    inputBg: string;
    inputColor: string;
    showUploadImage: boolean;
-   announcementTitle: string;
+   postTitle: string;
    textareaRef: React.RefObject<HTMLTextAreaElement | null>;
    image?: UploadedImageData;
 
@@ -34,7 +33,7 @@ interface AnnouncementCreateFormProps {
    onSetIdCard: () => void;
 }
 
-export default function AnnouncementCreateForm({
+export default function PostCreateForm({
    inputValue,
    inputBg,
    inputColor,
@@ -50,7 +49,7 @@ export default function AnnouncementCreateForm({
    onSetUser,
    onSetCalendar,
    onSetIdCard,
-}: AnnouncementCreateFormProps) {
+}: PostCreateFormProps) {
    const uploadImageRef = useRef<UploadImageRef>(null);
 
    const handleLoadImage = () => {

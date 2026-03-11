@@ -20,7 +20,7 @@ async function initDatabase() {
     `);
 
     await client.query(`
-      CREATE TABLE IF NOT EXISTS announcements (
+      CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         title VARCHAR(255),

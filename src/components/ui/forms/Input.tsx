@@ -16,7 +16,8 @@ interface ComponentProps {
   pattern?: string;
   required?: boolean;
   checked?: boolean;
-  name?:string
+  name?:string;
+  maxLength?: number;
 }
 
 export default function Input({
@@ -36,6 +37,7 @@ export default function Input({
   required,
   checked,
   name,
+  maxLength,
 }: ComponentProps) {
   return (
     <input
@@ -55,6 +57,7 @@ export default function Input({
       pattern={pattern}
       required={required}
       checked={checked}
+      maxLength={maxLength}
     />
   );
 }

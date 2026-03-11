@@ -40,8 +40,8 @@ async function seedDatabase() {
 
     console.log(`✅ ${users.length} utilisateurs ajoutés`);
 
-    // Seed announcements
-    const announcements = [
+    // Seed posts
+    const posts = [
       {
         user_id: 2, // jean_parent
         title: "Recherche nounou à temps partiel",
@@ -57,15 +57,15 @@ async function seedDatabase() {
       },
     ];
 
-    for (const announcement of announcements) {
+    for (const post of posts) {
       await client.query(
-        `INSERT INTO announcements (user_id, title, description, location) 
+        `INSERT INTO posts (user_id, title, description, location) 
          VALUES ($1, $2, $3, $4)`,
         [
-          announcement.user_id,
-          announcement.title,
-          announcement.description,
-          announcement.location,
+          post.user_id,
+          post.title,
+          post.description,
+          post.location,
         ],
       );
     }

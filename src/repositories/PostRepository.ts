@@ -1,30 +1,30 @@
 import pool from "@/lib/db";
 import {
-  Announcement,
-  IAnnouncement,
-  IAnnouncementDTO,
-} from "./../models/Announcement";
+  Post,
+  IPost,
+  IPostDTO,
+} from "./../models/Post";
 
-export class AnnouncementRepository {
+export class PostRepository {
 
-  private readonly tableName = "announcements";
+  private readonly tableName = "posts";
 
-  async create(announcement: IAnnouncement): Promise<IAnnouncementDTO> {
+  async create(post: IPost): Promise<IPostDTO> {
     const result = await pool.query(
       `INSERT INTO ${this.tableName} (user_id, title, description, parent_id, location, metadata) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [
-        announcement.user_id,
-        announcement.title,
-        announcement.description,
-        announcement.parent_id,
-        announcement.location,
-        announcement.metadata ? JSON.stringify(announcement.metadata) : null,
+        post.user_id,
+        post.title,
+        post.description,
+        post.parent_id,
+        post.location,
+        post.metadata ? JSON.stringify(post.metadata) : null,
       ],
     );
-    return new Announcement(result.rows[0]).Announcement();
+    return new Post(result.rows[0]).Post();
   }
 
-  async findById(id: number): Promise<IAnnouncementDTO | null> {
+  async findById(id: number): Promise<IPostDTO | null> {
 
     const result = await pool.query(
       `SELECT
@@ -41,10 +41,10 @@ export class AnnouncementRepository {
     if (result.rows.length === 0) {
       return null;
     }
-    return new Announcement(result.rows[0]).Announcement();
+    return new Post(result.rows[0]).Post();
   }
 
-  async findAll(limit?: number, offset?: number): Promise<IAnnouncementDTO[]> {
+  async findAll(limit?: number, offset?: number): Promise<IPostDTO[]> {
     console.log("🔍 Repository: Requête SELECT avec pagination et count des commentaires...");
 
     let query = `
@@ -72,15 +72,15 @@ export class AnnouncementRepository {
 
     const result = await pool.query(query, params);
 
-    return result.rows.map((row) => new Announcement(row).Announcement());
+    return result.rows.map((row) => new Post(row).Post());
   }
 
   async update(
     id: number,
-    announcement: Partial<IAnnouncement>,
-  ): Promise<IAnnouncementDTO | null> {
-    const fields = Object.keys(announcement);
-    const values = Object.values(announcement);
+    post: Partial<IPost>,
+  ): Promise<IPostDTO | null> {
+    const fields = Object.keys(post);
+    const values = Object.values(post);
     const setString = fields
       .map((field, index) => `${field} = $${index + 1}`)
       .join(", ");
@@ -93,17 +93,17 @@ export class AnnouncementRepository {
     if (result.rows.length === 0) {
       return null;
     }
-    return new Announcement(result.rows[0]).Announcement();
+    return new Post(result.rows[0]).Post();
   }
 
   async delete(id: number): Promise<boolean> {
     await pool.query(`DELETE FROM ${this.tableName} WHERE id = $1`, [id]);
     return this.findAll().then(
-      (announcements) => !announcements.some((a) => a.id === id),
+      (posts) => !posts.some((a) => a.id === id),
     );
   }
 
-  async findByUserId(user_id: string): Promise<IAnnouncementDTO[]> {
+  async findByUserId(user_id: string): Promise<IPostDTO[]> {
     const result = await pool.query(
       `SELECT
          a.*, 
@@ -117,10 +117,10 @@ export class AnnouncementRepository {
       ORDER BY a.created_at DESC, a.id DESC`,
       [user_id],
     );
-    return result.rows.map((row) => new Announcement(row).Announcement());
+    return result.rows.map((row) => new Post(row).Post());
   }
 
-  async findByLocation(location: string): Promise<IAnnouncementDTO[]> {
+  async findByLocation(location: string): Promise<IPostDTO[]> {
     const result = await pool.query(
       `SELECT
          a.*, 
@@ -134,10 +134,10 @@ export class AnnouncementRepository {
       ORDER BY a.created_at DESC, a.id DESC`,
       [location],
     );
-    return result.rows.map((row) => new Announcement(row).Announcement());
+    return result.rows.map((row) => new Post(row).Post());
   }
 
-  async search(query: string): Promise<IAnnouncementDTO[]> {
+  async search(query: string): Promise<IPostDTO[]> {
     const result = await pool.query(
       `SELECT
          a.*, 
@@ -151,6 +151,6 @@ export class AnnouncementRepository {
       ORDER BY a.created_at DESC, a.id DESC`,
       [`%${query}%`],
     );
-    return result.rows.map((row) => new Announcement(row).Announcement());
+    return result.rows.map((row) => new Post(row).Post());
   }
 }

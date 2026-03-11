@@ -1,29 +1,29 @@
 "use client";
 
 import Header from "@/components/header";
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Layout from "../../layout";
 
-export default function AnnouncementDetailPage() {
+export default function PostDetailPage() {
   const params = useParams();
   const id = params?.id as string;
-  const [announcement, setAnnouncement] = useState<IAnnouncementDTO | null>(
+  const [post, setPost] = useState<IPostDTO | null>(
     null,
   );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAnnouncementDetails = async () => {
+    const fetchPostDetails = async () => {
       if (id) {
         setIsLoading(true);
         try {
-          const response = await fetch(`/api/announcements/${id}`);
+          const response = await fetch(`/api/posts/${id}`);
           const data = await response.json();
 
           if (data.success) {
-            setAnnouncement(data.data);
+            setPost(data.data);
           } else {
             console.error(
               "Erreur lors de la récupération de l'annonce:",
@@ -38,7 +38,7 @@ export default function AnnouncementDetailPage() {
       }
     };
 
-    fetchAnnouncementDetails();
+    fetchPostDetails();
   }, [id]);
 
   if (isLoading) {
@@ -52,7 +52,7 @@ export default function AnnouncementDetailPage() {
     );
   }
 
-  if (!announcement) {
+  if (!post) {
     return (
       <Layout>
         <Header />
@@ -63,7 +63,7 @@ export default function AnnouncementDetailPage() {
     );
   }
 
-  const metadata = announcement.metadata as
+  const metadata = post.metadata as
     | {
       background?: string;
       backgroundColor?: string;
@@ -83,13 +83,13 @@ export default function AnnouncementDetailPage() {
             <h1
               className={`text-4xl font-bold mb-4 ${metadata?.backgroundColor ? "text-white" : "text-gray-900"}`}
             >
-              {announcement.title}
+              {post.title}
             </h1>
 
             <div
               className={`text-lg mb-6 ${metadata?.backgroundColor ? "text-white text-opacity-90" : "text-gray-700"}`}
             >
-              {announcement.description}
+              {post.description}
             </div>
 
             <div
@@ -98,14 +98,14 @@ export default function AnnouncementDetailPage() {
               <p
                 className={`text-sm ${metadata?.backgroundColor ? "text-white text-opacity-80" : "text-gray-600"}`}
               >
-                <strong>Localisation:</strong> {announcement.location}
+                <strong>Localisation:</strong> {post.location}
               </p>
-              {announcement.created_at && (
+              {post.created_at && (
                 <p
                   className={`text-sm ${metadata?.backgroundColor ? "text-white text-opacity-80" : "text-gray-600"} mt-2`}
                 >
                   <strong>Publié le:</strong>{" "}
-                  {new Date(announcement.created_at).toLocaleDateString(
+                  {new Date(post.created_at).toLocaleDateString(
                     "fr-FR",
                   )}
                 </p>

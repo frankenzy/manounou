@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { signToken } from "@/lib/jwt";
 
 interface RegisterBody {
    email?: string;
    password?: string;
    firstName?: string;
    lastName?: string;
+   otp?: string;
 }
 
 function isValidEmail(email: string): boolean {
@@ -22,10 +22,11 @@ export async function POST(request: Request) {
       const password = body.password;
       const firstName = body.firstName?.trim() || null;
       const lastName = body.lastName?.trim() || null;
+      const otp = body.otp;
 
-      if (!email || !password) {
+      if (!email || !password || !otp) {
          return NextResponse.json(
-            { success: false, message: "Email et mot de passe sont requis" },
+            { success: false, message: "Email, mot de passe et OTP sont requis" },
             { status: 400 },
          );
       }
@@ -56,26 +57,40 @@ export async function POST(request: Request) {
          );
       }
 
+      const verification = await prisma.otpVerification.findUnique({
+         where: { email },
+      });
+
+      if (!verification || verification.otp !== otp || verification.expiresAt < new Date()) {
+         return NextResponse.json(
+            { success: false, message: "OTP Invalide ou expiré" },
+            { status: 400 }
+         );
+      }
+
       const passwordHash = await bcrypt.hash(password, 10);
+      const createData: any = {
+         email,
+         password: passwordHash,
+      };
+
+      if (firstName) createData.firstName = firstName;
+      if (lastName) createData.lastName = lastName;
+
       const user = await prisma.user.create({
-         data: {
-            email,
-            passwordHash,
-            firstName,
-            lastName,
-         },
+         data: createData,
          select: {
             id: true,
             email: true,
-            firstName: true,
-            lastName: true,
-            globalRole: true,
+            password: true,
+            role: true,
             createdAt: true,
          },
       });
 
-      const token = signToken(user.id, user.email);
-      const response = NextResponse.json(
+      await prisma.otpVerification.delete({ where: { email } });
+
+      return NextResponse.json(
          {
             success: true,
             message: "Compte créé avec succès",
@@ -83,16 +98,6 @@ export async function POST(request: Request) {
          },
          { status: 201 },
       );
-
-      response.cookies.set("authToken", token, {
-         httpOnly: true,
-         secure: process.env.NODE_ENV === "production",
-         sameSite: "lax",
-         path: "/",
-         maxAge: 24 * 60 * 60,
-      });
-
-      return response;
    } catch (error) {
       console.error("Register error:", error);
       return NextResponse.json(

@@ -1,12 +1,12 @@
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 import { useState } from "react";
-import { AnnouncementFormData } from "./types";
+import { PostFormData } from "./types";
 
-export const useAnnouncementSubmit = () => {
+export const usePostSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createAnnouncement = async (formData: AnnouncementFormData) => {
+  const createPost = async (formData: PostFormData) => {
     setIsSubmitting(true);
     setError(null);
 
@@ -45,12 +45,12 @@ export const useAnnouncementSubmit = () => {
     }
   };
 
-  const updateAnnouncement = async (
-    announcementId: number | string | undefined,
-    formData: AnnouncementFormData,
-    originalAnnouncement?: IAnnouncementDTO
+  const updatePost = async (
+    postId: number | string | undefined,
+    formData: PostFormData,
+    originalPost?: IPostDTO
   ) => {
-    if (!announcementId) {
+    if (!postId) {
       const errorMessage = "ID de l'annonce manquant";
       setError(errorMessage);
       return { success: false, error: errorMessage };
@@ -60,16 +60,16 @@ export const useAnnouncementSubmit = () => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/announcements/${announcementId}`, {
+      const response = await fetch(`/api/posts/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: originalAnnouncement?.user_id || "1",
+          user_id: originalPost?.user_id || "1",
           title: formData.title,
           description: formData.description,
-          location: formData.metadata.location || originalAnnouncement?.location || "Non spécifié",
+          location: formData.metadata.location || originalPost?.location || "Non spécifié",
           metadata: formData.metadata,
         }),
       });
@@ -97,7 +97,7 @@ export const useAnnouncementSubmit = () => {
   return {
     isSubmitting,
     error,
-    createAnnouncement,
-    updateAnnouncement,
+    createPost,
+    updatePost,
   };
 };

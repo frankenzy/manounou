@@ -1,4 +1,4 @@
-import { IAnnouncementDTO } from "./Announcement";
+import { IPostDTO } from "./Post";
 
 export interface IRepost {
    id: number;
@@ -19,7 +19,7 @@ export interface RepostProps {
    date: Date | string | number;
    announceId: number | string;
    alreadyReposted: boolean;
-   annonce: IAnnouncementDTO;
+   annonce: IPostDTO;
    isOpen: boolean;
    onClose: () => void;
    onSuccess?: () => void;

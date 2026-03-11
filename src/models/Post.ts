@@ -1,4 +1,4 @@
-export interface IAnnouncement {
+export interface IPost {
   id?: number;
   user_id: string;
   title: string;
@@ -12,7 +12,7 @@ export interface IAnnouncement {
   repostCount: number;
 }
 
-export interface IAnnouncementDTO {
+export interface IPostDTO {
   id?: number;
   user_id: string;
   title: string;
@@ -27,7 +27,7 @@ export interface IAnnouncementDTO {
   repostCount: number;
 }
 
-export class Announcement implements IAnnouncement {
+export class Post implements IPost {
   id?: number;
   user_id: string;
   title: string;
@@ -41,7 +41,7 @@ export class Announcement implements IAnnouncement {
   repost: string;
   repostCount: number;
 
-  constructor(data: IAnnouncement & { commentCount?: number | string }) {
+  constructor(data: IPost & { commentCount?: number | string }) {
     this.id = data.id;
     this.user_id = data.user_id;
     this.title = data.title;
@@ -56,7 +56,7 @@ export class Announcement implements IAnnouncement {
     this.commentCount = typeof data.commentCount === 'string' ? parseInt(data.commentCount, 10) : data.commentCount;
   }
 
-  Announcement(): IAnnouncementDTO {
+  Post(): IPostDTO {
     return {
       id: this.id,
       user_id: this.user_id,

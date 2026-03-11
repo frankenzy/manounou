@@ -125,7 +125,7 @@ export function useComments(announceId: number | undefined): UseCommentsResult {
 
 
 
-   // count comments for the current announcement
+   // count comments for the current post
    const countComments = useCallback(async (): Promise<number> => {
       if (!announceId) return 0;
 

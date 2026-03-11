@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// const PROTECTED_PATHS = ["/manounou", "/user", "/app", "/dashboard"];
-const PROTECTED_PATHS = ["/user", "/app", "/dashboard"];
+const PROTECTED_PATHS = ["/manounou", "/user", "/app", "/dashboard"];
+// const PROTECTED_PATHS = ["/user", "/app", "/dashboard"];
 
 function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PATHS.some(

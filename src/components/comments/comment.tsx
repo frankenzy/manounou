@@ -1,12 +1,12 @@
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 import { useState } from "react";
 import { HeartIcon, UserCircle } from "lucide-react";
 import { useComments } from "@/hooks/useComments";
-import AnnounceSkeleton from "../Announcement/AnnounceSkeleton";
+import AnnounceSkeleton from "../Post/AnnounceSkeleton";
 import { CommentTime } from "./CommentTime";
 
 interface CommentProps {
-   annonce: IAnnouncementDTO;
+   annonce: IPostDTO;
    isOpen: boolean;
    onClose: () => void;
 }

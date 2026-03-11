@@ -3,27 +3,27 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
-import AnnouncementForm from "./AnnouncementCreateForm";
-import { AnnouncementModalProps } from "./types";
-import { useAnnouncementForm } from "./useAnnouncementForm";
-import { useAnnouncementSubmit } from "./useAnnouncementSubmit";
+import PostForm from "./PostCreateForm";
+import { PostModalProps } from "./types";
+import { usePostForm } from "./usePostForm";
+import { usePostSubmit } from "./usePostSubmit";
 import ModalV2 from "../modals/Modal_V2";
 import { AnimatePresence, motion } from "framer-motion";
 import { slideHorizontal, springs } from "../motion";
 
-export default function AnnouncementModal({
+export default function PostModal({
    isOpen,
    onClose,
    onSuccess,
-   announcement,
+   post,
    mode,
-}: AnnouncementModalProps) {
-   const isEditMode = mode === "edit" || !!announcement;
+}: PostModalProps) {
+   const isEditMode = mode === "edit" || !!post;
 
    const [openSession, setOpenSession] = useState(0);
-   const formLogic = useAnnouncementForm(announcement, isOpen);
+   const formLogic = usePostForm(post, isOpen);
 
-   const { isSubmitting, error, createAnnouncement, updateAnnouncement } = useAnnouncementSubmit();
+   const { isSubmitting, error, createPost, updatePost } = usePostSubmit();
 
 
    useEffect(() => {
@@ -48,9 +48,9 @@ export default function AnnouncementModal({
 
       let result;
       if (isEditMode) {
-         result = await updateAnnouncement(announcement?.id, formData, announcement);
+         result = await updatePost(post?.id, formData, post);
       } else {
-         result = await createAnnouncement(formData);
+         result = await createPost(formData);
       }
       if (result && result.success !== false && !result.error) {
          handleCloseModal();
@@ -86,7 +86,7 @@ export default function AnnouncementModal({
 
    return (
       <ModalV2 isOpen={isOpen} onClose={handleCloseModal} className="my-modal">
-         <div className="p-6" key={`announcement-modal-session-${openSession}`}>
+         <div className="p-6" key={`post-modal-session-${openSession}`}>
             <div className="modalHeader flex items-center justify-between">
                <div className="void"></div>
                <h2 className="text-[clamp(1rem,2vw,2rem)] font-bold mb-4">
@@ -136,16 +136,16 @@ export default function AnnouncementModal({
                   key={tabs}
                   {...slideHorizontal(tabs === "job-seeker" ? 1 : -1)}
                >
-                  <AnnouncementForm
+                  <PostForm
                      inputValue={formLogic.inputValue}
                      inputBg={formLogic.inputBg}
                      inputColor={formLogic.inputColor}
                      showUploadImage={formLogic.showUploadImage}
-                     announcementTitle={formLogic.announcementTitle}
+                     postTitle={formLogic.postTitle}
                      image={formLogic.image}
                      textareaRef={formLogic.textareaRef}
                      onInput={formLogic.handleInput}
-                     onTitleChange={formLogic.setAnnouncementTitle}
+                     onTitleChange={formLogic.setPostTitle}
                      onColorSelect={formLogic.handleInputBg}
                      onResetStyles={formLogic.resetStyles}
                      onLoadImage={formLogic.handleLoadingImage}

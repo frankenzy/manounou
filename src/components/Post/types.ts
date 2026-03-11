@@ -1,4 +1,4 @@
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 
 export interface IMetadata {
   fontSize: string;
@@ -32,17 +32,17 @@ export interface IMetadata {
   updatedAt: string;
 }
 
-export interface AnnouncementFormData {
+export interface PostFormData {
   title: string;
   description: string;
   metadata: IMetadata;
 }
 
-export interface AnnouncementModalProps {
+export interface PostModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
-  announcement?: IAnnouncementDTO;
+  post?: IPostDTO;
   mode?: "create" | "edit";
 }
 

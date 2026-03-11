@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostProps) {
-   const announcementImage = typeof annonce.metadata?.image === "string" ? annonce.metadata.image : undefined;
+   const postImage = typeof annonce.metadata?.image === "string" ? annonce.metadata.image : undefined;
 
    const handleCloseModal = () => {
       onClose();
@@ -97,9 +97,9 @@ export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostPr
                      </div>
                   </div>
                   <>
-                     {announcementImage && (
+                     {postImage && (
                         <Image
-                           src={announcementImage}
+                           src={postImage}
                            alt="Annonce image"
                            className="w-24 h-24 object-cover rounded-xl flex-shrink-0 shadow-sm"
                         />

@@ -1,7 +1,7 @@
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 import { UploadedImageData } from "@/components/uploadImage";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnnouncementFormData, IMetadata, LENGTH_LIMIT } from "./types";
+import { PostFormData, IMetadata, LENGTH_LIMIT } from "./types";
 
 const getInitialMetadata = (): IMetadata => ({
   fontSize: "",
@@ -35,7 +35,7 @@ const getInitialMetadata = (): IMetadata => ({
   updatedAt: "",
 });
 
-export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: boolean) => {
+export const usePostForm = (post?: IPostDTO, isOpen?: boolean) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [inputValue, setInputValue] = useState("");
@@ -43,7 +43,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
   const [inputColor, setInputColor] = useState("");
   const [lastSelectedColor, setLastSelectedColor] = useState("");
   const [showUploadImage, setShowUploadImage] = useState(false);
-  const [announcementTitle, setAnnouncementTitle] = useState("");
+  const [postTitle, setPostTitle] = useState("");
 
   const [metadata, setMetadata] = useState<IMetadata>(getInitialMetadata());
 
@@ -102,7 +102,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
     setInputColor("text-black");
     setLastSelectedColor("");
     setInputValue("");
-    setAnnouncementTitle("");
+    setPostTitle("");
     setShowUploadImage(false);
     setMetadata(getInitialMetadata());
 
@@ -117,23 +117,23 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
       return;
     }
 
-    if (!announcement) {
+    if (!post) {
       resetForm();
       return;
     }
 
-    const announcementMetadata = (announcement.metadata || {}) as Partial<IMetadata>;
+    const postMetadata = (post.metadata || {}) as Partial<IMetadata>;
     const mergedMetadata: IMetadata = {
       ...getInitialMetadata(),
-      ...announcementMetadata,
-      tags: Array.isArray(announcementMetadata.tags) ? announcementMetadata.tags : [],
-      attachments: Array.isArray(announcementMetadata.attachments)
-        ? announcementMetadata.attachments
+      ...postMetadata,
+      tags: Array.isArray(postMetadata.tags) ? postMetadata.tags : [],
+      attachments: Array.isArray(postMetadata.attachments)
+        ? postMetadata.attachments
         : [],
     };
 
-    setAnnouncementTitle(announcement.title || "");
-    setInputValue(announcement.description || "");
+    setPostTitle(post.title || "");
+    setInputValue(post.description || "");
     setMetadata(mergedMetadata);
     setShowUploadImage(Boolean(mergedMetadata.image));
 
@@ -149,7 +149,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
       setInputColor("text-black");
       setLastSelectedColor("");
     }
-  }, [announcement, isOpen, resetForm]);
+  }, [post, isOpen, resetForm]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -209,8 +209,8 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
   };
 
   // Récupérer les données du formulaire
-  const getFormData = (): AnnouncementFormData => ({
-    title: announcementTitle || "Nouvelle annonce",
+  const getFormData = (): PostFormData => ({
+    title: postTitle || "Nouvelle annonce",
     description: inputValue,
     metadata,
   });
@@ -224,7 +224,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
     inputBg,
     inputColor,
     showUploadImage,
-    announcementTitle,
+    postTitle,
     metadata,
     image: metadata.image
       ? {
@@ -234,7 +234,7 @@ export const useAnnouncementForm = (announcement?: IAnnouncementDTO, isOpen?: bo
       : undefined,
 
     // Setters
-    setAnnouncementTitle,
+    setPostTitle,
 
     // Handlers
     handleInput,

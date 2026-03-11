@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 
-const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingAnnouncement }: { isOpen: boolean; onClose: () => void; onConfirm: () => void; isDeletingAnnouncement: boolean }) => {
+const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingPost }: { isOpen: boolean; onClose: () => void; onConfirm: () => void; isDeletingPost: boolean }) => {
    return (
 
       <>
@@ -8,13 +8,13 @@ const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingAnnouncement }: { i
             className={`fixed inset-0 z-[60] flex items-center justify-center px-4 transition-all duration-200 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="delete-announcement-title"
-            aria-describedby="delete-announcement-description"
+            aria-labelledby="delete-post-title"
+            aria-describedby="delete-post-description"
          >
             <button
                type="button"
                aria-label="Fermer la confirmation"
-               disabled={isDeletingAnnouncement}
+               disabled={isDeletingPost}
                onClick={onClose}
                className={`absolute inset-0 bg-black/35 backdrop-blur-sm transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
             />
@@ -26,10 +26,10 @@ const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingAnnouncement }: { i
                   <Trash2 className="h-6 w-6" />
                </div>
 
-               <h3 id="delete-announcement-title" className="text-center text-lg font-semibold text-gray-900">
+               <h3 id="delete-post-title" className="text-center text-lg font-semibold text-gray-900">
                   Supprimer cette annonce ?
                </h3>
-               <p id="delete-announcement-description" className="mt-2 text-center text-sm text-gray-600">
+               <p id="delete-post-description" className="mt-2 text-center text-sm text-gray-600">
                   Cette action est définitive et ne peut pas être annulée.
                </p>
 
@@ -37,7 +37,7 @@ const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingAnnouncement }: { i
                   <button
                      type="button"
                      onClick={onClose}
-                     disabled={isDeletingAnnouncement}
+                     disabled={isDeletingPost}
                      className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                      Annuler
@@ -45,10 +45,10 @@ const DeleteModal = ({ isOpen, onClose, onConfirm, isDeletingAnnouncement }: { i
                   <button
                      type="button"
                      onClick={onConfirm}
-                     disabled={isDeletingAnnouncement}
+                     disabled={isDeletingPost}
                      className="flex-1 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                     {isDeletingAnnouncement ? "Suppression..." : "Supprimer"}
+                     {isDeletingPost ? "Suppression..." : "Supprimer"}
                   </button>
                </div>
             </div>

@@ -37,7 +37,7 @@ export interface ValidationResult {
    errors: string[];
 }
 
-export class AnnouncementValidator {
+export class PostValidator {
    static validate(
       title: string,
       content: string,

@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { AnnouncementModal } from "@/components/Announcement";
-import AnnounceSkeleton from "@/components/Announcement/AnnounceSkeleton";
+import { PostModal } from "@/components/Post";
+import AnnounceSkeleton from "@/components/Post/AnnounceSkeleton";
 import { StaggerItem, StaggerList } from "@/components/premium/motion/StaggerList";
 import Comment from "@/components/comments/comment";
-import { IAnnouncementDTO } from "@/models/Announcement";
+import { IPostDTO } from "@/models/Post";
 import { IRepost } from "@/models/Repost";
 import { RelativeTime } from "@/components/RelativeTime";
 import {
@@ -51,17 +51,17 @@ const enum NavTabs {
 
 
 export default function BlueskyLayout() {
-  type FeedAnnouncement = IAnnouncementDTO & {
+  type FeedPost = IPostDTO & {
     feedId: string;
-    feedType: "announcement" | "repost";
+    feedType: "post" | "repost";
     repostText?: string;
     repostAuthorId?: number;
     feedTimestamp: number;
   };
 
-  const [annonces, setAnnonces] = useState<FeedAnnouncement[]>([]);
+  const [annonces, setAnnonces] = useState<FeedPost[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState<IAnnouncementDTO | undefined>(undefined);
+  const [selectedPost, setSelectedPost] = useState<IPostDTO | undefined>(undefined);
   const [activeNavTab, setActiveNavTab] = useState<NavTabs>(NavTabs.Annonces);
   const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [tabs, setTabs] = useState<'job-seeker' | 'employer'>('job-seeker');
@@ -71,17 +71,17 @@ export default function BlueskyLayout() {
   const [repost, setRepost] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | number | null>(null);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
-  const [isDeletingAnnouncement, setIsDeletingAnnouncement] = useState(false);
+  const [isDeletingPost, setIsDeletingPost] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showOnlyReposts, setShowOnlyReposts] = useState(false);
   const [sortMode, setSortMode] = useState<"recent" | "engaged">("recent");
 
-  const handleOpenComment = (announcementId: string | number) => {
-    if (openCommentId === announcementId) {
+  const handleOpenComment = (postId: string | number) => {
+    if (openCommentId === postId) {
       setOpenCommentId(null);
     } else {
-      setOpenCommentId(announcementId);
+      setOpenCommentId(postId);
     }
   };
 
@@ -96,18 +96,18 @@ export default function BlueskyLayout() {
     }, 220);
   };
 
-  const openDeleteConfirmModal = (announcementId?: string | number) => {
-    if (announcementId === undefined) return;
-    setDeleteTargetId(announcementId);
+  const openDeleteConfirmModal = (postId?: string | number) => {
+    if (postId === undefined) return;
+    setDeleteTargetId(postId);
     requestAnimationFrame(() => setIsDeleteConfirmVisible(true));
   };
 
-  const confirmDeleteAnnouncement = async () => {
+  const confirmDeletePost = async () => {
     if (deleteTargetId === null) return;
 
-    setIsDeletingAnnouncement(true);
+    setIsDeletingPost(true);
     try {
-      const response = await fetch(`/api/announcements/${deleteTargetId}`, {
+      const response = await fetch(`/api/posts/${deleteTargetId}`, {
         method: "DELETE",
       });
 
@@ -115,9 +115,9 @@ export default function BlueskyLayout() {
         await fetchAnnonces();
       }
     } catch (error) {
-      console.error("Error deleting announcement:", error);
+      console.error("Error deleting post:", error);
     } finally {
-      setIsDeletingAnnouncement(false);
+      setIsDeletingPost(false);
       closeDeleteConfirmModal();
     }
   };
@@ -125,14 +125,14 @@ export default function BlueskyLayout() {
   const fetchAnnonces = useCallback(async () => {
     try {
       const [announceResponse, repostResponse] = await Promise.all([
-        fetch("/api/announcements"),
+        fetch("/api/posts"),
         fetch("/api/repost"),
       ]);
 
       const announcePayload = await announceResponse.json();
       const repostPayload = await repostResponse.json();
 
-      const announcements: IAnnouncementDTO[] = Array.isArray(announcePayload)
+      const posts: IPostDTO[] = Array.isArray(announcePayload)
         ? announcePayload
         : Array.isArray(announcePayload?.data)
           ? announcePayload.data
@@ -151,42 +151,42 @@ export default function BlueskyLayout() {
         return Number.isNaN(time) ? 0 : time;
       };
 
-      const announcementsById = new Map<number, IAnnouncementDTO>();
-      announcements.forEach((announcement) => {
-        if (announcement.id !== undefined) {
-          announcementsById.set(Number(announcement.id), announcement);
+      const postsById = new Map<number, IPostDTO>();
+      posts.forEach((post) => {
+        if (post.id !== undefined) {
+          postsById.set(Number(post.id), post);
         }
       });
 
-      const announcementFeed: FeedAnnouncement[] = announcements.map((announcement) => ({
-        ...announcement,
-        feedId: `announcement-${announcement.id}`,
-        feedType: "announcement",
-        feedTimestamp: toTimestamp(announcement.created_at),
+      const postFeed: FeedPost[] = posts.map((post) => ({
+        ...post,
+        feedId: `post-${post.id}`,
+        feedType: "post",
+        feedTimestamp: toTimestamp(post.created_at),
       }));
 
-      const repostFeed = reposts.reduce<FeedAnnouncement[]>((acc, repostItem) => {
-        const parentAnnouncement = announcementsById.get(Number(repostItem.announce_id));
-        if (!parentAnnouncement) {
+      const repostFeed = reposts.reduce<FeedPost[]>((acc, repostItem) => {
+        const parentPost = postsById.get(Number(repostItem.announce_id));
+        if (!parentPost) {
           return acc;
         }
 
         acc.push({
-          ...parentAnnouncement,
+          ...parentPost,
           feedId: `repost-${repostItem.id}`,
           feedType: "repost" as const,
           repostText: repostItem.text,
           repostAuthorId: repostItem.author_id,
-          created_at: repostItem.create_at || repostItem.created_at || parentAnnouncement.created_at,
+          created_at: repostItem.create_at || repostItem.created_at || parentPost.created_at,
           feedTimestamp: toTimestamp(
-            repostItem.create_at || repostItem.created_at || parentAnnouncement.created_at
+            repostItem.create_at || repostItem.created_at || parentPost.created_at
           ),
         });
 
         return acc;
       }, []);
 
-      const mergedFeed = [...announcementFeed, ...repostFeed].sort((a, b) => {
+      const mergedFeed = [...postFeed, ...repostFeed].sort((a, b) => {
         const timeDelta = b.feedTimestamp - a.feedTimestamp;
         if (timeDelta !== 0) {
           return timeDelta;
@@ -199,7 +199,7 @@ export default function BlueskyLayout() {
 
       setAnnonces(mergedFeed);
     } catch (error) {
-      console.error("Error fetching announcements:", error);
+      console.error("Error fetching posts:", error);
       setAnnonces([]);
     }
   }, []);
@@ -212,7 +212,7 @@ export default function BlueskyLayout() {
     if (deleteTargetId === null) return;
 
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !isDeletingAnnouncement) {
+      if (event.key === "Escape" && !isDeletingPost) {
         closeDeleteConfirmModal();
       }
     };
@@ -221,7 +221,7 @@ export default function BlueskyLayout() {
     return () => {
       document.removeEventListener("keydown", handleEsc);
     };
-  }, [deleteTargetId, isDeletingAnnouncement]);
+  }, [deleteTargetId, isDeletingPost]);
 
   const filteredFeed = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -388,18 +388,18 @@ export default function BlueskyLayout() {
   };
 
   const handleOpenModal = () => {
-    setSelectedAnnouncement(undefined); // Reset pour création
+    setSelectedPost(undefined); // Reset pour création
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedAnnouncement(undefined);
+    setSelectedPost(undefined);
   };
 
   // Menu pour les posts avec options (éditer, supprimer, etc.)
 
-  const PostMenu = ({ announcementId }: { announcementId?: string | number }) => {
+  const PostMenu = ({ postId }: { postId?: string | number }) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -423,12 +423,12 @@ export default function BlueskyLayout() {
     }, [isOpen]);
 
     const handleEdit = async () => {
-      console.log("Edit announcement:", announcementId);
+      console.log("Edit post:", postId);
       setIsOpen(false);
 
       // Récupérer les données complètes de l'annonce
       try {
-        const response = await fetch(`/api/announcements/${announcementId}`);
+        const response = await fetch(`/api/posts/${postId}`);
 
         if (response.ok) {
           const result = await response.json();
@@ -438,24 +438,24 @@ export default function BlueskyLayout() {
 
 
           if (result.success) {
-            setSelectedAnnouncement(result.data);
+            setSelectedPost(result.data);
             setIsModalOpen(true);
           }
         }
       } catch (error) {
-        console.error("Error fetching announcement for edit:", error);
+        console.error("Error fetching post for edit:", error);
       }
     };
 
     const handleDelete = async () => {
-      openDeleteConfirmModal(announcementId);
+      openDeleteConfirmModal(postId);
       setIsOpen(false);
     };
 
     const handleShare = async () => {
-      console.log("Share announcement:", announcementId);
+      console.log("Share post:", postId);
       try {
-        const response = await fetch(`/api/announcements/${announcementId}`);
+        const response = await fetch(`/api/posts/${postId}`);
 
         setIsOpen(false);
 
@@ -465,12 +465,12 @@ export default function BlueskyLayout() {
           console.log("Fetch response for edit:", result.data);
 
           if (result.success) {
-            setSelectedAnnouncement(result.data);
+            setSelectedPost(result.data);
             setIsModalOpen(true);
           }
         }
       } catch (error) {
-        console.error("Error fetching announcement for edit:", error);
+        console.error("Error fetching post for edit:", error);
       }
 
     };
@@ -681,11 +681,11 @@ export default function BlueskyLayout() {
 
 
 
-  const handleRepost = (announcementId: number) => {
+  const handleRepost = (postId: number) => {
 
-    const annonceToRepost = annonces.find(a => a.id === announcementId);
+    const annonceToRepost = annonces.find(a => a.id === postId);
     if (annonceToRepost) {
-      setSelectedAnnouncement(annonceToRepost);
+      setSelectedPost(annonceToRepost);
       setRepost(true);
     }
 
@@ -755,7 +755,7 @@ export default function BlueskyLayout() {
 
         {Array.isArray(filteredFeed) && filteredFeed.length > 0 ? (
           <StaggerList className="mt-2" staggerChildren={0.09}>
-            {filteredFeed.map((annonce: FeedAnnouncement, index: number) => {
+            {filteredFeed.map((annonce: FeedPost, index: number) => {
               const metadata = annonce.metadata as Record<string, string> | undefined;
               const bgClass = metadata?.background || metadata?.backgroundColor;
               const metaColor = metadata?.backgroundColor as string | undefined;
@@ -802,7 +802,7 @@ export default function BlueskyLayout() {
                               </span>
                             </div>
 
-                            {!isRepostItem && <PostMenu announcementId={annonce.id} />}
+                            {!isRepostItem && <PostMenu postId={annonce.id} />}
                           </div>
 
                           {isRepostItem && annonce.repostText && (
@@ -824,7 +824,7 @@ export default function BlueskyLayout() {
                               <figure className="w-full relative overflow-hidden rounded-xl border border-white/40 bg-black/5 aspect-[4/5] md:aspect-[16/10]">
                                 <Image
                                   src={metadata.image}
-                                  alt="Announcement Image"
+                                  alt="Post Image"
                                   fill
                                   loading="lazy"
                                   decoding="async"
@@ -943,27 +943,27 @@ export default function BlueskyLayout() {
 
       <FilterDrawer />
 
-      <AnnouncementModal
+      <PostModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSuccess={fetchAnnonces}
-        announcement={selectedAnnouncement}
+        post={selectedPost}
       />
 
-      {selectedAnnouncement && (
+      {selectedPost && (
         <Comment
           isOpen={commentModalOpen}
           onClose={handleCommentModalClose}
-          annonce={selectedAnnouncement}
+          annonce={selectedPost}
         />
       )}
 
-      {selectedAnnouncement && repost && (
+      {selectedPost && repost && (
         <Repost
-          date={selectedAnnouncement.created_at || new Date()}
-          announceId={selectedAnnouncement.id as number}
+          date={selectedPost.created_at || new Date()}
+          announceId={selectedPost.id as number}
           alreadyReposted={false}
-          annonce={selectedAnnouncement}
+          annonce={selectedPost}
           isOpen={repost}
           onClose={() => setRepost(false)}
           onSuccess={fetchAnnonces}
@@ -974,8 +974,8 @@ export default function BlueskyLayout() {
         <DeleteModal
           isOpen={isDeleteConfirmVisible}
           onClose={closeDeleteConfirmModal}
-          onConfirm={confirmDeleteAnnouncement}
-          isDeletingAnnouncement={isDeletingAnnouncement}
+          onConfirm={confirmDeletePost}
+          isDeletingPost={isDeletingPost}
         />
       )}
 

@@ -4,32 +4,32 @@ import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/jwt";
 
 interface LoginBody {
-   email?: string;
+   phone?: string;
    password?: string;
 }
 
 export async function POST(request: Request) {
    try {
       const body = (await request.json()) as LoginBody;
-      const email = body.email?.trim().toLowerCase();
+      const phone = body.phone?.trim(); // Normalize phone number by trimming whitespace
       const password = body.password;
 
-      if (!email || !password) {
+      if (!phone || !password) {
          return NextResponse.json(
-            { success: false, message: "Email et mot de passe sont requis" },
+            { success: false, message: "Numéro de téléphone et mot de passe sont requis" },
             { status: 400 },
          );
       }
 
-      const user = await prisma.user.findUnique({ where: { email } });
-      if (!user || !user.passwordHash) {
+      const user = await prisma.user.findUnique({ where: { phone } });
+      if (!user || !user.password) {
          return NextResponse.json(
             { success: false, message: "Identifiants invalides" },
             { status: 401 },
          );
       }
 
-      const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+      const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) {
          return NextResponse.json(
             { success: false, message: "Identifiants invalides" },
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
          );
       }
 
-      const token = signToken(user.id, user.email);
+      const token = signToken(user.id, user.phone);
 
       const response = NextResponse.json(
          {
@@ -45,10 +45,9 @@ export async function POST(request: Request) {
             message: "Connexion réussie",
             data: {
                id: user.id,
+               phone: user.phone,
                email: user.email,
-               firstName: user.firstName,
-               lastName: user.lastName,
-               globalRole: user.globalRole,
+               role: user.role,
             },
          },
          { status: 200 },
