@@ -1,6 +1,6 @@
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/lib/password";
 
 interface RegisterBody {
    email?: string;
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
          );
       }
 
-      const passwordHash = await bcrypt.hash(password, 10);
+      const passwordHash = await hashPassword(password);
 
       const createData: any = {
          email,
@@ -83,7 +83,6 @@ export async function POST(request: Request) {
          select: {
             id: true,
             email: true,
-            password: true,
             role: true,
             createdAt: true,
          },
