@@ -1,7 +1,7 @@
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/jwt";
+import { hashPassword, verifyPasswordWithLegacySupport } from "@/lib/password";
 
 interface LoginBody {
    phone?: string;
@@ -29,12 +29,21 @@ export async function POST(request: Request) {
          );
       }
 
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
+      const passwordCheck = await verifyPasswordWithLegacySupport(password, user.password);
+      if (!passwordCheck.isValid) {
          return NextResponse.json(
             { success: false, message: "Identifiants invalides" },
             { status: 401 },
          );
+      }
+
+      if (passwordCheck.needsRehash) {
+         await prisma.user.update({
+            where: { id: user.id },
+            data: {
+               password: await hashPassword(password),
+            },
+         });
       }
 
       const token = signToken(user.id, user.phone);
