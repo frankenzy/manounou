@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { hashPassword, isBcryptHash } from "@/lib/password";
 import {
    type CreateDocumentInput,
    type CreateNotificationInput,
@@ -33,8 +34,15 @@ export class UserServiceV1 {
          throw new HttpError(400, "role is required");
       }
 
+      const payload: CreateUserInput = { ...input };
+      if (payload.password) {
+         payload.password = isBcryptHash(payload.password)
+            ? payload.password
+            : await hashPassword(payload.password);
+      }
+
       try {
-         return await this.repository.createUser(input);
+         return await this.repository.createUser(payload);
       } catch (error) {
          if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
             throw new HttpError(409, "phone or email already exists");
@@ -45,8 +53,12 @@ export class UserServiceV1 {
 
    async updateUser(id: string, input: UpdateUserInput) {
       await this.getUserById(id);
+      const payload: UpdateUserInput = { ...input };
+      if (payload.password && !isBcryptHash(payload.password)) {
+         payload.password = await hashPassword(payload.password);
+      }
       try {
-         return await this.repository.updateUser(id, input);
+         return await this.repository.updateUser(id, payload);
       } catch (error) {
          if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
             throw new HttpError(409, "phone or email already exists");
