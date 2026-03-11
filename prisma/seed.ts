@@ -51,8 +51,8 @@ async function main() {
    const passwordColumn = columnNames.has("passwordHash")
       ? "passwordHash"
       : columnNames.has("password")
-        ? "password"
-        : null;
+         ? "password"
+         : null;
 
    if (!columnNames.has("email")) {
       throw new Error(`Column 'email' not found on public.${tableName}`);

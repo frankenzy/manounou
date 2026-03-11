@@ -8,7 +8,6 @@ import Loyout from "../layout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginAnimation from "@/components/animations/LoginAnimation";
-import WalkingNounou from "@/components/ui/WalkingNounou";
 
 export default function Home() {
   const router = useRouter();
@@ -31,8 +30,6 @@ export default function Home() {
   const handleBlur = () => {
     setInputFocus(false);
   };
-
-
   const slideVariants = {
 
     initial: (direction: number) => ({
@@ -61,8 +58,6 @@ export default function Home() {
         ease: [0.4, 0, 1, 1],
       },
     }),
-
-
   };
 
 
@@ -86,7 +81,7 @@ export default function Home() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, password }),
+        body: JSON.stringify({ phone: phone.trim(), password }),
       });
       const data = (await res.json()) as { success: boolean; message?: string };
       if (res.ok && data.success) {
