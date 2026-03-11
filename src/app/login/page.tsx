@@ -7,8 +7,8 @@ import Header from "../../components/header";
 import Loyout from "../layout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import OtpComponent from "@/components/ui/forms/otp.component";
-import { Phone } from "lucide-react";
+import LoginAnimation from "@/components/animations/LoginAnimation";
+import WalkingNounou from "@/components/ui/WalkingNounou";
 
 export default function Home() {
   const router = useRouter();
@@ -17,10 +17,8 @@ export default function Home() {
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [otp, setOtp] = useState<string>("");
-  const [isOTPStepValid, setIsOTPStepValid] = useState<boolean>(true);
   const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
-  const [step, setStep] = useState<"phone" | "loading" | "password" | "otp" | "success">("phone");
+  const [step, setStep] = useState<"phone" | "password" | "login">("phone");
 
 
   const isPhoneStepValid = phone.trim().length > 0 && /^[0-9]{10}$/.test(phone);
@@ -75,37 +73,15 @@ export default function Home() {
     setIsPhoneValid(value.trim().length === 0 || /^[0-9]{10}$/.test(value));
   };
 
-  const handleSubmitOTP = async () => {
-    if (!isOTPStepValid) {
-      setError("Veuillez saisir un code OTP valide");
-      return;
-    }
-    setError("");
-    setStep("success");
-    try {
-      const res = await fetch("/api/auth/login/otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, otp }),
-      });
-    } catch {
-      setError("Erreur réseau, veuillez réessayer");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSubmit = async () => {
-    setStep("loading");
     if (!isPasswordStepValid || !isPhoneStepValid) {
       setError("Numéro de téléphone ou mot de passe invalide");
-      setIsLoading(false);
-      // setStep("password");
-      setStep("otp");
       return;
     }
+
     setIsLoading(true);
     setError("");
+
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -115,7 +91,6 @@ export default function Home() {
       const data = (await res.json()) as { success: boolean; message?: string };
       if (res.ok && data.success) {
         router.push("/manounou");
-        setStep("otp");
       } else {
         setError(data.message || "Identifiants incorrects");
       }
@@ -131,9 +106,41 @@ export default function Home() {
       setError("Veuillez saisir un numéro de téléphone valide");
       return;
     }
+
+    setIsLoading(true);
+    // setStep("login");
+
     setError("");
-    // setStep("password");
-    setStep("otp");
+
+    try {
+      const res = await fetch("/api/auth/login/check-phone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      });
+
+      const data = (await res.json()) as {
+        success: boolean;
+        exists?: boolean;
+        message?: string;
+      };
+
+      if (!res.ok || !data.success) {
+        setError(data.message || "Impossible de vérifier le numéro");
+        return;
+      }
+
+      if (!data.exists) {
+        setError("Ce numéro n'est associé à aucun compte");
+        return;
+      }
+
+      setStep("password");
+    } catch {
+      setError("Erreur réseau, veuillez réessayer");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -152,18 +159,20 @@ export default function Home() {
             custom={1}
           >
             <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
+
               <main className="flex flex-col row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl">
                 <div className="flex flex-col gap-8 items-center content">
                   <div className="flex flex-col items-center w-full">
                     <Logo />
                   </div>
-
                   <div className="flex flex-col items-center w-full">
                     <h3 className="text-4xl font-bold">Connexion Nounou</h3>
                     <p className="text-xl text-center my-4">
                       Connectez-vous à votre compte Manounou
                     </p>
                   </div>
+                  <LoginAnimation />
+
 
                   {error && (
                     <div className="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
@@ -210,16 +219,11 @@ export default function Home() {
           </motion.div>
 
         )}
-        {step === "loading" && (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full flex justify-center py-4"
-          >
-            <div className="h-5 w-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-          </motion.div>
+
+        {step === "login" && (
+          <div className="flex items-center justify-center min-h-screen bg-red-500">
+            <LoginAnimation />
+          </div>
         )}
 
         {step === "password" && (
@@ -262,6 +266,10 @@ export default function Home() {
                     required={true}
                   />
 
+                  <p className="text-sm text-gray-500 w-full text-left">
+                    Numéro confirmé: {phone}
+                  </p>
+
                   <Buttons
                     onClick={handleSubmit}
                     className={`w-full py-5 border-2 shadow-sm ${isPasswordStepValid
@@ -272,46 +280,23 @@ export default function Home() {
                   >
                     {isLoading ? "Connexion en cours..." : "Se connecter"}
                   </Buttons>
+
+                  <Buttons
+                    onClick={() => {
+                      setStep("phone");
+                      setPassword("");
+                      setError("");
+                    }}
+                    className="w-full py-5 border-2 shadow-sm bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+                    disabled={isLoading}
+                  >
+                    Modifier le numéro
+                  </Buttons>
                 </div>
               </main>
             </div>
           </motion.div>
         )}
-
-        {step === "otp" && (
-          <motion.div
-            key="otp"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <OtpComponent
-              number={4}
-              onChange={(value, isValid) => {
-                setOtp(value);
-                setIsOTPStepValid(isValid);
-              }}
-              onComplete={(value) => {
-                console.log("OTP complete:", value);
-              }}
-              onBack={() => setStep("phone")}
-            />
-          </motion.div>
-        )}
-
-
-        {step === "success" && (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="flex flex-col items-center justify-center">
-              <h1>Connexion réussie</h1>
-            </div>
-          </motion.div>
-        )}*
 
       </AnimatePresence>
     </Loyout>
