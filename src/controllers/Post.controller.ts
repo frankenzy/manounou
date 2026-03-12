@@ -3,6 +3,8 @@ import { PostService } from "@/services/PostService";
 import { NextApiRequest, NextApiResponse } from "next";
 import { BaseController } from "./BaseController";
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export class PostController extends BaseController {
   constructor(private readonly postService: PostService) {
     super();
@@ -20,6 +22,14 @@ export class PostController extends BaseController {
   async createPost(req: NextApiRequest, res: NextApiResponse) {
     try {
       const postData = this.getBody(req) as IPost;
+      const normalizedUserId = (postData.user_id ?? '').trim();
+
+      if (!UUID_REGEX.test(normalizedUserId)) {
+        return this.sendValidationError(res, 'user_id must be a valid UUID');
+      }
+
+      postData.user_id = normalizedUserId;
+
       const newPost = await this.postService.createPost(postData);
       this.sendCreated(res, newPost, 'Annonce créée avec succès');
     } catch (error) {
@@ -38,6 +48,15 @@ export class PostController extends BaseController {
     try {
       const id = this.parseId(req);
       const postData = this.getBody(req) as Partial<IPost>;
+
+      if (postData.user_id !== undefined) {
+        const normalizedUserId = String(postData.user_id).trim();
+        if (!UUID_REGEX.test(normalizedUserId)) {
+          return this.sendValidationError(res, 'user_id must be a valid UUID');
+        }
+        postData.user_id = normalizedUserId;
+      }
+
       const updatedPost = await this.postService.updatePost(id, postData);
 
       if (!updatedPost) {
