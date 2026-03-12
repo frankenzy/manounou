@@ -6,18 +6,37 @@ export const usePostSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const getAuthenticatedUserId = async (): Promise<string> => {
+    const meResponse = await fetch("/api/auth/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const meResult = await meResponse.json();
+
+    if (!meResponse.ok || !meResult?.success || !meResult?.data?.id) {
+      throw new Error("Utilisateur non connecté");
+    }
+
+    return String(meResult.data.id);
+  };
+
   const createPost = async (formData: PostFormData) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
+      const authenticatedUserId = await getAuthenticatedUserId();
+
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: "1",
+          user_id: authenticatedUserId,
           title: formData.title,
           description: formData.description,
           parent_id: formData.parent_id ?? null,
@@ -61,13 +80,15 @@ export const usePostSubmit = () => {
     setError(null);
 
     try {
+      const authenticatedUserId = await getAuthenticatedUserId();
+
       const response = await fetch(`/api/posts/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: originalPost?.user_id || "1",
+          user_id: originalPost?.user_id || authenticatedUserId,
           title: formData.title,
           description: formData.description,
           parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
