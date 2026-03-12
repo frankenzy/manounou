@@ -11,7 +11,7 @@ export const usePostSubmit = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/v1/posts", {
+      const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -20,7 +20,8 @@ export const usePostSubmit = () => {
           user_id: "1",
           title: formData.title,
           description: formData.description,
-          location: formData.metadata.location || "Non spécifié",
+          parent_id: formData.parent_id ?? null,
+          location: formData.location,
           metadata: formData.metadata,
         }),
       });
@@ -69,7 +70,8 @@ export const usePostSubmit = () => {
           user_id: originalPost?.user_id || "1",
           title: formData.title,
           description: formData.description,
-          location: formData.metadata.location || originalPost?.location || "Non spécifié",
+          parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
+          location: formData.location || originalPost?.location || "Non spécifié",
           metadata: formData.metadata,
         }),
       });
