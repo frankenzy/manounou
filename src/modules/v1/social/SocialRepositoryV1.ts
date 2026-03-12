@@ -50,20 +50,42 @@ export class SocialRepositoryV1 {
       });
    }
 
-   createPost(input: CreatePostInput) {
-      return prisma.post.create({
-         data: {
-            authorId: input.authorId,
-            content: input.content,
-            visibility: input.visibility,
-            media: input.media
-               ? {
-                  create: input.media,
-               }
-               : undefined,
-         },
-         include: { media: true },
-      });
+   async createPost(input: CreatePostInput, requestId?: string) {
+      try {
+         const post = await prisma.post.create({
+            data: {
+               authorId: input.authorId,
+               content: input.content,
+               visibility: input.visibility,
+               media: input.media
+                  ? {
+                     create: input.media,
+                  }
+                  : undefined,
+            },
+            include: { media: true },
+         });
+
+         console.debug("[v1][posts.create][repository][success]", {
+            requestId,
+            postId: post.id,
+            mediaCount: post.media.length,
+         });
+
+         return post;
+      } catch (error) {
+         console.error("[v1][posts.create][repository][error]", {
+            requestId,
+            input: {
+               authorId: input?.authorId,
+               hasContent: typeof input?.content === "string" ? input.content.trim().length > 0 : false,
+               mediaCount: Array.isArray(input?.media) ? input.media.length : 0,
+               visibility: input?.visibility,
+            },
+            error,
+         });
+         throw error;
+      }
    }
 
    updatePost(id: string, input: UpdatePostInput) {
