@@ -212,6 +212,8 @@ export const usePostForm = (post?: IPostDTO, isOpen?: boolean) => {
   const getFormData = (): PostFormData => ({
     title: postTitle || "Nouvelle annonce",
     description: inputValue,
+    location: metadata.location || post?.location || "Non spécifié",
+    parent_id: post?.parent_id,
     metadata,
   });
 
