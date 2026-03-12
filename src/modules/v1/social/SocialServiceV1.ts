@@ -22,11 +22,18 @@ export class SocialServiceV1 {
       return post;
    }
 
-   async createPost(input: CreatePostInput) {
+   async createPost(input: CreatePostInput, requestId?: string) {
       // if (!input.authorId || !input.content) {
       //    throw new HttpError(400, "authorId and content are required");
       // }
-      return this.repository.createPost(input);
+      console.debug("[v1][posts.create][service]", {
+         requestId,
+         authorId: input?.authorId,
+         contentLength: typeof input?.content === "string" ? input.content.length : null,
+         mediaCount: Array.isArray(input?.media) ? input.media.length : 0,
+      });
+
+      return this.repository.createPost(input, requestId);
    }
 
    async updatePost(id: string, input: UpdatePostInput) {
