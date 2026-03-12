@@ -35,6 +35,8 @@ export interface IMetadata {
 export interface PostFormData {
   title: string;
   description: string;
+  location: string;
+  parent_id?: number;
   metadata: IMetadata;
 }
 
