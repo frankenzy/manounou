@@ -14,10 +14,39 @@ export class SocialControllerV1 {
    }
 
    async createPost(request: NextRequest) {
+      const requestId = request.headers.get("x-request-id") ?? crypto.randomUUID();
+      const startedAt = Date.now();
+
       try {
+         console.info("[v1][posts.create][start]", {
+            requestId,
+            method: request.method,
+            path: request.nextUrl.pathname,
+         });
+
          const payload = await getJsonBody<Parameters<SocialServiceV1["createPost"]>[0]>(request);
-         return ok(await this.service.createPost(payload), 201);
+         console.debug("[v1][posts.create][payload]", {
+            requestId,
+            authorId: payload?.authorId,
+            hasContent: typeof payload?.content === "string" ? payload.content.trim().length > 0 : false,
+            mediaCount: Array.isArray(payload?.media) ? payload.media.length : 0,
+            visibility: payload?.visibility,
+         });
+
+         const createdPost = await this.service.createPost(payload, requestId);
+         console.info("[v1][posts.create][success]", {
+            requestId,
+            postId: createdPost.id,
+            durationMs: Date.now() - startedAt,
+         });
+
+         return ok(createdPost, 201);
       } catch (error) {
+         console.error("[v1][posts.create][error]", {
+            requestId,
+            durationMs: Date.now() - startedAt,
+            error,
+         });
          return fail(error);
       }
    }
