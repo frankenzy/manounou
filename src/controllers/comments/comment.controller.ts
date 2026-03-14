@@ -10,7 +10,6 @@ export class CommentController extends BaseController {
 
     async create(req: NextApiRequest, res: NextApiResponse) {
         try {
-            // support legacy and new payload keys: { announce_id, author_id, comment } or { postId, userId, content }
             const body = req.body as any;
             const payload: ICreateCommentDTO = {
                 content: body.content ?? body.comment,
