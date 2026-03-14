@@ -17,11 +17,13 @@ export default function ModalV2({ isOpen, onClose, children }: CustomProps) {
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
+               onClick={onClose}
             >
                <motion.div
                   {...scaleIn}
                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                   className="bg-white rounded-xl shadow-xl max-w-2xl w-full"
+                  onClick={(event) => event.stopPropagation()}
                >
                   {children}
                </motion.div>
