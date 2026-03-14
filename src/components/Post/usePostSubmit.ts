@@ -36,12 +36,13 @@ export const usePostSubmit = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: authenticatedUserId,
+          authorId: authenticatedUserId,
+          content: formData.description,
+          metaData: formData.metadata,
+          visibility: formData.metadata?.visibility || "PUBLIC",
           title: formData.title,
-          description: formData.description,
-          parent_id: formData.parent_id ?? null,
           location: formData.location,
-          metadata: formData.metadata,
+          parent_id: formData.parent_id ?? null,
         }),
       });
 
@@ -88,12 +89,13 @@ export const usePostSubmit = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: originalPost?.user_id || authenticatedUserId,
+          authorId: originalPost?.user_id || authenticatedUserId,
+          content: formData.description,
+          metaData: formData.metadata,
+          visibility: formData.metadata?.visibility || "PUBLIC",
           title: formData.title,
-          description: formData.description,
-          parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
           location: formData.location || originalPost?.location || "Non spécifié",
-          metadata: formData.metadata,
+          parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
         }),
       });
 
