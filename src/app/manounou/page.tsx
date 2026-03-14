@@ -37,7 +37,9 @@ import DeleteModal from "@/components/modals/deleteModal";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
 import MiniPulseGame from "@/components/premium/game/MiniPulseGame";
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 
 const ParticleFieldScene = dynamic(() => import("@/components/premium/webgl/ParticleFieldScene"), {
   ssr: false,
@@ -76,6 +78,11 @@ export default function BlueskyLayout() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showOnlyReposts, setShowOnlyReposts] = useState(false);
   const [sortMode, setSortMode] = useState<"recent" | "engaged">("recent");
+
+  const [isLoging, setIsLoging] = useState(false);
+
+  const router = useRouter();
+
 
   const handleOpenComment = (postId: string | number) => {
     if (openCommentId === postId) {
@@ -388,8 +395,15 @@ export default function BlueskyLayout() {
   };
 
   const handleOpenModal = () => {
-    setSelectedPost(undefined); // Reset pour création
-    setIsModalOpen(true);
+    //TODO: Verifier si l'utilisateur est connecté
+
+    setSelectedPost(undefined);
+    if (isLoging) {
+      setIsModalOpen(true);
+    } else {
+      const returnUrl = typeof window !== "undefined" ? window.location.pathname : "/";
+      router.push(`/login?next=${encodeURIComponent(returnUrl)}`);
+    }
   };
 
   const handleCloseModal = () => {
