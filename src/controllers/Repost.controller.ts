@@ -19,7 +19,7 @@ export default class RepostController extends BaseController {
 
          const payload: ICreateRepostDTO = {
             announce_id: Number(announceId),
-            author_id: Number(authorId),
+            author_id: String(authorId),
             text,
          };
 
@@ -38,7 +38,7 @@ export default class RepostController extends BaseController {
             return res.status(400).json({ success: false, message: "Missing announceId" });
          }
 
-         await this.repostService.deleteRepost(announceId as number);
+         await this.repostService.deleteRepost(String(announceId));
          this.sendSuccess(res, null, 200, 'Repost deleted successfully');
       } catch (error) {
          this.handleError(res, error);

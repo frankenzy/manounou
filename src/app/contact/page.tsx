@@ -2,6 +2,7 @@
 import HEAD from "@/components/header";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { toast } from 'react-hot-toast';
 import "./style.css";
 import { Layout } from "lucide-react";
 
@@ -101,7 +102,7 @@ const ContactForms = () => {
     console.log(formData);
     if (isFormValid) {
       // TODO: Implement contact form submission endpoint
-      alert("Formulaire valide (envoi non implémenté)");
+      toast.success("Formulaire valide (envoi non implémenté)");
       setFormData({
         name: "",
         email: "",
@@ -109,7 +110,7 @@ const ContactForms = () => {
       });
       setIsAccepted(false);
     } else {
-      alert("Formulaire invalide");
+      toast.error("Formulaire invalide");
       return;
     }
   };

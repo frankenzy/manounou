@@ -6,14 +6,14 @@ import AnnounceSkeleton from "../Post/AnnounceSkeleton";
 import { CommentTime } from "./CommentTime";
 
 interface CommentProps {
-   annonce: IPostDTO;
+   post: IPostDTO;
    isOpen: boolean;
    onClose: () => void;
 }
 
-export default function Comment({ annonce }: CommentProps) {
+export default function Comment({ post }: CommentProps) {
    const [comment, setComment] = useState("");
-   const { comments, isLoading, error, addComment } = useComments(annonce?.id);
+   const { comments, isLoading, error, addComment } = useComments(post?.id);
    const [isSubmitting, setIsSubmitting] = useState(false);
 
    const handleSubmit = async () => {

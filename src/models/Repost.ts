@@ -3,23 +3,23 @@ import { IPostDTO } from "./Post";
 export interface IRepost {
    id: number;
    announce_id: number;
-   author_id: number;
+   author_id: string;
    text?: string;
-   create_at: Date;
-   created_at?: Date;
+   created_at: Date;
+   updated_at?: Date;
 }
 
 export interface ICreateRepostDTO {
    announce_id: number;
-   author_id: number;
+   author_id: string;
    text?: string;
 }
 
 export interface RepostProps {
    date: Date | string | number;
-   announceId: number | string;
+   postId: string;
    alreadyReposted: boolean;
-   annonce: IPostDTO;
+   post: IPostDTO;
    isOpen: boolean;
    onClose: () => void;
    onSuccess?: () => void;
@@ -32,11 +32,11 @@ export interface RepostApiResponse {
 }
 
 export interface RepostCreateRequest {
-   announceId: number | string;
-   authorId: number | string;
+   announceId: string;
+   authorId: string;
    text?: string;
 }
 
 export interface RepostDeleteRequest {
-   announceId: number | string;
+   announceId: string;
 }

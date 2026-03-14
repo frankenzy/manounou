@@ -1,6 +1,7 @@
 import { IPostDTO } from "@/models/Post";
 import { useState } from "react";
 import { PostFormData } from "./types";
+import postsRepository from "@/repositories/postsRepository";
 
 export const usePostSubmit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,29 +31,21 @@ export const usePostSubmit = () => {
     try {
       const authenticatedUserId = await getAuthenticatedUserId();
 
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          authorId: authenticatedUserId,
-          content: formData.description,
-          metaData: formData.metadata,
-          visibility: formData.metadata?.visibility || "PUBLIC",
-          title: formData.title,
-          location: formData.location,
-          parent_id: formData.parent_id ?? null,
-        }),
+      const result = await postsRepository.createPost({
+        authorId: authenticatedUserId,
+        content: formData.description,
+        metaData: formData.metadata,
+        visibility: formData.metadata?.visibility || "PUBLIC",
+        title: formData.title,
+        location: formData.location,
+        parent_id: formData.parent_id ?? null,
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      if (result?.success) {
         console.log("Annonce créée avec succès:", result.data);
         return { success: true, data: result.data };
       } else {
-        const errorMessage = `Erreur: ${result.message}`;
+        const errorMessage = `Erreur: ${result?.message || 'Unknown error'}`;
         setError(errorMessage);
         return { success: false, error: errorMessage };
       }
@@ -83,29 +76,21 @@ export const usePostSubmit = () => {
     try {
       const authenticatedUserId = await getAuthenticatedUserId();
 
-      const response = await fetch(`/api/posts/${postId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          authorId: originalPost?.user_id || authenticatedUserId,
-          content: formData.description,
-          metaData: formData.metadata,
-          visibility: formData.metadata?.visibility || "PUBLIC",
-          title: formData.title,
-          location: formData.location || originalPost?.location || "Non spécifié",
-          parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
-        }),
+      const result = await postsRepository.updatePost(postId, {
+        authorId: originalPost?.userId || authenticatedUserId,
+        content: formData.description,
+        metaData: formData.metadata,
+        visibility: formData.metadata?.visibility || "PUBLIC",
+        title: formData.title,
+        location: formData.location || originalPost?.location || "Non spécifié",
+        parent_id: formData.parent_id ?? originalPost?.parent_id ?? null,
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      if (result?.success) {
         console.log("Annonce modifiée avec succès:", result.data);
         return { success: true, data: result.data };
       } else {
-        const errorMessage = `Erreur: ${result.message}`;
+        const errorMessage = `Erreur: ${result?.message || 'Unknown error'}`;
         setError(errorMessage);
         return { success: false, error: errorMessage };
       }

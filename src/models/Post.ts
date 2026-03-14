@@ -1,10 +1,10 @@
 export interface IPost {
-  id?: number;
+  id?: string;
   user_id: string;
   title: string;
   description: string;
   location: string;
-  parent_id?: number;
+  parent_id?: string;
   created_at?: Date;
   updated_at?: Date;
   metadata?: Record<string, unknown>;
@@ -13,11 +13,11 @@ export interface IPost {
 }
 
 export interface IPostDTO {
-  id?: number;
-  user_id: string;
+  id?: string;
+  userId: string;
   title: string;
   description: string;
-  parent_id?: number;
+  parent_id?: string | number;
   location: string;
   created_at?: Date;
   updated_at?: Date;
@@ -28,11 +28,11 @@ export interface IPostDTO {
 }
 
 export class Post implements IPost {
-  id?: number;
+  id?: string;
   user_id: string;
   title: string;
   description: string;
-  parent_id?: number;
+  parent_id?: string;
   location: string;
   created_at?: Date;
   updated_at?: Date;
@@ -59,7 +59,7 @@ export class Post implements IPost {
   Post(): IPostDTO {
     return {
       id: this.id,
-      user_id: this.user_id,
+      userId: this.user_id,
       title: this.title,
       description: this.description,
       parent_id: this.parent_id,

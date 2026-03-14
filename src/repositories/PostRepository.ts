@@ -47,7 +47,7 @@ export class PostRepository {
             announce_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
             author_id TEXT NOT NULL,
             text TEXT,
-            create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           );
         `);
       })().catch((error) => {

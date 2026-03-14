@@ -3,6 +3,7 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
+import { toast } from 'react-hot-toast';
 import PostForm from "./PostCreateForm";
 import { PostModalProps } from "./types";
 import { usePostForm } from "./usePostForm";
@@ -56,7 +57,7 @@ export default function PostModal({
          handleCloseModal();
          if (onSuccess) onSuccess();
       } else {
-         alert(result?.error || 'Erreur lors de la soumission de l\'annonce');
+         toast.error(result?.error || 'Erreur lors de la soumission de l\'annonce');
       }
    };
 

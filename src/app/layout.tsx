@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import '../styles/animations.css';
+import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +26,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <body className="bg-slate-300" suppressHydrationWarning>{children}</body>
+      <body className="bg-slate-300" suppressHydrationWarning>
+        <AuthProvider>
+          {children}
+          <Toaster position="top-right" />
+        </AuthProvider>
+      </body>
     </html>
   );
 }

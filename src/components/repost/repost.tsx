@@ -3,9 +3,12 @@ import Modal from "../Modal";
 import { UserCircle } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import postsRepository from "@/repositories/postsRepository";
+import { toast } from "react-hot-toast";
+import { useAuthContext } from "@/context/AuthContext";
 
-export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostProps) {
-   const postImage = typeof annonce.metadata?.image === "string" ? annonce.metadata.image : undefined;
+export default function Repost({ post, isOpen, onClose, onSuccess }: RepostProps) {
+   const postImage = typeof post.metadata?.image === "string" ? post.metadata.image : undefined;
 
    const handleCloseModal = () => {
       onClose();
@@ -14,53 +17,44 @@ export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostPr
 
    const [isSubmitting, setIsSubmitting] = useState(false);
 
+   const { user, isLoggedIn } = useAuthContext();
+   const authUserId = user?.id;
+
+
    const handleRepostSubmit = async () => {
 
       setIsSubmitting(true);
+      if (!authUserId) {
+         toast.error("Vous devez être connecté pour republier.");
+         setIsSubmitting(false);
+         return;
+      }
+
       const requestData: RepostCreateRequest = {
-         announceId: annonce.id as number,
-         authorId: 1,
+         postId: post.id as string,
+         userId: authUserId,
          text: repostText,
       };
 
       try {
-         const response = await fetch("/api/repost", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
-         });
-
-         const data: RepostApiResponse = await response.json();
-
-         if (response.ok) {
-            alert("Repost créé avec succès !");
+         const data = await postsRepository.createRepost(requestData);
+         if (data?.success) {
+            toast.success("Repost créé avec succès !");
             setRepostText("");
             onSuccess?.();
             handleCloseModal();
-
          } else {
-
-            alert(`Erreur lors de la création du repost : ${data.message || 'Erreur inconnue'}`);
-
+            toast.error(`Erreur lors de la création du repost : ${data?.message || 'Erreur inconnue'}`);
          }
-
-
       } catch (error) {
-
          console.error("Erreur lors de la création du repost :", error);
-
-         alert("Erreur lors de la création du repost : " + (error instanceof Error ? error.message : 'Erreur inconnue'));
-
+         toast.error("Erreur lors de la création du repost : " + (error instanceof Error ? error.message : 'Erreur inconnue'));
       } finally {
-
          setIsSubmitting(false);
-
       }
    };
 
-   console.log("Repost component received annonce:", annonce);
+   console.log("Repost component received post:", post);
    return (
       <Modal isOpen={isOpen} onClose={handleCloseModal} className="my-modal" >
          <div className=" bg-white border-collapse rounded-lg p-4 gap-4 min-h-[395px] min-w-[600px] relative flex flex-col">
@@ -92,8 +86,8 @@ export default function Repost({ annonce, isOpen, onClose, onSuccess }: RepostPr
                         className="text-orange-500 flex-shrink-0 mt-1"
                      />
                      <div className="flex flex-col gap-2 flex-1 min-w-0">
-                        <span className="font-bold text-gray-900 text-base">{annonce.user_id || "Anonyme"}</span>
-                        <p className="text-gray-700 text-sm leading-relaxed line-clamp-4 break-words">{annonce.description}</p>
+                        <span className="font-bold text-gray-900 text-base">{post.userId || "Anonyme"}</span>
+                        <p className="text-gray-700 text-sm leading-relaxed line-clamp-4 break-words">{post.description}</p>
                      </div>
                   </div>
                   <>

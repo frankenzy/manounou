@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { IPostDTO } from "@/models/Post";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import postsRepository from "@/repositories/postsRepository";
 import Layout from "../../layout";
 
 export default function PostDetailPage() {
@@ -19,16 +20,11 @@ export default function PostDetailPage() {
       if (id) {
         setIsLoading(true);
         try {
-          const response = await fetch(`/api/posts/${id}`);
-          const data = await response.json();
-
-          if (data.success) {
+          const data = await postsRepository.getById(id);
+          if (data?.success) {
             setPost(data.data);
           } else {
-            console.error(
-              "Erreur lors de la récupération de l'annonce:",
-              data.message,
-            );
+            console.error("Erreur lors de la récupération de l'annonce:", data?.message);
           }
         } catch (error) {
           console.error("Erreur lors de la récupération de l'annonce:", error);

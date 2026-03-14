@@ -20,7 +20,7 @@ export class RepostService {
       return this.repostRepository.findAll();
    }
 
-   async findRepostById(id: number): Promise<IRepost> {
+   async findRepostById(id: string): Promise<IRepost> {
       return this.repostRepository.findOne(id);
    }
 
@@ -32,11 +32,11 @@ export class RepostService {
       return this.repostRepository.findByAuthor(authorId);
    }
 
-   async deleteRepost(id: number): Promise<void> {
+   async deleteRepost(id: string): Promise<void> {
       await this.repostRepository.remove(id);
    }
 
-   async countReposts(announce_id: number): Promise<number> {
+   async countReposts(announce_id: string): Promise<number> {
       return this.repostRepository.countReposts(announce_id);
    }
 
