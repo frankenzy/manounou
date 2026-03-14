@@ -108,6 +108,7 @@ model User {
    ConversationParticipant ConversationParticipant[]
    GameScores              GameScore[]
    UserSavedPosts          SavedPost[]
+   reposts                 Repost[]
 
    @@index([role])
 }
@@ -183,10 +184,24 @@ model Post {
    media      Media[]
    likes      Like[]
    comments   Comment[]
+   reposts    Repost[]
    savedPosts SavedPost[]
 
    @@index([authorId])
    @@index([createdAt])
+}
+
+model Repost {
+   id        String   @id @default(uuid())
+   userId    String
+   postId    String
+   createdAt DateTime @default(now())
+
+   user User @relation(fields: [userId], references: [id])
+   post Post @relation(fields: [postId], references: [id])
+
+   @@index([userId])
+   @@index([postId])
 }
 
 model Media {
