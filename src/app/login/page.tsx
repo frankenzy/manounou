@@ -8,6 +8,7 @@ import Loyout from "../layout";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginAnimation from "@/components/animations/LoginAnimation";
+import { error } from "node:console";
 
 export default function Home() {
   const router = useRouter();
@@ -230,7 +231,17 @@ export default function Home() {
             exit="exit"
             custom={-1}
           >
-            <  Login />
+            <Login
+              error={error}
+              isLoading={isLoading}
+              password={password}
+              setPassword={setPassword}
+              phone={phone}
+              handleSubmit={handleSubmit}
+              isPasswordStepValid={isPasswordStepValid}
+              setStep={setStep}
+              setError={setError}
+            />
           </motion.div>
         )}
 
@@ -242,7 +253,29 @@ export default function Home() {
 
 
 
-const Login = () => {
+type LoginProps = {
+  error: string;
+  isLoading: boolean;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  phone: string;
+  handleSubmit: () => void;
+  isPasswordStepValid: boolean;
+  setStep: React.Dispatch<React.SetStateAction<"phone" | "password" | "login">>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Login = ({
+  error,
+  isLoading,
+  password,
+  setPassword,
+  phone,
+  handleSubmit,
+  isPasswordStepValid,
+  setStep,
+  setError,
+}: LoginProps) => {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-2xl">

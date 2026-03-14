@@ -108,7 +108,25 @@ export class SocialRepositoryV1 {
    }
 
    createComment(input: CreateCommentInput) {
-      return prisma.comment.create({ data: input, include: { user: true } });
+      // Validate referenced user/post to provide clearer errors instead of FK violation
+      return (async () => {
+         // Try resolving user by id, phone or email to support legacy payloads
+         let user = await prisma.user.findUnique({ where: { id: input.userId } });
+         if (!user) {
+            user = await prisma.user.findUnique({ where: { phone: input.userId } as any });
+         }
+         if (!user) {
+            user = await prisma.user.findUnique({ where: { email: input.userId } as any });
+         }
+         if (!user) {
+            throw new Error("User not found");
+         }
+         const post = await prisma.post.findUnique({ where: { id: input.postId } });
+         if (!post) {
+            throw new Error("Post not found");
+         }
+         return prisma.comment.create({ data: input, include: { user: true } });
+      })();
    }
 
    countLikes(postId: string) {

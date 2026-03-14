@@ -3,6 +3,27 @@ import { prisma } from "@/lib/prisma";
 
 export class CommentRepository {
    async create(createCommentDto: ICreateCommentDTO): Promise<IComment> {
+      if (!createCommentDto.userId || !createCommentDto.postId) {
+         throw new Error("userId and postId are required");
+      }
+
+      // Try to resolve user by id, then by phone or email (accept legacy payloads)
+      let user = await prisma.user.findUnique({ where: { id: createCommentDto.userId } });
+      if (!user) {
+         user = await prisma.user.findUnique({ where: { phone: createCommentDto.userId } as any });
+      }
+      if (!user) {
+         user = await prisma.user.findUnique({ where: { email: createCommentDto.userId } as any });
+      }
+      if (!user) {
+         throw new Error("User not found");
+      }
+
+      const post = await prisma.post.findUnique({ where: { id: createCommentDto.postId } });
+      if (!post) {
+         throw new Error("Post not found");
+      }
+
       const created = await prisma.comment.create({
          data: {
             content: createCommentDto.content,
