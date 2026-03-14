@@ -15,7 +15,7 @@ const HeroBlob = memo(function HeroBlob() {
       meshRef.current.rotation.z = Math.cos(time * 0.22) * 0.08;
    });
 
-   const geometryArgs = useMemo(() => [1.25, 128, 128] as const, []);
+   const geometryArgs = useMemo(() => [1.25, 6] as const, []);
 
    return (
       <mesh ref={meshRef} scale={1.35}>

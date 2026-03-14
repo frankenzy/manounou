@@ -1,4 +1,5 @@
 import {
+   Prisma,
    type AccountStatus,
    type DocumentStatus,
    type DocumentType,
@@ -79,11 +80,22 @@ export class UserRepositoryV1 {
    }
 
    createUser(input: CreateUserInput) {
-      return prisma.user.create({ data: input });
+      return prisma.user.create({
+         data: {
+            ...input,
+            metaData: input.metaData as unknown as Prisma.InputJsonValue | undefined,
+         },
+      });
    }
 
    updateUser(id: string, input: UpdateUserInput) {
-      return prisma.user.update({ where: { id }, data: input });
+      return prisma.user.update({
+         where: { id },
+         data: {
+            ...input,
+            metaData: input.metaData as unknown as Prisma.InputJsonValue | undefined,
+         },
+      });
    }
 
    deleteUser(id: string) {
@@ -97,10 +109,14 @@ export class UserRepositoryV1 {
    upsertProfile(userId: string, input: UpsertProfileInput) {
       return prisma.profile.upsert({
          where: { userId },
-         update: input,
+         update: {
+            ...input,
+            bio: input.bio as unknown as Prisma.InputJsonValue | undefined,
+         },
          create: {
             userId,
             ...input,
+            bio: input.bio as unknown as Prisma.InputJsonValue | undefined,
          },
          include: { location: true },
       });

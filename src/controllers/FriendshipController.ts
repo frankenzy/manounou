@@ -13,7 +13,11 @@ export class FriendshipController extends BaseController {
     if (!token) throw new Error("Unauthorized");
     const payload = verifyToken(token);
     if (!payload) throw new Error("Unauthorized");
-    return payload.userId;
+    const numericUserId = Number(payload.userId);
+    if (!Number.isInteger(numericUserId) || numericUserId <= 0) {
+      throw new Error("Unauthorized");
+    }
+    return numericUserId;
   }
 
   async getPendingRequests(req: NextApiRequest, res: NextApiResponse) {

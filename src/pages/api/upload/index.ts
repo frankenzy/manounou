@@ -1,4 +1,4 @@
-import formidable, { Fields, Files } from "formidable";
+import formidable from "formidable";
 import fs from "node:fs/promises";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { uploadImageToCloudinary } from "@/lib/cloudinary";
@@ -43,9 +43,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
          public_id: result.public_id,
       });
 
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error("Upload Error:", error);
-      return res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : "Upload failed";
+      return res.status(500).json({ error: message });
    } finally {
       // Bonne pratique n°1 : On ne laisse jamais de traînées sur le serveur
       if (tempFilePath) {

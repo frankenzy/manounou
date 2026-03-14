@@ -1,31 +1,150 @@
-import { PostController } from "@/controllers/Post.controller";
-import { PostRepository } from "@/repositories/PostRepository";
-import { PostService } from "@/services/PostService";
+import { prisma } from "@/lib/prisma";
+import { PostVisibility, Prisma } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
+type LegacyPostDto = {
+    id: string;
+    user_id: string;
+    title: string;
+    description: string;
+    parent_id?: null;
+    location: string;
+    created_at: Date;
+    updated_at: Date;
+    metadata: Record<string, unknown>;
+    commentCount: number;
+    repost: string;
+    repostCount: number;
+};
 
-const postRepository = new PostRepository();
-const postService = new PostService(postRepository);
-const postController = new PostController(postService);
+type IncomingPayload = {
+    authorId?: string;
+    user_id?: string;
+    content?: string;
+    description?: string;
+    title?: string;
+    location?: string;
+    metaData?: Record<string, unknown>;
+    metadata?: Record<string, unknown>;
+    visibility?: PostVisibility | string;
+};
+
+function toLegacyDto(post: {
+    id: string;
+    authorId: string;
+    content: string;
+    metaData: Prisma.JsonValue | null;
+    createdAt: Date;
+    updatedAt: Date;
+    _count?: { comments: number };
+}): LegacyPostDto {
+    const metadata = (post.metaData && typeof post.metaData === "object" && !Array.isArray(post.metaData)
+        ? post.metaData
+        : {}) as Record<string, unknown>;
+
+    return {
+        id: post.id,
+        user_id: post.authorId,
+        title: typeof metadata.title === "string" ? metadata.title : "Nouvelle annonce",
+        description: post.content,
+        parent_id: null,
+        location: typeof metadata.location === "string" ? metadata.location : "Non spécifié",
+        created_at: post.createdAt,
+        updated_at: post.updatedAt,
+        metadata,
+        commentCount: post._count?.comments ?? 0,
+        repost: "",
+        repostCount: 0,
+    };
+}
+
+function normalizeVisibility(input?: PostVisibility | string): PostVisibility {
+    if (input === "FOLLOWERS" || input === "PRIVATE" || input === "PUBLIC") {
+        return input;
+    }
+    return PostVisibility.PUBLIC;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
 
-    switch (method) {
-        case 'GET':
-            return postController.getAllPosts(req, res);
+    try {
+        switch (method) {
+            case "GET": {
+                const posts = await prisma.post.findMany({
+                    orderBy: { createdAt: "desc" },
+                    include: { _count: { select: { comments: true } } },
+                });
 
-        case 'POST':
-            return postController.createPost(req, res);
+                return res.status(200).json({ success: true, data: posts.map(toLegacyDto) });
+            }
 
-        case 'PUT':
-            return postController.searchPosts(req, res);
+            case "POST": {
+                const payload = req.body as IncomingPayload;
+                const authorId = (payload.authorId ?? payload.user_id ?? "").trim();
+                const content = String(payload.content ?? payload.description ?? "").trim();
 
-        default:
-            res.setHeader('Allow', []);
-            return res.status(405).json({
-                success: false,
-                message: `Method ${method} Not Allowed`,
-            });
+                if (!authorId || !content) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "authorId and content are required",
+                    });
+                }
+
+                const incomingMeta = (payload.metaData || payload.metadata || {}) as Record<string, unknown>;
+                const metaData: Prisma.InputJsonValue = {
+                    ...incomingMeta,
+                    ...(payload.title ? { title: payload.title } : {}),
+                    ...(payload.location ? { location: payload.location } : {}),
+                } as Prisma.InputJsonValue;
+
+                const created = await prisma.post.create({
+                    data: {
+                        authorId,
+                        content,
+                        metaData,
+                        visibility: normalizeVisibility(payload.visibility),
+                    },
+                    include: { _count: { select: { comments: true } } },
+                });
+
+                return res.status(201).json({
+                    success: true,
+                    data: toLegacyDto(created),
+                    message: "Annonce créée avec succès",
+                });
+            }
+
+            case "PUT": {
+                const queryText = String(req.query.q || "").trim().toLowerCase();
+                const posts = await prisma.post.findMany({
+                    orderBy: { createdAt: "desc" },
+                    include: { _count: { select: { comments: true } } },
+                });
+
+                const mapped = posts.map(toLegacyDto);
+                const filtered = queryText
+                    ? mapped.filter((post) =>
+                        post.title.toLowerCase().includes(queryText) || post.description.toLowerCase().includes(queryText),
+                    )
+                    : mapped;
+
+                return res.status(200).json({ success: true, data: filtered });
+            }
+
+            default:
+                res.setHeader("Allow", ["GET", "POST", "PUT"]);
+                return res.status(405).json({
+                    success: false,
+                    message: `Method ${method} Not Allowed`,
+                });
+        }
+    } catch (error) {
+        console.error("Posts API error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            error: error instanceof Error ? error.message : "Unknown error",
+        });
     }
 }

@@ -26,7 +26,7 @@ const ParticleField = memo(function ParticleField() {
    return (
       <points ref={pointsRef}>
          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" array={particles} count={particles.length / 3} itemSize={3} />
+            <bufferAttribute attach="attributes-position" args={[particles, 3]} />
          </bufferGeometry>
          <pointsMaterial color="#fb923c" size={0.018} sizeAttenuation transparent opacity={0.55} depthWrite={false} />
       </points>

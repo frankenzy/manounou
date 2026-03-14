@@ -28,15 +28,6 @@ export class CloudinaryProvider {
 
    async deleteFile(publicId: string): Promise<void> {
       // Implement Cloudinary file deletion logic here
+      void publicId;
    }
 }
-
-type UploadSuccessResponse = {
-   url: string;
-   secure_url: string;
-   public_id: string;
-};
-
-type UploadErrorResponse = {
-   error: string;
-};

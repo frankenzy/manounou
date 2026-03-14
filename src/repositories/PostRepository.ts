@@ -8,8 +8,59 @@ import {
 export class PostRepository {
 
   private readonly tableName = "posts";
+  private static initializationPromise: Promise<void> | null = null;
+
+  private async ensureLegacySchema(): Promise<void> {
+    if (!PostRepository.initializationPromise) {
+      PostRepository.initializationPromise = (async () => {
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS posts (
+            id SERIAL PRIMARY KEY,
+            user_id TEXT,
+            title VARCHAR(255),
+            description TEXT,
+            parent_id INTEGER,
+            location VARCHAR(255),
+            metadata JSONB,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );
+        `);
+
+        await pool.query(`ALTER TABLE posts ADD COLUMN IF NOT EXISTS parent_id INTEGER;`);
+
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS comments (
+            id SERIAL PRIMARY KEY,
+            announce_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+            author_id TEXT NOT NULL,
+            comment TEXT NOT NULL,
+            create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            deleted_at TIMESTAMP
+          );
+        `);
+
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS reposts (
+            id SERIAL PRIMARY KEY,
+            announce_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+            author_id TEXT NOT NULL,
+            text TEXT,
+            create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );
+        `);
+      })().catch((error) => {
+        PostRepository.initializationPromise = null;
+        throw error;
+      });
+    }
+
+    await PostRepository.initializationPromise;
+  }
 
   async create(post: IPost): Promise<IPostDTO> {
+    await this.ensureLegacySchema();
     const result = await pool.query(
       `INSERT INTO ${this.tableName} (user_id, title, description, parent_id, location, metadata) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [
@@ -25,6 +76,7 @@ export class PostRepository {
   }
 
   async findById(id: number): Promise<IPostDTO | null> {
+    await this.ensureLegacySchema();
 
     const result = await pool.query(
       `SELECT
@@ -45,6 +97,7 @@ export class PostRepository {
   }
 
   async findAll(limit?: number, offset?: number): Promise<IPostDTO[]> {
+    await this.ensureLegacySchema();
     console.log("🔍 Repository: Requête SELECT avec pagination et count des commentaires...");
 
     let query = `
@@ -79,6 +132,7 @@ export class PostRepository {
     id: number,
     post: Partial<IPost>,
   ): Promise<IPostDTO | null> {
+    await this.ensureLegacySchema();
     const fields = Object.keys(post);
     const values = Object.values(post);
     const setString = fields
@@ -97,6 +151,7 @@ export class PostRepository {
   }
 
   async delete(id: number): Promise<boolean> {
+    await this.ensureLegacySchema();
     await pool.query(`DELETE FROM ${this.tableName} WHERE id = $1`, [id]);
     return this.findAll().then(
       (posts) => !posts.some((a) => a.id === id),
@@ -104,6 +159,7 @@ export class PostRepository {
   }
 
   async findByUserId(user_id: string): Promise<IPostDTO[]> {
+    await this.ensureLegacySchema();
     const result = await pool.query(
       `SELECT
          a.*, 
@@ -121,6 +177,7 @@ export class PostRepository {
   }
 
   async findByLocation(location: string): Promise<IPostDTO[]> {
+    await this.ensureLegacySchema();
     const result = await pool.query(
       `SELECT
          a.*, 
@@ -138,6 +195,7 @@ export class PostRepository {
   }
 
   async search(query: string): Promise<IPostDTO[]> {
+    await this.ensureLegacySchema();
     const result = await pool.query(
       `SELECT
          a.*, 

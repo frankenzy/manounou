@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
    try {
       await destroyCloudinaryAsset(public_id);
       return res.status(200).json({ success: true });
-   } catch (error) {
+   } catch {
       return res.status(500).json({ error: "Erreur suppression" });
    }
 }

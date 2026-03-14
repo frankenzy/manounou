@@ -1,4 +1,4 @@
-import { type JobStatus, type JobType } from "@prisma/client";
+import { Prisma, type JobStatus, type JobType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export interface CreateLocationInput {
@@ -59,7 +59,12 @@ export class JobsRepositoryV1 {
    }
 
    createLocation(input: CreateLocationInput) {
-      return prisma.location.create({ data: input });
+      const data = {
+         ...input,
+         coordinates: input.coordinates as unknown as Prisma.InputJsonValue | undefined,
+      };
+
+      return prisma.location.create({ data });
    }
 
    listCategories() {
@@ -71,7 +76,7 @@ export class JobsRepositoryV1 {
    }
 
    listJobPosts() {
-      return prisma.jobPost.findMany({
+      return prisma.job.findMany({
          orderBy: { createdAt: "desc" },
          include: {
             author: true,
@@ -84,7 +89,7 @@ export class JobsRepositoryV1 {
    }
 
    getJobPostById(id: string) {
-      return prisma.jobPost.findUnique({
+      return prisma.job.findUnique({
          where: { id },
          include: {
             author: true,
@@ -97,15 +102,15 @@ export class JobsRepositoryV1 {
    }
 
    createJobPost(input: CreateJobPostInput) {
-      return prisma.jobPost.create({ data: input });
+      return prisma.job.create({ data: input });
    }
 
    updateJobPost(id: string, input: UpdateJobPostInput) {
-      return prisma.jobPost.update({ where: { id }, data: input });
+      return prisma.job.update({ where: { id }, data: input });
    }
 
    deleteJobPost(id: string) {
-      return prisma.jobPost.delete({ where: { id } });
+      return prisma.job.delete({ where: { id } });
    }
 
    listOffers(jobPostId: string) {
@@ -123,7 +128,7 @@ export class JobsRepositoryV1 {
    createMatch(input: CreateMatchInput) {
       return prisma.$transaction(async (tx) => {
          const match = await tx.match.create({ data: input });
-         await tx.jobPost.update({
+         await tx.job.update({
             where: { id: input.jobPostId },
             data: { status: "MATCHED" },
          });
