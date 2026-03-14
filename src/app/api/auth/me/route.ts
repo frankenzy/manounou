@@ -18,10 +18,10 @@ export async function GET(request: NextRequest) {
          where: { id: payload.userId },
          select: {
             id: true,
+            phone: true,
             email: true,
-            firstName: true,
-            lastName: true,
-            globalRole: true,
+            role: true,
+            status: true,
             createdAt: true,
             updatedAt: true,
          },
