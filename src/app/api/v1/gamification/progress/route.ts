@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 interface GameProgress {
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
 
       await prisma.user.update({
          where: { id: body.userId },
-         data: { metaData: nextMetaData },
+         data: { metaData: nextMetaData as unknown as Prisma.InputJsonValue },
       });
 
       return NextResponse.json({ success: true, data: nextProgress }, { status: 200 });
