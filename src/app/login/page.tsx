@@ -230,70 +230,80 @@ export default function Home() {
             exit="exit"
             custom={-1}
           >
-            <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
-              <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-2xl">
-                <div className="flex flex-col gap-6 items-center w-full">
-                  <div className="flex flex-col items-center w-full">
-                    <Logo />
-                  </div>
-
-                  <div className="flex flex-col items-center w-full">
-                    <h3 className="text-3xl font-bold">Entrez votre mot de passe</h3>
-                    <p className="text-lg text-center my-2 text-gray-600">
-                      Pour sécuriser votre compte Manounou
-                    </p>
-                  </div>
-
-                  {error && (
-                    <div className="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
-                      {error}
-                    </div>
-                  )}
-
-                  <Input
-                    disabled={isLoading}
-                    Placeholder="Mot de passe"
-                    className="w-full"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required={true}
-                  />
-
-                  <p className="text-sm text-gray-500 w-full text-left">
-                    Numéro confirmé: {phone}
-                  </p>
-
-                  <Buttons
-                    onClick={handleSubmit}
-                    className={`w-full py-5 border-2 shadow-sm ${isPasswordStepValid
-                      ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
-                      : "bg-gray-300 border-gray-300 text-gray-600"
-                      }`}
-                    disabled={!isPasswordStepValid || isLoading}
-                  >
-                    {isLoading ? "Connexion en cours..." : "Se connecter"}
-                  </Buttons>
-
-                  <Buttons
-                    onClick={() => {
-                      setStep("phone");
-                      setPassword("");
-                      setError("");
-                    }}
-                    className="w-full py-5 border-2 shadow-sm bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-                    disabled={isLoading}
-                  >
-                    Modifier le numéro
-                  </Buttons>
-                </div>
-              </main>
-            </div>
+            <  Login />
           </motion.div>
         )}
 
       </AnimatePresence>
     </Loyout>
   );
+
 }
+
+
+
+const Login = () => {
+  return (
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-2xl">
+        <div className="flex flex-col gap-6 items-center w-full">
+          <div className="flex flex-col items-center w-full">
+            <Logo />
+          </div>
+
+          <div className="flex flex-col items-center w-full">
+            <h3 className="text-3xl font-bold">Entrez votre mot de passe</h3>
+            <p className="text-lg text-center my-2 text-gray-600">
+              Pour sécuriser votre compte Manounou
+            </p>
+          </div>
+
+          {error && (
+            <div className="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          <Input
+            disabled={isLoading}
+            Placeholder="Mot de passe"
+            className="w-full"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required={true}
+          />
+
+          <p className="text-sm text-gray-500 w-full text-left">
+            Numéro confirmé: {phone}
+          </p>
+
+          <Buttons
+            onClick={handleSubmit}
+            className={`w-full py-5 border-2 shadow-sm ${isPasswordStepValid
+              ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
+              : "bg-gray-300 border-gray-300 text-gray-600"
+              }`}
+            disabled={!isPasswordStepValid || isLoading}
+          >
+            {isLoading ? "Connexion en cours..." : "Se connecter"}
+          </Buttons>
+
+          <Buttons
+            onClick={() => {
+              setStep("phone");
+              setPassword("");
+              setError("");
+            }}
+            className="w-full py-5 border-2 shadow-sm bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+            disabled={isLoading}
+          >
+            Modifier le numéro
+          </Buttons>
+        </div>
+      </main>
+    </div>
+  );
+};
+
