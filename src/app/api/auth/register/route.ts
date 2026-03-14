@@ -10,6 +10,13 @@ interface RegisterBody {
    otp?: string;
 }
 
+type RegisterCreateData = {
+   email: string;
+   phone: string;
+   password: string;
+   role: "WORKER";
+};
+
 function isValidEmail(email: string): boolean {
    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
    return emailRegex.test(email);
@@ -20,8 +27,6 @@ export async function POST(request: Request) {
       const body = (await request.json()) as RegisterBody;
       const email = body.email?.trim().toLowerCase();
       const password = body.password;
-      const firstName = body.firstName?.trim() || null;
-      const lastName = body.lastName?.trim() || null;
       const otp = body.otp;
 
       if (!email || !password || !otp) {
@@ -70,13 +75,12 @@ export async function POST(request: Request) {
 
       const passwordHash = await hashPassword(password);
 
-      const createData: any = {
+      const createData: RegisterCreateData = {
          email,
+         phone: email,
          password: passwordHash,
+         role: "WORKER",
       };
-
-      if (firstName) createData.firstName = firstName;
-      if (lastName) createData.lastName = lastName;
 
       const user = await prisma.user.create({
          data: createData,
