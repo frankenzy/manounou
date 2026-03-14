@@ -1,73 +1,65 @@
 import { IComment, ICreateCommentDTO, IUpdateCommentDTO } from "@/models/Comment";
-import pool from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
 export class CommentRepository {
-   private readonly tableName = "comments";
-
    async create(createCommentDto: ICreateCommentDTO): Promise<IComment> {
-
-      const result = await pool.query(
-         `INSERT INTO ${this.tableName} (announce_id, author_id, comment) VALUES ($1, $2, $3) RETURNING *`,
-         [createCommentDto.announce_id, createCommentDto.author_id, createCommentDto.comment]
-      );
-      return result.rows[0];
+      const created = await prisma.comment.create({
+         data: {
+            content: createCommentDto.content,
+            userId: createCommentDto.userId,
+            postId: createCommentDto.postId,
+         },
+      });
+      return created as unknown as IComment;
    }
 
    async findAll(): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} ORDER BY create_at DESC`);
-      return result.rows;
+      const rows = await prisma.comment.findMany({ orderBy: { createdAt: "desc" } });
+      return rows as unknown as IComment[];
    }
 
-   async findOne(id: number): Promise<IComment> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE id = $1`, [id]);
-      return result.rows[0];
+   async findOne(id: string): Promise<IComment | null> {
+      const row = await prisma.comment.findUnique({ where: { id } });
+      return row as unknown as IComment | null;
    }
 
    async findByPost(postId: string): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY create_at DESC`, [postId]);
-      return result.rows;
+      const rows = await prisma.comment.findMany({ where: { postId }, orderBy: { createdAt: "desc" } });
+      return rows as unknown as IComment[];
    }
 
    async findByAuthor(authorId: string): Promise<IComment[]> {
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE author_id = $1 ORDER BY create_at DESC`, [authorId]);
-      return result.rows;
+      const rows = await prisma.comment.findMany({ where: { userId: authorId }, orderBy: { createdAt: "desc" } });
+      return rows as unknown as IComment[];
    }
 
-   async update(id: number, updateCommentDto: IUpdateCommentDTO): Promise<IComment> {
-      const fields = Object.keys(updateCommentDto);
-      const values = Object.values(updateCommentDto);
-      const setString = fields.map((field, index) => `${field} = $${index + 1}`).join(", ");
-
-      const result = await pool.query(
-         `UPDATE ${this.tableName} SET ${setString} WHERE id = $${fields.length + 1} RETURNING *`,
-         [...values, id]
-      );
-      return result.rows[0];
+   async update(id: string, updateCommentDto: IUpdateCommentDTO): Promise<IComment> {
+      const updated = await prisma.comment.update({ where: { id }, data: updateCommentDto });
+      return updated as unknown as IComment;
    }
 
-   async remove(id: number): Promise<void> {
-      await pool.query(`DELETE FROM ${this.tableName} WHERE id = $1`, [id]);
+   async remove(id: string): Promise<void> {
+      await prisma.comment.delete({ where: { id } });
    }
 
-   async save(comment: IComment): Promise<IComment> {
+   async save(comment: Partial<IComment> & { id?: string }): Promise<IComment> {
       if (comment.id) {
-         return await this.update(comment.id, comment);
+         const { id, ...data } = comment;
+         const updated = await prisma.comment.update({ where: { id }, data: data as any });
+         return updated as unknown as IComment;
       } else {
-         return await this.create({
-            announce_id: comment.announce_id,
-            author_id: comment.author_id,
-            comment: comment.comment,
-         });
+         const created = await prisma.comment.create({ data: comment as any });
+         return created as unknown as IComment;
       }
    }
 
    async count(): Promise<number> {
-      const result = await pool.query(`SELECT COUNT(*) FROM ${this.tableName}`);
-      return parseInt(result.rows[0].count, 10);
+      const count = await prisma.comment.count();
+      return count;
    }
 
    async countByPost(postId: string): Promise<number> {
-      const result = await pool.query(`SELECT COUNT(*) FROM ${this.tableName} WHERE announce_id = $1`, [postId]);
-      return parseInt(result.rows[0].count, 10);
+      const count = await prisma.comment.count({ where: { postId } });
+      return count;
    }
 }

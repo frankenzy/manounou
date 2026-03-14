@@ -1,31 +1,27 @@
 export interface IComment {
-    id: number;
-    announce_id: number;
-    comment: string;
-    author_id: string;
-    create_at: Date;
-    updated_at: Date;
-    deletedAt?: Date;
+    id: string;
+    content: string;
+    userId: string;
+    postId: string;
+    createdAt: Date;
+    updatedAt?: Date;
 }
-
 
 export interface ICommentDTO {
-    id: number;
-    announce_id: number;
-    comment: string;
-    author_id: string;
-    create_at: Date;
-    update_at: Date;
+    id: string;
+    content: string;
+    userId: string;
+    postId: string;
+    createdAt: Date;
+    updatedAt?: Date;
 }
-
 
 export interface ICreateCommentDTO {
-    announce_id: number;
-    comment: string;
-    author_id: string;
+    content: string;
+    userId: string;
+    postId: string;
 }
 
-
 export interface IUpdateCommentDTO {
-    comment?: string;
+    content?: string;
 }

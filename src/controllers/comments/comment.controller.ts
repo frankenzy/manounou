@@ -10,7 +10,15 @@ export class CommentController extends BaseController {
 
     async create(req: NextApiRequest, res: NextApiResponse) {
         try {
-            const comment = await this.commentService.create(req.body as ICreateCommentDTO);
+            // support legacy and new payload keys: { announce_id, author_id, comment } or { postId, userId, content }
+            const body = req.body as any;
+            const payload: ICreateCommentDTO = {
+                content: body.content ?? body.comment,
+                userId: body.userId ?? body.author_id,
+                postId: body.postId ?? body.announce_id,
+            };
+
+            const comment = await this.commentService.create(payload);
             this.sendCreated(res, comment, 'Comment created successfully');
         } catch (error) {
             this.handleError(res, error);
@@ -19,8 +27,8 @@ export class CommentController extends BaseController {
 
     async findAll(req: NextApiRequest, res: NextApiResponse) {
         try {
-            const announceId = req.query.announce_id as string | undefined;
-            const comments = await this.commentService.findAll(announceId ? parseInt(announceId) : undefined);
+            const announceId = (req.query.announce_id as string) || (req.query.postId as string) || undefined;
+            const comments = await this.commentService.findAll(announceId);
             this.sendSuccess(res, comments);
         } catch (error) {
             this.handleError(res, error);
@@ -29,15 +37,18 @@ export class CommentController extends BaseController {
 
 
     async findOne(req: NextApiRequest) {
-        const id = this.parseId(req);
+        const id = req.query.id as string;
+        if (!id) throw new Error('Invalid ID provided');
         return await this.commentService.findOne(id);
     }
 
     async update(req: NextApiRequest, res: NextApiResponse) {
         try {
-            const id = this.parseId(req);
-            const comment = this.getBody(req) as Partial<IComment>;
-            const updatedComment = await this.commentService.update(id, comment);
+            const id = req.query.id as string;
+            if (!id) throw new Error('Invalid ID provided');
+            const body = this.getBody(req) as any;
+            const updateDto = { content: body.content ?? body.comment } as Partial<IComment>;
+            const updatedComment = await this.commentService.update(id, updateDto as any);
 
             if (!updatedComment) {
                 return this.sendNotFound(res, 'Annonce non trouvée');
@@ -51,7 +62,8 @@ export class CommentController extends BaseController {
 
     async delete(req: NextApiRequest, res: NextApiResponse) {
         try {
-            const id = this.parseId(req);
+            const id = req.query.id as string;
+            if (!id) throw new Error('Invalid ID provided');
             await this.commentService.remove(id);
             res.status(200).json({
                 success: true,

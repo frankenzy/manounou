@@ -13,7 +13,7 @@ export class RepostRepository {
             text TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
          );
-      `).catch(() => {});
+      `).catch(() => { });
    }
 
    async create(createRepostDto: ICreateRepostDTO): Promise<IRepost> {

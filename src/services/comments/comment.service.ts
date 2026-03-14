@@ -10,35 +10,33 @@ export class CommentService {
         return await this.commentRepository.create(IComment);
     }
 
-    async findAll(announceId?: number): Promise<CommentEntity[]> {
-        const comments = await this.commentRepository.findAll();
-
-        if (announceId !== undefined) {
-            return comments.filter(comment => comment.announce_id === announceId);
+    async findAll(postId?: string): Promise<CommentEntity[]> {
+        if (postId) {
+            return await this.commentRepository.findByPost(postId);
         }
 
-        return comments;
+        return await this.commentRepository.findAll();
     }
 
-    async findOne(id: number): Promise<CommentEntity> {
+    async findOne(id: string): Promise<CommentEntity> {
         const comment = await this.commentRepository.findOne(id);
 
         if (!comment) {
             throw new Error(`Comment with ID ${id} not found`);
         }
-        return comment;
+        return comment as CommentEntity;
     }
 
 
     async findByPost(postId: string): Promise<CommentEntity[]> {
-        return await this.commentRepository.findByPost(postId)
+        return await this.commentRepository.findByPost(postId);
     }
 
     async findByAuthor(authorId: string): Promise<CommentEntity[]> {
         return await this.commentRepository.findByAuthor(authorId);
     }
 
-    async update(id: number, updateCommentDto: IUpdateCommentDTO): Promise<CommentEntity> {
+    async update(id: string, updateCommentDto: IUpdateCommentDTO): Promise<CommentEntity> {
         const comment = await this.findOne(id);
 
         Object.assign(comment, updateCommentDto);
@@ -46,15 +44,15 @@ export class CommentService {
         return await this.commentRepository.update(id, updateCommentDto);
     }
 
-    async remove(id: number): Promise<void> {
+    async remove(id: string): Promise<void> {
         const comment = await this.findOne(id);
         await this.commentRepository.remove(comment.id);
     }
 
-    async softDelete(id: number): Promise<CommentEntity> {
+    async softDelete(id: string): Promise<CommentEntity> {
         const comment = await this.findOne(id);
-        comment.deletedAt = new Date();
-        return await this.commentRepository.save(comment);
+        // Prisma model doesn't have deletedAt by default; use save/update if you add soft delete
+        return await this.commentRepository.save({ ...comment, id });
     }
 
     async count(): Promise<number> {
