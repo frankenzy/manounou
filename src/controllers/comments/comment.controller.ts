@@ -3,6 +3,12 @@ import { CommentService } from '@/services/comments/comment.service';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { BaseController } from '../BaseController';
 
+type AuthenticatedNextApiRequest = NextApiRequest & {
+  user?: {
+    id?: string;
+  };
+};
+
 export class CommentController extends BaseController {
   constructor(private readonly commentService: CommentService) {
     super();
@@ -11,9 +17,12 @@ export class CommentController extends BaseController {
   async create(req: NextApiRequest, res: NextApiResponse) {
     try {
       const body = req.body as any;
+      //get the user connected id
+      const userId = (req as AuthenticatedNextApiRequest).user?.id;
+      console.log('Creating comment with body:', body, 'and userId:', userId);
       const payload: ICreateCommentDTO = {
         content: body.content ?? body.comment,
-        userId: body.userId ?? body.author_id,
+        userId: body.userId ?? body.author_id ?? userId ?? 'anonymous',
         postId: body.postId ?? body.announce_id,
       };
 
