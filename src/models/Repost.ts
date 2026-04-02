@@ -1,42 +1,42 @@
-import { IPostDTO } from "./Post";
+import { IPostDTO } from './Post';
 
 export interface IRepost {
-   id: number;
-   announce_id: number;
-   author_id: string;
-   text?: string;
-   created_at: Date;
-   updated_at?: Date;
+  id: number;
+  announce_id: string; // now a string (UUID or post id)
+  author_id: string;
+  text?: string;
+  created_at: Date;
+  updated_at?: Date;
 }
 
 export interface ICreateRepostDTO {
-   announce_id: number;
-   author_id: string;
-   text?: string;
+  announce_id: string; // accept string ids (UUID)
+  author_id: string;
+  text?: string;
 }
 
 export interface RepostProps {
-   date: Date | string | number;
-   postId: string;
-   alreadyReposted: boolean;
-   post: IPostDTO;
-   isOpen: boolean;
-   onClose: () => void;
-   onSuccess?: () => void;
+  date: Date | string | number;
+  postId: string;
+  alreadyReposted: boolean;
+  post: IPostDTO;
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess?: () => void;
 }
 
 export interface RepostApiResponse {
-   success: boolean;
-   message: string;
-   alreadyReposted?: boolean;
+  success: boolean;
+  message: string;
+  alreadyReposted?: boolean;
 }
 
 export interface RepostCreateRequest {
-   announceId: string;
-   authorId: string;
-   text?: string;
+  postId: string;
+  userId: string;
+  text?: string;
 }
 
 export interface RepostDeleteRequest {
-   announceId: string;
+  postId: string;
 }

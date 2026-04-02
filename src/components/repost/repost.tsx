@@ -1,9 +1,9 @@
-import { RepostApiResponse, RepostCreateRequest, RepostProps } from "@/models/Repost";
+import { RepostCreateRequest, RepostProps } from "@/models/Repost";
 import Modal from "../Modal";
 import { UserCircle } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-import postsRepository from "@/repositories/postsRepository";
+import useReposts from '@/hooks/useReposts';
 import { toast } from "react-hot-toast";
 import { useAuthContext } from "@/context/AuthContext";
 
@@ -21,8 +21,9 @@ export default function Repost({ post, isOpen, onClose, onSuccess }: RepostProps
    const authUserId = user?.id;
 
 
-   const handleRepostSubmit = async () => {
+   const { createRepost } = useReposts(post.id as string);
 
+   const handleRepostSubmit = async () => {
       setIsSubmitting(true);
       if (!authUserId) {
          toast.error("Vous devez être connecté pour republier.");
@@ -30,21 +31,15 @@ export default function Repost({ post, isOpen, onClose, onSuccess }: RepostProps
          return;
       }
 
-      const requestData: RepostCreateRequest = {
-         postId: post.id as string,
-         userId: authUserId,
-         text: repostText,
-      };
-
       try {
-         const data = await postsRepository.createRepost(requestData);
-         if (data?.success) {
+         const ok = await createRepost(post.id as string, authUserId, repostText);
+         if (ok) {
             toast.success("Repost créé avec succès !");
             setRepostText("");
             onSuccess?.();
             handleCloseModal();
          } else {
-            toast.error(`Erreur lors de la création du repost : ${data?.message || 'Erreur inconnue'}`);
+            toast.error("Erreur lors de la création du repost");
          }
       } catch (error) {
          console.error("Erreur lors de la création du repost :", error);

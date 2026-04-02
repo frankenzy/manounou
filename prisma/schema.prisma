@@ -193,14 +193,14 @@ model Post {
 
 model Repost {
    id        String   @id @default(uuid())
-   userId    String
+   authorId  String
    postId    String
+   content   String?
    createdAt DateTime @default(now())
+   author    User     @relation(fields: [authorId], references: [id])
+   post      Post     @relation(fields: [postId], references: [id])
 
-   user User @relation(fields: [userId], references: [id])
-   post Post @relation(fields: [postId], references: [id])
-
-   @@index([userId])
+   @@index([authorId])
    @@index([postId])
 }
 
@@ -389,9 +389,8 @@ model SavedPost {
    id     String @id @default(uuid())
    userId String
    postId String
-
-   user User @relation(fields: [userId], references: [id])
-   post Post @relation(fields: [postId], references: [id])
+   user   User   @relation(fields: [userId], references: [id])
+   post   Post   @relation(fields: [postId], references: [id])
 
    @@unique([userId, postId])
 }

@@ -1,25 +1,24 @@
-"use client";
-import { AnimatePresence, motion } from "framer-motion";
-import Buttons from "../../components/ui/buttons/buttons";
-import Logo from "../../components/Logo";
-import Input from "../../components/ui/forms/Input";
-import Header from "../../components/header";
-import Loyout from "../layout";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import LoginAnimation from "@/components/animations/LoginAnimation";
-import { error } from "node:console";
+'use client';
+import LoginAnimation from '@/components/animations/LoginAnimation';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Edit2Icon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Header from '../../components/header';
+import Logo from '../../components/Logo';
+import Buttons from '../../components/ui/buttons/buttons';
+import Input from '../../components/ui/forms/Input';
+import Loyout from '../layout';
 
 export default function Home() {
   const router = useRouter();
-  const [phone, setPhone] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [phone, setPhone] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true);
-  const [step, setStep] = useState<"phone" | "password" | "login">("phone");
-
+  const [step, setStep] = useState<'phone' | 'password' | 'login'>('phone');
 
   const isPhoneStepValid = phone.trim().length > 0 && /^[0-9]{10}$/.test(phone);
   const isPasswordStepValid = password.trim().length > 0;
@@ -32,13 +31,11 @@ export default function Home() {
     setInputFocus(false);
   };
   const slideVariants = {
-
     initial: (direction: number) => ({
       x: direction > 0 ? 100 : -100,
       opacity: 0,
       scale: 0.98,
     }),
-
 
     animate: {
       x: 0,
@@ -61,37 +58,36 @@ export default function Home() {
     }),
   };
 
-
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPhone(value);
-    setError("");
+    setError('');
     setIsPhoneValid(value.trim().length === 0 || /^[0-9]{10}$/.test(value));
   };
 
   const handleSubmit = async () => {
     if (!isPasswordStepValid || !isPhoneStepValid) {
-      setError("Numéro de téléphone ou mot de passe invalide");
+      setError('Numéro de téléphone ou mot de passe invalide');
       return;
     }
 
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: phone.trim(), password }),
       });
       const data = (await res.json()) as { success: boolean; message?: string };
       if (res.ok && data.success) {
-        router.push("/manounou");
+        router.push('/manounou');
       } else {
-        setError(data.message || "Identifiants incorrects");
+        setError(data.message || 'Identifiants incorrects');
       }
     } catch {
-      setError("Erreur réseau, veuillez réessayer");
+      setError('Erreur réseau, veuillez réessayer');
     } finally {
       setIsLoading(false);
     }
@@ -99,19 +95,19 @@ export default function Home() {
 
   const handleSubmitPhone = async () => {
     if (!isPhoneStepValid) {
-      setError("Veuillez saisir un numéro de téléphone valide");
+      setError('Veuillez saisir un numéro de téléphone valide');
       return;
     }
 
     setIsLoading(true);
     // setStep("login");
 
-    setError("");
+    setError('');
 
     try {
-      const res = await fetch("/api/auth/login/check-phone", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth/login/check-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone }),
       });
 
@@ -122,7 +118,7 @@ export default function Home() {
       };
 
       if (!res.ok || !data.success) {
-        setError(data.message || "Impossible de vérifier le numéro");
+        setError(data.message || 'Impossible de vérifier le numéro');
         return;
       }
 
@@ -131,9 +127,9 @@ export default function Home() {
         return;
       }
 
-      setStep("password");
+      setStep('password');
     } catch {
-      setError("Erreur réseau, veuillez réessayer");
+      setError('Erreur réseau, veuillez réessayer');
     } finally {
       setIsLoading(false);
     }
@@ -143,9 +139,8 @@ export default function Home() {
     <Loyout>
       <Header />
 
-      <AnimatePresence initial={false} mode="wait" custom={1}>
-        {step === "phone" && (
-
+      <AnimatePresence initial={true} mode="wait" custom={1}>
+        {step === 'phone' && (
           <motion.div
             key="phone"
             variants={slideVariants}
@@ -155,7 +150,6 @@ export default function Home() {
             custom={1}
           >
             <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
-
               <main className="flex flex-col row-start-2 items-center sm:items-start border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl">
                 <div className="flex flex-col gap-8 items-center content">
                   <div className="flex flex-col items-center w-full">
@@ -163,12 +157,11 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-center w-full">
                     <h3 className="text-4xl font-bold">Connexion Nounou</h3>
-                    <p className="text-xl text-center my-4">
+                    {/* <p className="text-xl text-center my-4">
                       Connectez-vous à votre compte Manounou
-                    </p>
+                    </p> */}
                   </div>
-                  <LoginAnimation />
-
+                  {/* <LoginAnimation /> */}
 
                   {error && (
                     <div className="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
@@ -201,28 +194,45 @@ export default function Home() {
 
                   <Buttons
                     onClick={handleSubmitPhone}
-                    className={`w-full py-5 border-2 hover:bg-slate-300 shadow-sm ${isPhoneStepValid
-                      ? "bg-orange-500 text-white "
-                      : "bg-gray-300  text-gray-900"
-                      }`}
+                    className={`w-full py-5 shadow-sm rounded-lg ${
+                      isPhoneStepValid ? 'bg-orange-500 text-white ' : ' text-gray-900'
+                    }`}
                     disabled={!isPhoneStepValid || isLoading}
                   >
-                    {isLoading ? "Connexion en cours..." : "Se connecter"}
+                    {isLoading ? 'Connexion en cours...' : 'Se connecter'}
                   </Buttons>
+
+                  {/* Social login buttons */}
+                  <div className="w-full flex flex-row gap-3 mt-3 justify-between">
+                    <Buttons
+                      onClick={() => (window.location.href = '/api/auth/google')}
+                      className=" py-3 border-2 shadow-sm rounded-lg bg-white text-gray-800 flex items-center justify-center gap-2"
+                    >
+                      <span className="text-xl">G</span>
+                      Continuer avec Google
+                    </Buttons>
+
+                    <Buttons
+                      onClick={() => (window.location.href = '/api/auth/github')}
+                      className=" py-3 border-2 shadow-sm rounded-lg bg-gray-900 text-white flex items-center justify-center gap-2"
+                    >
+                      <span className="text-xl">🐙</span>
+                      Continuer avec GitHub
+                    </Buttons>
+                  </div>
                 </div>
               </main>
             </div>
           </motion.div>
-
         )}
 
-        {step === "login" && (
+        {step === 'login' && (
           <div className="flex items-center justify-center min-h-screen bg-red-500">
             <LoginAnimation />
           </div>
         )}
 
-        {step === "password" && (
+        {step === 'password' && (
           <motion.div
             key="password"
             variants={slideVariants}
@@ -244,14 +254,10 @@ export default function Home() {
             />
           </motion.div>
         )}
-
       </AnimatePresence>
     </Loyout>
   );
-
 }
-
-
 
 type LoginProps = {
   error: string;
@@ -261,7 +267,7 @@ type LoginProps = {
   phone: string;
   handleSubmit: () => void;
   isPasswordStepValid: boolean;
-  setStep: React.Dispatch<React.SetStateAction<"phone" | "password" | "login">>;
+  setStep: React.Dispatch<React.SetStateAction<'phone' | 'password' | 'login'>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -278,17 +284,10 @@ const Login = ({
 }: LoginProps) => {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-20 pt-10 pb-5 rounded-xl w-full max-w-2xl">
-        <div className="flex flex-col gap-6 items-center w-full">
-          <div className="flex flex-col items-center w-full">
-            <Logo />
-          </div>
-
+      <main className="flex flex-col row-start-2 items-center border-gray-200 border-2 border-solid px-10 pt-10 pb-5 rounded-xl w-full max-w-lg">
+        <div className="flex flex-col gap-6 items-center">
           <div className="flex flex-col items-center w-full">
             <h3 className="text-3xl font-bold">Entrez votre mot de passe</h3>
-            <p className="text-lg text-center my-2 text-gray-600">
-              Pour sécuriser votre compte Manounou
-            </p>
           </div>
 
           {error && (
@@ -296,7 +295,19 @@ const Login = ({
               {error}
             </div>
           )}
-
+          <h1 className="text-gray-500 flex justify-normal items-center gap-2">
+            {phone}{' '}
+            <span
+              className="text-gray-400"
+              onClick={() => {
+                setStep('phone');
+                setPassword('');
+                setError('');
+              }}
+            >
+              <Edit2Icon width={20} className="text-orange-700" />
+            </span>
+          </h1>
           <Input
             disabled={isLoading}
             Placeholder="Mot de passe"
@@ -304,39 +315,35 @@ const Login = ({
             type="password"
             name="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required={true}
           />
 
-          <p className="text-sm text-gray-500 w-full text-left">
-            Numéro confirmé: {phone}
-          </p>
-
           <Buttons
             onClick={handleSubmit}
-            className={`w-full py-5 border-2 shadow-sm ${isPasswordStepValid
-              ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600"
-              : "bg-gray-300 border-gray-300 text-gray-600"
-              }`}
+            className={`w-full py-5 border-2 shadow-sm rounded-xl ${
+              isPasswordStepValid
+                ? 'bg-orange-500 text-white border-orange-500 hover:bg-orange-600'
+                : 'bg-gray-300 border-gray-300 text-gray-600'
+            }`}
             disabled={!isPasswordStepValid || isLoading}
           >
-            {isLoading ? "Connexion en cours..." : "Se connecter"}
+            {isLoading ? 'Connexion en cours...' : 'Se connecter'}
           </Buttons>
 
-          <Buttons
+          {/* <Buttons
             onClick={() => {
-              setStep("phone");
-              setPassword("");
-              setError("");
+              setStep('phone');
+              setPassword('');
+              setError('');
             }}
-            className="w-full py-5 border-2 shadow-sm bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+            className="w-full py-5 border-2 shadow-sm border-gray-300 text-gray-700 rounded-xl bg-slate-500"
             disabled={isLoading}
           >
             Modifier le numéro
-          </Buttons>
+          </Buttons> */}
         </div>
       </main>
     </div>
   );
 };
-

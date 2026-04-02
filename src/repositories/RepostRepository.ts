@@ -8,7 +8,7 @@ export class RepostRepository {
       await pool.query(`
          CREATE TABLE IF NOT EXISTS reposts (
             id SERIAL PRIMARY KEY,
-            announce_id INTEGER NOT NULL,
+            announce_id TEXT NOT NULL,
             author_id TEXT NOT NULL,
             text TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -20,7 +20,7 @@ export class RepostRepository {
       await this.ensureSchema();
       const result = await pool.query(
          `INSERT INTO ${this.tableName} (announce_id, author_id, text) VALUES ($1, $2, $3) RETURNING *`,
-         [createRepostDto.announce_id, createRepostDto.author_id, createRepostDto.text]
+         [String(createRepostDto.announce_id), createRepostDto.author_id, createRepostDto.text]
       );
       return result.rows[0];
    }
@@ -39,7 +39,7 @@ export class RepostRepository {
 
    async findByPost(postId: string): Promise<IRepost[]> {
       await this.ensureSchema();
-      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY created_at DESC, id DESC`, [postId]);
+      const result = await pool.query(`SELECT * FROM ${this.tableName} WHERE announce_id = $1 ORDER BY created_at DESC, id DESC`, [String(postId)]);
       return result.rows;
    }
 
@@ -57,7 +57,7 @@ export class RepostRepository {
 
    async countReposts(announce_id: string): Promise<number> {
       await this.ensureSchema();
-      const result = await pool.query(`SELECT COUNT(*) FROM ${this.tableName} WHERE announce_id = $1`, [announce_id]);
+      const result = await pool.query(`SELECT COUNT(*) FROM ${this.tableName} WHERE announce_id = $1`, [String(announce_id)]);
       return parseInt(result.rows[0].count, 10);
    }
 }
